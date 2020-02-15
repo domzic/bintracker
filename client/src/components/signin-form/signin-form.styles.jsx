@@ -1,9 +1,12 @@
-import React from 'react';
+import styled from 'styled-components';
 
-const SignInForm = () => (
-    <div>
-        <h3>Sign in form</h3>
-    </div>
-);
+export const FormContainer = styled.div`
+    width: 380px;
+    display: flex;
+    flex-direction: column;
+`;
 
-export default SignInForm;
+export const Buttons = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;

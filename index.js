@@ -5,10 +5,10 @@ const passport = require('passport');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
+require('dotenv').config();
 require('./models/User');
 require('./services/passport');
 
-require('dotenv').config();
 
 mongoose.connect(process.env.MONGO_URI, { 
     useNewUrlParser: true,

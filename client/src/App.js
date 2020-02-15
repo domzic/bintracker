@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './App.css';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import axios from 'axios';
+
+import {userContext} from './contexts/user.context';
 
 import Header from './components/header/header.component';
 import HomePage from './pages/home/home-page.component';
@@ -13,28 +16,34 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
-            currentUser: null
+            user: null
         }
+    }
+
+    async componentDidMount() {
+        let response = await axios.get('/api/current_user');
+        await this.setState({ user: response.data });
     }
 
     render() {
         return (
-            <div className="App">
-                <BrowserRouter>
-                    <Header />
-                    <div className="App__Content">
-                    <Switch>
-                        <Route exact path='/' component={HomePage}></Route>
-                        <Route exact path='/signin' component={RegistrationPage}></Route>
-                        <Route exact path='/profile' component={ProfilePage}></Route>
-                        <Route exact path='/dashboard' component={DashboardPage}></Route>
-                        <Route exact path='/stats' component={StatisticsPage}></Route>
-                    </Switch>
-                    </div>
-                </BrowserRouter>
-            </div>
+            <userContext.Provider>
+                <div className="App">
+                    <BrowserRouter>
+                        <Header />
+                        <div className="App__Content">
+                        <Switch>
+                            <Route exact path='/' component={HomePage}></Route>
+                            <Route exact path='/signin' component={RegistrationPage}></Route>
+                            <Route exact path='/profile' component={ProfilePage}></Route>
+                            <Route exact path='/dashboard' component={DashboardPage}></Route>
+                            <Route exact path='/stats' component={StatisticsPage}></Route>
+                        </Switch>
+                        </div>
+                    </BrowserRouter>
+                </div>
+            </userContext.Provider>
         );
     }
 }
