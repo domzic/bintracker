@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const MapWrapper = styled.div`
-    width: 50vw;
-    height: 50vh;
+    position: relative;
+    width: 100%;
+    height: 80vh;
 `;
