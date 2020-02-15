@@ -6,6 +6,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
 require('./models/User');
+require('./services/passport');
 
 require('dotenv').config();
 
