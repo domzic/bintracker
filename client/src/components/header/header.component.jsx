@@ -1,26 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
+import logo from '../../assets/logo.png';
+
 import {
     HeaderContent,
     HeaderContainer,
     LogoContainer,
     Navigation,
-    Option
+    Option,
+    Logo
 } from './header.styles';
 
 
 const Header = () => (
     <HeaderContainer>
         <HeaderContent>
-            <LogoContainer to="/">
-                <div className='logo' />
-            </LogoContainer>
+            <Option to="/">
+                <Logo src={logo} alt="Logo"/>
+            </Option>
             <Navigation>
-                <Option to='/shop'>
-                    SHOP
-                </Option>
-                <Option to='/shop'>
-                    CONTACT
+                <Option to='/dashboard'>
+                    DASHBOARD
                 </Option>
             </Navigation>
 
