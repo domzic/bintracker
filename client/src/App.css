@@ -1,9 +1,14 @@
 .App {
   min-height: 100vh;
-  background-color: #fffff5;
+  background-image: linear-gradient(to right, #94d18a, #4fdaab);
 }
 
 .App__Content {
   max-width: 1080px;
   margin: 0 auto;
+  background: rgba(0, 0, 0, -.5);
+}
+
+.App__Content, .App__Content > div {
+  min-height: calc(100vh - 100px);
 }

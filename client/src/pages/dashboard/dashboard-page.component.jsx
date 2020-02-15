@@ -1,10 +1,13 @@
 import React from 'react';
 
+import {
+    PageContainer
+} from './dashboard-page.styles';
 
 const DashboardPage = () => (
-    <div className='homepage'>
-        <h5>This is dashboard page</h5>
-    </div>
+    <PageContainer>
+        <h3>This is dashboard page</h3>
+    </PageContainer>
 );
 
 export default DashboardPage;

@@ -16,12 +16,21 @@ import {
 const Header = () => (
     <HeaderContainer>
         <HeaderContent>
-            <Option to="/">
+            <Link to="/">
                 <Logo src={logo} alt="Logo"/>
-            </Option>
+            </Link>
             <Navigation>
+            <Option to='/stats'>
+                    Statisctics
+                </Option>
                 <Option to='/dashboard'>
-                    DASHBOARD
+                    Dashboard
+                </Option>
+                <Option to='/profile'>
+                    Profile
+                </Option>
+                <Option to='/signin'>
+                    Sign in
                 </Option>
             </Navigation>
 
