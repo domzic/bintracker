@@ -11,17 +11,26 @@ export const Button = styled.button`
     background-color: ${props => props.theme.backgroundColor};
     color: white;
     text-transform: uppercase;
-    font-family: 'Open Sans Condensed';
     font-weight: bolder;
     border: none;
     cursor: pointer;
     display: flex;
     justify-content: center;
+    border-radius: 3px;
+    transition: all .2s;
 
     &:hover {
         background-color: ${props => props.theme.hBackgroundColor};
         color: black;
         border: ${props => props.theme.hBorder}
+    }
+
+    &:active {
+        transform: scale(0.8);
+    }
+
+    &:focus {
+        outline: none;
     }
 `;
 
