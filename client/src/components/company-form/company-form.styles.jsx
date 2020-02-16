@@ -8,6 +8,8 @@ export const FormContainer = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
+    max-width: 500px;
+    flex-grow: 1;
 `;
 
 export const Form = styled.form`

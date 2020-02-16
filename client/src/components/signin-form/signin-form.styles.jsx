@@ -8,6 +8,7 @@ export const FormContainer = styled.div`
     width: 380px;
     display: flex;
     flex-direction: column;
+    padding-right: 20px;
 `;
 
 export const Buttons = styled.div`
