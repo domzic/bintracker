@@ -16,7 +16,7 @@ import {
 
 
 const Header = () => {
-    const { user, setUser } = useContext(UserContext);
+    const { user } = useContext(UserContext);
 
     const logout = event => {
         window.location.href = '/api/logout';
@@ -34,8 +34,9 @@ const Header = () => {
                 <Link to="/">
                     <Logo src={logo} alt="Logo"/>
                 </Link>
+                { user ?  (
                 <Navigation>
-                <Option to='/stats'>
+                    <Option to='/stats'>
                         Statisctics
                     </Option>
                     <Option to='/dashboard'>
@@ -44,19 +45,17 @@ const Header = () => {
                     <Option to='/profile'>
                         Profile
                     </Option>
-                    { user ?  (
-                            <CustomButton onClick={logout} theme={logoutTheme}>
-                                Logout
-                            </CustomButton>
-                        ) : (
-                            <Option to='/signin'>
-                                Sign in
-                            </Option>
-                        )
-                    }
-                    
-                    
+                    <CustomButton onClick={logout} theme={logoutTheme}>
+                        Logout
+                    </CustomButton>
                 </Navigation>
+                ) : (
+                <Navigation>
+                    <Option to='/signin'>
+                    Sign in
+                    </Option>
+                </Navigation>
+                )}
             </HeaderContent>
         </HeaderContainer>
     );
