@@ -2,7 +2,18 @@ import styled from 'styled-components';
 
 export const Group = styled.div`
     position: relative;
-    margin: 45px 0;
+    margin-bottom: 20px;
+`;
+
+export const Label = styled.label`
+        color: grey;
+        font-size: 16px;
+        font-weight: normal;
+        position: absolute;
+        pointer-events: none;
+        left: 5px;
+        top: 5px;
+        transition: 300ms ease all;
 `;
 
 export const Input = styled.input`
@@ -14,7 +25,7 @@ export const Input = styled.input`
     display: block;
     width: 100%;
     border: none;
-    border-radius: 0;
+    border-radius: 3px;
     border-bottom: 1px solid grey;
     margin: 25px 0;
 
@@ -22,20 +33,17 @@ export const Input = styled.input`
         outline: none;
     }
 
-    &:focus ~ {Label} {
-        top: -14px;
+    &:focus + ${Label} {
+        top: 0;
+        left: 0;
         font-size: 12px;
         color: black;
     }
 `;
 
-export const Label = styled.label`
-        color: grey;
-        font-size: 16px;
-        font-weight: normal;
-        position: absolute;
-        pointer-events: none;
-        left: 5px;
-        top: 10px;
-        transition: 300ms ease all;
+export const ErrorMessage = styled.span` 
+    display: block;
+    color: red;
+    margin-top: -20px;
+    font-size: 12px;
 `;

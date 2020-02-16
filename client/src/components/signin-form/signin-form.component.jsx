@@ -4,6 +4,7 @@ import FormInput from '../form-input/form-input.component';
 import CustomButton from '../button/button.component';
 
 import {
+    Headline,
     FormContainer,
     Buttons
 } from './signin-form.styles';
@@ -26,8 +27,7 @@ class SignIn extends React.Component {
     render() {
         return (
             <FormContainer>
-                <h2>Are you already registered within your company?</h2><br></br>
-                <span>Sign in with your google account</span>
+                <Headline>Are you already registered within your company?</Headline>
                 <CustomButton theme={this.googleButtonTheme} onClick={this.signInWithGoogle}>
                     Sign in with Google
                 </CustomButton>

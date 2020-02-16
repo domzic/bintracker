@@ -13,13 +13,13 @@ export const Button = styled.button`
     text-transform: uppercase;
     font-weight: bolder;
     border: none;
-    cursor: pointer;
     display: flex;
     justify-content: center;
     border-radius: 3px;
     transition: all .2s;
+    cursor: pointer;
 
-    &:hover {
+    &:hover:not(&:disabled) {
         background-color: ${props => props.theme.hBackgroundColor};
         color: black;
         border: ${props => props.theme.hBorder}
@@ -31,6 +31,11 @@ export const Button = styled.button`
 
     &:focus {
         outline: none;
+    }
+
+    &:disabled {
+        background-color: grey;
+        cursor: default;
     }
 `;
 
