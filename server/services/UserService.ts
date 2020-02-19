@@ -1,19 +1,26 @@
-import User from '../models/User';
+import User, { IUserRelationships , IUser } from '../models/User';
+import { Error }  from 'mongoose';
+import { doesNotMatch } from 'assert';
 
-export default class UserService {
+export class UserService {
+    
+    async create(users: IUser[] | IUser) {
+        try {
+            return await User.insertMany(users);
+        } catch (error) {
+            if (error instanceof Error.ValidationError) {
+                throw new Error('User with this username already exists');
+            }
+            throw new Error(error.message);
+        }
+    }
 
-    userModel;
-    
-    constructor(userModel) {
-        this.userModel = userModel;
-    }
-    
-    async addUsers(users) {
-        
-    }
+    async update(user: IUserRelationships) {
+        try {
+            return await user.save();
+        } catch (error) {
+            throw new Error(error.message);
+        }
 
-    async getUserByEmail(email) {
-        return await this.userModel.findOne({ email: email });
     }
-    
 }

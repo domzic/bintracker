@@ -1,26 +1,19 @@
 import mongoose, { Document, Schema, Model, model } from 'mongoose';
+import validator from 'mongoose-unique-validator';
 
 import { IUser } from './User';
 
 const CompanySchema = new Schema({
-    name: String,
-    employees: [{
-        type: Schema.Types.ObjectId,
-        ref: 'users',
-        required: true
-    }]
-});
+    name: { type: String, unique: true },
+    employees: [String]
+}).plugin(validator);
 
 interface ICompanySchema extends Document {
     name: string;
 }
 
 export interface ICompany extends ICompanySchema {
-    employees: [IUser['_id']];
-}
-
-export interface ICompanyRelationships extends ICompanySchema {
-    employees: [IUser];
+    employees: [String];
 }
 
 export default model<ICompany>('Company', CompanySchema, 'companies');

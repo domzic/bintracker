@@ -1,13 +1,12 @@
 import passport from 'passport';
 import passportGoogle, { Profile, VerifyCallback} from 'passport-google-oauth20';
 import mongoose from 'mongoose';
-import UserService from '../services/UserService';
+import { UserService } from '../services/UserService';
 
-import User, { IUser } from '../models/User';
-
+import User, { IUser, IUserRelationships,  } from '../models/User';
 const GoogleStrategy = passportGoogle.Strategy;
 
-passport.serializeUser((user: IUser, done) => {
+passport.serializeUser((user: IUserRelationships, done) => {
   done(null, user.id);
 });
 
@@ -24,21 +23,31 @@ passport.use(
         callbackURL: "/auth/google/callback"
     },
     async (accessToken: string, refreshToken: string, profile: Profile, done: VerifyCallback) => {
-        //const userService = new UserService(User, mongoose);
-        /*let user: IUser = await this.userModel.findOne({ email: email });
-        if (user) {
-          return done(null, user);
-        }
-        done("User is not registered yet.", user);*/
-        User.findOne({ email: profile._json.email }, (err, existingUser) => {
-            if (err) { 
-                return done(err); 
-            }
+        User.findOne({ email: profile._json.email }, async (error: string, existingUser: IUserRelationships) => {
+
             if (!existingUser) {
-                done("User is not registered", null);
+                done("User is unauthorized", null);
+                return;
             }
-            done(err, existingUser);
-        });
+
+            if (error) {
+                done(error, null);
+                return;
+            }
+
+            if (!existingUser.confirmed) {
+                existingUser['displayName'] = profile.displayName;
+                existingUser['confirmed'] = true;
+                existingUser['googleId'] = profile.id;
+                const userService = new UserService();
+                try {
+                    existingUser = await userService.update(existingUser);
+                } catch (error) {
+                    done(error, existingUser);
+                }
+            }
+            done(undefined, existingUser)
+        });    
     }
   )
 );

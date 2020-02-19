@@ -52,7 +52,7 @@ const Header = () => {
                 ) : (
                 <Navigation>
                     <Option to='/signin'>
-                    Sign in
+                        Sign in
                     </Option>
                 </Navigation>
                 )}

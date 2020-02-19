@@ -1,14 +1,17 @@
 import mongoose, { Document, Schema, Model, model } from 'mongoose';
-
+import validator from 'mongoose-unique-validator';
 import { ICompany } from './Company';
 
 const UserSchema: Schema = new Schema({
     googleId: String,
     displayName: String,
-    email: String,
+    email: {
+        type: String,
+        unique: true
+    },
     company: {
         type: Schema.Types.ObjectId,
-        ref: 'companies',
+        ref: 'Company',
         required: true
     },  
     isAdmin: {
@@ -19,7 +22,7 @@ const UserSchema: Schema = new Schema({
         type: Boolean,
         default: false
     }
-});
+}).plugin(validator);
 
 interface IUserSchema extends Document {
     googleId?: string;
@@ -37,8 +40,12 @@ export interface IUserRelationships extends IUserSchema {
     company: ICompany;
 }
 
-UserSchema.statics.findMyCompany = async function(id: number) {
-    return this.findById(id).populate('company').exec()
+UserSchema.statics.findWithCompany = async function(email: String) {
+    return this.find({ email: email}).populate("company").exec()
+  }
+  
+export interface IUserModel extends Model<IUser> {
+    findWithCompany(id: string): Promise<IUserRelationships>;
 }
 
-export default mongoose.model<IUser>('User', UserSchema, 'users');
+export default mongoose.model<IUser, IUserModel>('User', UserSchema, 'users');

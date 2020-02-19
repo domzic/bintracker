@@ -13,6 +13,7 @@ import {
 } from './company-form.styles';
 import Axios from 'axios';
 import { STATES } from 'mongoose';
+import { CLIENT_RENEG_WINDOW } from 'tls';
 
 const CompanyForm = () => {
 
@@ -26,7 +27,13 @@ const CompanyForm = () => {
 
     const handleSubmit = async event => {
         event.preventDefault();
-        axios.post('/api/company', formData);
+        axios.post('/api/company', formData)
+            .then(result => result.json())
+            .then(result => {
+                console.log("Success", result.data);
+            }).catch(error => {
+                console.log("Error: ", error.response);
+            });
     }
 
     const handleEmployeesChange = async event => {
@@ -45,6 +52,7 @@ const CompanyForm = () => {
 
     return (
         <FormContainer>
+
             <Headline>Register your own company</Headline>
             <Form onSubmit={handleSubmit}>
                 <FormInput
@@ -55,6 +63,7 @@ const CompanyForm = () => {
                         ...formData, 
                         name: e.target.value 
                     })}
+                    required
                 />
                 <FormInput
                     type='email'
@@ -64,6 +73,7 @@ const CompanyForm = () => {
                         admin: e.target.value
                     })}
                     label="Admin's gmail address"
+                    required
                 />
                 <FormInput
                     type='text'
@@ -71,6 +81,7 @@ const CompanyForm = () => {
                     onChange={handleEmployeesChange}
                     label="Employees' gmail addresses"
                     error={error}
+                    required
                 />
                 <Button type='submit' disabled={ error }>Register company</Button>
             </Form>

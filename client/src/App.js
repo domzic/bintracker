@@ -19,6 +19,7 @@ const App = () => {
     async function fetchUser() {
         const fetchedUser = await axios.get("/api/current_user");
         setUser(fetchedUser.data);
+        console.log(fetchedUser.data);
     }
 
     useEffect(() => {
