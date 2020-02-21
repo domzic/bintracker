@@ -5,11 +5,15 @@ import {
     MapWrapper
 } from './google-map.styles';
 
+const mapStyles = {
+    width: '100px',
+    height: '100px'
+  };
+
 export class GoogleMap extends Component {
 
   render() {
     return (
-      <MapWrapper>
         <Map 
           google={this.props.google} 
           zoom={14}
@@ -17,6 +21,8 @@ export class GoogleMap extends Component {
             lat: 54.8985,
             lng: 23.9036
           }}
+          scrollWheel = {true}
+          
         >
   
           <Marker name={'Current location'} />
@@ -27,11 +33,10 @@ export class GoogleMap extends Component {
               </div>
           </InfoWindow>
         </Map>
-      </MapWrapper>
     );
   }
 }
  
 export default GoogleApiWrapper({
-  apiKey: process.env.REACT_APP_GOOGLE_API_KEYY
+  apiKey: process.env.REACT_APP_GOOGLE_API_KEY
 })(GoogleMap);

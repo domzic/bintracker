@@ -1,12 +1,27 @@
 import React from 'react';
 
+import FiltersContainer from '../../components/filters-container/filters-container.component';
+import MainBoard from '../../components/main-board/main-board.component';
+
 import {
-    PageContainer
+    PageContainer,
+    PageHeading,
+    ActionsTitle,
+    MainContent,
+    MapContainer
 } from './dashboard-page.styles';
 
 const DashboardPage = () => (
     <PageContainer>
-        <h3>This is dashboard page</h3>
+        <PageHeading>
+            <ActionsTitle>
+                Dashboard actions:
+            </ActionsTitle>
+            <FiltersContainer />
+        </PageHeading>
+        <MainBoard>
+
+        </MainBoard>
     </PageContainer>
 );
 
