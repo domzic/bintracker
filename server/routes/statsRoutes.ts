@@ -6,9 +6,6 @@ import { authenticated } from '../middlewares/authenticated';
 export default function(app: Application) {
     let companyController = new CompanyController();
 
-    app.route('/api/company')
-        .post(authenticated, companyController.createCompany)
-        .get(authenticated, companyController.getCompany);
-
+    app.get('/api/stats/', authenticated, companyController.getCompanyStats);
 
 }

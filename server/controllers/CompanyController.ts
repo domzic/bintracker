@@ -39,6 +39,10 @@ export class CompanyController {
         
     }
 
+    public getCompanyStats = (req: Request, res: Response, next: NextFunction) => {
+        
+    }
+
     private createEmployees = (users: IUser[], res: Response) => {
         try {
             this.userService.create(users);
