@@ -4,7 +4,7 @@ import { CompanyController } from '../controllers/CompanyController';
 import { authenticated } from '../middlewares/authenticated';
   
 export default function(app: Application) {
-    let companyController = new CompanyController();
+    const companyController = new CompanyController();
 
     app.route('/api/company')
         .post(authenticated, companyController.createCompany)

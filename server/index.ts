@@ -8,6 +8,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes';
 import companyRoutes from './routes/companyRoutes';
+import sensorRoutes from './routes/sensorRoutes';
 
 dotenv.config();
 import "./config/passport";
@@ -39,6 +40,7 @@ app.use(cors());
 
 authRoutes(app);
 companyRoutes(app);
+sensorRoutes(app);
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, 'client/build')));
