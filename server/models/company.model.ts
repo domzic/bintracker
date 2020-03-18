@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema, Model, model } from 'mongoose';
 import validator from 'mongoose-unique-validator';
 
-import { IUser } from './User';
+import { IUser } from './user.model';
 
 const CompanySchema = new Schema({
     name: { type: String, unique: true },

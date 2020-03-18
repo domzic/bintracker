@@ -1,9 +1,8 @@
 import passport from 'passport';
 import passportGoogle, { Profile, VerifyCallback} from 'passport-google-oauth20';
 import mongoose from 'mongoose';
-import { UserService } from '../services/UserService';
 
-import User, { IUser, IUserRelationships,  } from '../models/User';
+import User, { IUser, IUserRelationships,  } from '../models/user.model';
 const GoogleStrategy = passportGoogle.Strategy;
 
 passport.serializeUser((user: IUserRelationships, done) => {
@@ -20,7 +19,7 @@ passport.use(
     {
         clientID: process.env.GOOGLE_CLIENT_ID as string,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-        callbackURL: "/auth/google/callback"
+        callbackURL: "/api/auth/google/callback"
     },
     async (accessToken: string, refreshToken: string, profile: Profile, done: VerifyCallback) => {
         User.findOne({ email: profile._json.email }, async (error: string, existingUser: IUserRelationships) => {
@@ -39,9 +38,8 @@ passport.use(
                 existingUser['displayName'] = profile.displayName;
                 existingUser['confirmed'] = true;
                 existingUser['googleId'] = profile.id;
-                const userService = new UserService();
                 try {
-                    existingUser = await userService.update(existingUser);
+                    existingUser = await existingUser.update(existingUser);
                 } catch (error) {
                     done(error, existingUser);
                 }

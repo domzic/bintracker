@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
-import CustomMarker from '../marker/marker.component';
+
 
 import logo from '../../assets/bin.svg';
 
@@ -11,9 +11,15 @@ export class GoogleMap extends Component {
     state = {
         showingInfoWindow: false,  
         activeMarker: {},         
-        level: undefined
+        level: undefined,
+        initialCenter: {}
     };
 
+    constructor(props) {
+        super(props);
+
+
+    }
     renderMarkers() {
         const sensorsData = this.props.sensorsContext.sensors;
         return sensorsData.map((sensor, index) => {

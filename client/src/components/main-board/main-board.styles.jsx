@@ -7,7 +7,7 @@ export const Container = styled.div`
 `;
 
 export const MapWrapper = styled.div`
-    flex-basis: 60%;
+    flex-basis: 70%;
     height: 80vh;
     position: relative;
 `;

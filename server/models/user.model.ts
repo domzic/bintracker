@@ -1,6 +1,6 @@
 import mongoose, { Document, Schema, Model, model } from 'mongoose';
 import validator from 'mongoose-unique-validator';
-import { ICompany } from './Company';
+import { ICompany } from './company.model';
 
 const UserSchema: Schema = new Schema({
     googleId: String,

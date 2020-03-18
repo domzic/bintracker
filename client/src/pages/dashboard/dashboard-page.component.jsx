@@ -26,7 +26,7 @@ const DashboardPage = () => {
 
     useEffect(() => {
         const fetchSensors = async () => {
-            const response = await axios.get("/api/sensors");
+            const response = await axios.get("/api/container");
             setSensors(response.data);
             setLoading(false);
             console.log(response.data);

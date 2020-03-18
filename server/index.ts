@@ -6,41 +6,31 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import path from 'path';
 import dotenv from 'dotenv';
-import authRoutes from './routes/authRoutes';
-import companyRoutes from './routes/companyRoutes';
-import sensorRoutes from './routes/sensorRoutes';
+import routes from './routes';
+import { logger } from './middlewares/logger';
 
 dotenv.config();
-import "./config/passport";
-import { logger } from './middlewares/logger';
+import "./controllers/passport.controller";
 
 mongoose.connect(process.env.MONGO_URI as string, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
 
-const app = express();
-app.use(logger);
-
 const port = process.env.PORT || 5000;
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ 
-  extended: true 
-}));
 
-app.use(
-    cookieSession({
+const app = express();
+app.use(logger)
+    .use(bodyParser.json())
+    .use(bodyParser.urlencoded({ extended: true }))
+    .use(cookieSession({
       maxAge: 30 * 24 * 60 * 60 * 1000,
       keys: [process.env.COOKIE_KEY as string]
-    })
-);
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(cors());
-
-authRoutes(app);
-companyRoutes(app);
-sensorRoutes(app);
+    }))
+    .use(passport.initialize())
+    .use(passport.session())
+    .use(cors())
+    .use('/api', routes);
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, 'client/build')));

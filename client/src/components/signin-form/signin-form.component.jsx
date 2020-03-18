@@ -20,9 +20,9 @@ class SignIn extends React.Component {
         };
     }
 
-    signInWithGoogle = event => {
-        window.location.href = "/auth/google";
-    }
+    signInWithGoogle = () => {
+        window.location.href = "/api/auth/google";
+    };
 
     render() {
         return (

@@ -17,7 +17,7 @@ const App = () => {
     const providerValue = useMemo(() => ({user, setUser}), [user, setUser]);
 
     async function fetchUser() {
-        const fetchedUser = await axios.get("/api/current_user");
+        const fetchedUser = await axios.get("/api/auth/current_user");
         setUser(fetchedUser.data);
         console.log(fetchedUser.data);
     }
