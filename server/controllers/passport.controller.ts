@@ -2,10 +2,10 @@ import passport from 'passport';
 import passportGoogle, { Profile, VerifyCallback} from 'passport-google-oauth20';
 import mongoose from 'mongoose';
 
-import User, { IUser, IUserRelationships,  } from '../models/user.model';
+import User, { IUser,  } from '../models/user.model';
 const GoogleStrategy = passportGoogle.Strategy;
 
-passport.serializeUser((user: IUserRelationships, done) => {
+passport.serializeUser((user: IUser, done) => {
   done(null, user.id);
 });
 
@@ -22,7 +22,7 @@ passport.use(
         callbackURL: "/api/auth/google/callback"
     },
     async (accessToken: string, refreshToken: string, profile: Profile, done: VerifyCallback) => {
-        User.findOne({ email: profile._json.email }, async (error: string, existingUser: IUserRelationships) => {
+        User.findOne({ email: profile._json.email }, async (error: string, existingUser: IUser) => {
 
             if (!existingUser) {
                 done("User is unauthorized", null);

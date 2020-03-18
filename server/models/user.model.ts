@@ -42,8 +42,8 @@ export interface IUserRelationships extends IUserSchema {
 
 UserSchema.statics.findWithCompany = async function(email: String) {
     return this.find({ email: email}).populate("company").exec()
-  }
-  
+};
+
 export interface IUserModel extends Model<IUser> {
     findWithCompany(id: string): Promise<IUserRelationships>;
 }

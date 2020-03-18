@@ -13,7 +13,7 @@ interface ICompanySchema extends Document {
 }
 
 export interface ICompany extends ICompanySchema {
-    employees: [String];
+    employees: String[];
 }
 
 export default model<ICompany>('Company', CompanySchema, 'companies');
