@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import EmployeesList from '../../components/employees-list/employees-list.component';
 
 import { UserContext } from '../../contexts/user.context';
 
@@ -10,6 +11,7 @@ const ProfilePage = () => {
     const { user } = useContext(UserContext);
     return (
         <PageContainer>
+            <EmployeesList/>
             <h3>Hello {user.displayName}!</h3>
         </PageContainer>
     );
