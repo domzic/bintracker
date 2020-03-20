@@ -21,7 +21,7 @@ export class GoogleMap extends Component {
 
     }
     renderMarkers() {
-        const sensorsData = this.props.sensorsContext.sensors;
+        const sensorsData = this.props.containersContext.containers;
         return sensorsData.map((sensor, index) => {
             return <Marker 
                 key={index}

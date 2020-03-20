@@ -18,23 +18,24 @@ const ProfilePage = () => {
 
     const providerValue = useMemo(() => ({company, setCompany}), [company, setCompany]);
 
-    const fetchCompanyData = async () => {
-        const response = await axios.get("/api/company");
-        setCompany(response.data);
-        setLoading(false);
-    };
+
 
     useEffect( () => {
-        if (user.isAdmin) {
-            fetchCompanyData();
-        }
+        const fetchCompanyData = async () => {
+            const response = await axios.get("/api/company/");
+            setCompany(response.data);
+            console.log('Company: ',response.data);
+            setLoading(false);
+        };
+
+        fetchCompanyData();
     }, []);
 
     return (
         <PageContainer>
             {user.isAdmin ?
                 <CompanyContext.Provider value={providerValue}>
-                    <EmployeesWithSpinner loading={loading}/>
+                    <EmployeesWithSpinner isLoading={loading}/>
                 </CompanyContext.Provider>
                 :
                 {}
