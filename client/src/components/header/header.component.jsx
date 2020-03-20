@@ -19,7 +19,7 @@ const Header = () => {
     const { user } = useContext(UserContext);
 
     const logout = event => {
-        window.location.href = '/api/logout';
+        window.location.href = '/api/auth/logout';
     }
 
     const logoutTheme = {

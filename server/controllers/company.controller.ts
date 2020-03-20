@@ -63,14 +63,15 @@ export const removeEmployee = async (req: Request, res: Response) => {
 
 export const addEmployee = async (req: Request, res: Response) => {
     try {
-        const { companyId, employeeEmail } = req.body;
-        const company = await Company.findById(companyId);
+        const { email } = req.body;
+        console.log('email: ', email);
+        const company = await Company.findById(req.user!!.company);
 
         if (!company) {
             throw new Error('Internal server error');
         }
 
-        const employee = await User.create({ email: employeeEmail, company: companyId, isAdmin: false, confirmed: false});
+        const employee = await User.create({ email: email.toLowerCase(), company: req.user!!.company, isAdmin: false, confirmed: false});
         company.employees.push(employee);
         await company.save();
         res.sendStatus(200);

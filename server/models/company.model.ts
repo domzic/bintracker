@@ -4,7 +4,7 @@ import validator from 'mongoose-unique-validator';
 
 const CompanySchema = new Schema({
     name: { type: String, unique: true },
-    employees: [{type: Schema.Types.ObjectId, red: 'User' }]
+    employees: [{type: Schema.Types.ObjectId, ref: 'User' }]
 
 }).plugin(validator);
 
