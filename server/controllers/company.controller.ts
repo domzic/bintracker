@@ -42,9 +42,9 @@ export const getCompany = async (req: Request, res: Response) => {
 };
 
 export const removeEmployee = async (req: Request, res: Response) => {
-    const { companyId, employeeEmail } = req.body;
+    const { employeeEmail } = req.body;
     try {
-        const company = await Company.findById(companyId);
+        const company = await Company.findById(req.user!!.company);
         if (!company) {
             throw new Error('Internal server error');
         }
@@ -71,4 +71,13 @@ export const addEmployee = async (req: Request, res: Response) => {
     } catch (error) {
         res.sendStatus(500).json({ message: error.message });
     }
+};
+
+export const getEmployees = async (req: Request, res: Response) => {
+    const company = await Company.findById(req.user!!.company);
+    if (!company) {
+        res.sendStatus(500);
+    }
+    let employees = await User.find({ email : { $in: company!!.employees}});
+    res.send(employees);
 };

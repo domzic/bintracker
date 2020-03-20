@@ -1,8 +1,7 @@
-import React, { useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import axios from "axios";
 import MaterialTable from 'material-table';
 import './employees-list.styles.css';
-
 import { forwardRef } from 'react';
 
 import AddBox from '@material-ui/icons/AddBox';
@@ -20,6 +19,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import {CompanyContext} from "../../contexts/company.context";
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -43,53 +43,40 @@ const tableIcons = {
 
 const EmployeesList = () => {
 
+    const { company } = useContext(CompanyContext);
+
     const [state, setState] = useState({
         columns: [
             { title: 'Display name', field: 'displayName' },
             { title: 'Email', field: 'email' },
             { title: 'Is confirmed', field: 'confirmed' }
         ],
-        data: []
+        data: company.employees
     });
 
-    const fetchEmployees = async () => {
-        const response = await axios.get("/api/company/employees");
-        setState( {...state, data: response.data });
-    };
-
-    useEffect( () => {
-        fetchEmployees();
-    }, []);
-
-    const renderEmployees = employee => {
-        return (
-            <tr key={employee._id}>
-                <td>{employee.displayName}</td>
-                <td>{employee.email}</td>
-            </tr>
-        );
-    };
-
     return (
-      <MaterialTable
-          title="Employees"
-          columns={state.columns}
-          data={state.data}
-          icons={tableIcons}
-          actions={[
-              {
-                  icon: DeleteOutline,
-                  tooltip: 'Delete User',
-                  onClick: (event, employee) => {
-                      const confirmed = window.confirm(`Are you sure you want to remove ${employee.displayName}?`);
-                      if (confirmed) {
-                          axios.delete('/api/company/employee', { data: { employeeEmail: employee.email }})
-                              .then(() => window.location.reload());
+        <div style={{ width: '100%' }}>
+              <MaterialTable
+                  isLoading={state.loading}
+                  title="Employees"
+                  columns={state.columns}
+                  data={state.data}
+                  icons={tableIcons}
+                  actions={[
+                      {
+                          icon: DeleteOutline,
+                          tooltip: 'Delete User',
+                          onClick: (event, employee) => {
+                              const confirmed = window.confirm(`Are you sure you want to remove ${employee.displayName}?`);
+                              if (confirmed) {
+                                  axios.delete('/api/company/employee', { data: { employeeEmail: employee.email }})
+                                      .then(() => window.location.reload());
+                              }
+                          }
                       }
-                  }
-              }
-          ]}
-      />
+                  ]}
+              />
+        </div>
     );
 };
 
