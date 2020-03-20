@@ -1,18 +1,16 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { UserContext } from "../../contexts/user.context";
+import { UserContext } from '../../contexts/user.context';
 
 import logo from '../../assets/logo.png';
 import CustomButton from '../button/button.component';
 
-import {
-    HeaderContent,
+import { HeaderContent,
     HeaderContainer,
     LogoContainer,
     Navigation,
     Option,
-    Logo
-} from './header.styles';
+    Logo } from './header.styles';
 
 
 const Header = () => {
@@ -20,44 +18,46 @@ const Header = () => {
 
     const logout = event => {
         window.location.href = '/api/auth/logout';
-    }
+    };
 
     const logoutTheme = {
         hBorder: '1px solid rgba(0, 0, 0, .6)',
         backgroundColor: 'transparent',
         hBackgroundColor: 'rgba(0, 0, 0, .2)'
-    }
-    
+    };
+
+    const getProfileName = () => (user.isAdmin ? 'Admin panel' : 'Profile');
+
     return (
         <HeaderContainer>
             <HeaderContent>
-                <Link to="/">
-                    <Logo src={logo} alt="Logo"/>
+            <Link to="/">
+                <Logo src={logo} alt="Logo" />
                 </Link>
-                { user ?  (
-                <Navigation>
-                    <Option to='/stats'>
-                        Statisctics
+            { user ? (
+                    <Navigation>
+                <Option to="/stats">
+                          Statisctics
                     </Option>
-                    <Option to='/dashboard'>
+                        <Option to="/dashboard">
                         Dashboard
                     </Option>
-                    <Option to='/profile'>
-                        Profile
-                    </Option>
-                    <CustomButton onClick={logout} theme={logoutTheme}>
-                        Logout
+                <Option to="/profile">
+                          {getProfileName()}
+                        </Option>
+                <CustomButton onClick={logout} theme={logoutTheme}>
+                          Logout
                     </CustomButton>
-                </Navigation>
+              </Navigation>
                 ) : (
-                <Navigation>
-                    <Option to='/signin'>
-                        Sign in
+                  <Navigation>
+                      <Option to="/signin">
+                          Sign in
                     </Option>
-                </Navigation>
+                    </Navigation>
                 )}
-            </HeaderContent>
-        </HeaderContainer>
+          </HeaderContent>
+      </HeaderContainer>
     );
 };
 

@@ -1,10 +1,7 @@
-import React, {useContext, useEffect, useState} from 'react';
-import axios from "axios";
+import React, { useContext, useEffect, useState, forwardRef } from 'react';
+import axios from 'axios';
 import MaterialTable from 'material-table';
 import './employees-list.styles.css';
-import { forwardRef } from 'react';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -21,7 +18,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import {CompanyContext} from "../../contexts/company.context";
+import { CompanyContext } from '../../contexts/company.context';
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -50,96 +47,34 @@ const EmployeesList = () => {
     const [state, setState] = useState({
         columns: [
             { title: 'Display name', field: 'displayName' },
-            { title: 'Email', field: 'email' },
-            { title: 'Is confirmed', field: 'confirmed' }
+            { title: 'Email', field: 'email' }
         ],
         data: company.employees
     });
 
     return (
         <div style={{ width: '100%' }}>
-            <Formik
-                initialValues={{ email: "" }}
-                onSubmit={async values => {
-                    axios.post('/api/company/employee', { email: values.email })
-                        .then(() => window.location.reload());
-                }}
-                validationSchema={Yup.object().shape({
-                    email: Yup.string()
-                        .email()
-                        .required("Required")
-                })}
-            >
-                {props => {
-                    const {
-                        values,
-                        touched,
-                        errors,
-                        dirty,
-                        isSubmitting,
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                        handleReset
-                    } = props;
-                    return (
-                        <form onSubmit={handleSubmit}>
-                            <label htmlFor="email" style={{ display: "block" }}>
-                                Employee email address
-                            </label>
-                            <input
-                                id="email"
-                                placeholder="Enter employee email"
-                                type="text"
-                                value={values.email}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                className={
-                                    errors.email && touched.email
-                                        ? "text-input error"
-                                        : "text-input"
-                                }
-                            />
-                            {errors.email && touched.email && (
-                                <div className="input-feedback">{errors.email}</div>
-                            )}
-
-                            <button
-                                type="button"
-                                className="outline"
-                                onClick={handleReset}
-                                disabled={!dirty || isSubmitting}
-                            >
-                                Reset
-                            </button>
-                            <button type="submit" disabled={isSubmitting}>
-                                Submit
-                            </button>
-                        </form>
-                    );
-                }}
-            </Formik>
-            <MaterialTable
-              isLoading={state.loading}
-              title="Employees"
-              columns={state.columns}
-              data={state.data}
-              icons={tableIcons}
-              actions={[
-                  {
-                      icon: DeleteOutline,
-                      tooltip: 'Delete User',
-                      onClick: (event, employee) => {
-                          const confirmed = window.confirm(`Are you sure you want to remove ${employee.displayName}?`);
-                          if (confirmed) {
-                              axios.delete('/api/company/employee', { data: { employeeEmail: employee.email }})
-                                  .then(() => window.location.reload());
-                          }
-                      }
-                  }
-              ]}
-            />
-        </div>
+        <MaterialTable
+            isLoading={state.loading}
+            title="Employees"
+            columns={state.columns}
+            data={state.data}
+            icons={tableIcons}
+            actions={[
+                    {
+                        icon: DeleteOutline,
+                        tooltip: 'Delete User',
+                        onClick: (event, employee) => {
+                            const confirmed = window.confirm(`Are you sure you want to remove ${employee.displayName}?`);
+                            if (confirmed) {
+                                axios.delete('/api/company/employee', { data: { employeeEmail: employee.email } })
+                                    .then(() => window.location.reload());
+                            }
+                        }
+                    }
+                ]}
+          />
+      </div>
     );
 };
 

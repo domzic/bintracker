@@ -1,0 +1,50 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "airbnb"
+  ],
+  "plugins": [
+    "@typescript-eslint/eslint-plugin"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "env": {
+    "es6": true,
+    "node": true,
+    "jest": true,
+    "browser": true
+  },
+  "rules": {
+    "new-cap": "off",
+    "arrow-parens": "off",
+    "import/extensions": "off",
+    "max-classes-per-file": "off",
+    "no-useless-constructor": "off",
+    "class-methods-use-this": "off",
+    "lines-between-class-members": "off",
+    "implicit-arrow-linebreak": "off",
+    "no-plusplus": "off",
+    "import/no-unresolved": "off",
+    "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": "off",
+
+    "indent": [
+      "error", 4
+    ],
+    "comma-dangle": [
+      "error", "never"
+    ],
+    "max-len": [
+      "error", { "code": 120 }
+    ],
+    "padded-blocks": [
+      "error", { "classes": "always" }
+    ],
+    "no-empty-function": [
+      "error", { "allow" : [ "constructors", "functions" ] }
+    ],
+    "object-curly-newline": [
+      "error", { "ImportDeclaration": "never", "ExportDeclaration": "never" }
+    ]
+  }
+}
