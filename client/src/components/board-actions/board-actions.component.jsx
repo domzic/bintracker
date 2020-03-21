@@ -1,14 +1,15 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import MapIcon from '@material-ui/icons/Map';
 import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
 import Button from '@material-ui/core/Button';
+import { toast } from 'react-toastify';
+import { makeStyles } from '@material-ui/core/styles';
 import { Container, Option } from './board-actions.styles';
 import Modal from '../modal/modal.component';
 import ContainerForm from '../container-form/container-form.component';
 import { ButtonText } from '../modal/modal.styles';
-import {toast} from "react-toastify";
-import {Context} from "../../state/store";
-import {makeStyles} from "@material-ui/core/styles";
+import { Context } from '../../state/store';
+import { Actions, MapView } from '../../state/constants';
 
 export const actionButtonStyles = makeStyles({
     root: {
@@ -27,60 +28,60 @@ export const actionButtonStyles = makeStyles({
     }
 });
 
-const BoardActions = ( props ) => {
+const BoardActions = (props) => {
     const buttonClasses = actionButtonStyles();
     const [state, dispatch] = useContext(Context);
 
     const showDirections = () => {
-        dispatch({type: 'SET_MAP_VIEW', payload: 'directions'});
+        dispatch({ type: Actions.SET_MAP_VIEW, payload: MapView.DIRECTIONS });
         toast.success('Showing directions.');
     };
 
     const showContainers = () => {
-        dispatch({type: 'SET_MAP_VIEW', payload: 'map'});
+        dispatch({ type: Actions.SET_MAP_VIEW, payload: MapView.MAP });
         toast.success('Showing containers.');
     };
 
     return (
         <Container>
             <Button
-                variant="contained"
+            variant="contained"
                 color="default"
-                size="big"
-                startIcon={<RestoreFromTrashIcon />}
+            size="big"
+            startIcon={<RestoreFromTrashIcon />}
                 type="button"
-                disabled={state.mapView === 'map'}
+            disabled={state.mapView === 'map'}
                 onClick={showContainers}
-                classes={{
+            classes={{
                     root: buttonClasses.root,
                     label: buttonClasses.label
                 }}
-            >
-                <ButtonText>See containers</ButtonText>
-            </Button>
+          >
+            <ButtonText>See containers</ButtonText>
+          </Button>
             <Button
                 variant="contained"
                 color="default"
                 size="big"
-                startIcon={<MapIcon />}
-                type="button"
+            startIcon={<MapIcon />}
+            type="button"
                 disabled={state.mapView === 'directions'}
-                onClick={showDirections}
+            onClick={showDirections}
                 classes={{
                     root: buttonClasses.root,
                     label: buttonClasses.label
                 }}
-            >
+          >
                 <ButtonText>See directions</ButtonText>
-            </Button>
+          </Button>
             <Modal
                 title="Container form"
                 position={{ top: 50, left: 50 }}
                 buttonText="Add container"
-            >
+          >
                 <ContainerForm />
-            </Modal>
-        </Container>
+          </Modal>
+      </Container>
     );
 };
 

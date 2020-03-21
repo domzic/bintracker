@@ -14,6 +14,7 @@ import ProfilePage from './pages/profile/profile-page.component';
 import {ToastContainer} from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
+import {Actions} from "./state/constants";
 
 const App = () => {
 
@@ -22,7 +23,7 @@ const App = () => {
     useEffect(() => {
         async function fetchUser() {
             const fetchedUser = await axios.get("/api/auth/current_user");
-            dispatch({type: 'SET_USER', payload: fetchedUser.data});
+            dispatch({type: Actions.SET_USER, payload: fetchedUser.data});
         }
 
         fetchUser();

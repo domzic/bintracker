@@ -6,6 +6,7 @@ import WithSpinner from '../../components/with-spinner/with-spinner.component';
 import { PageContainer, Body } from './profile-page.styles';
 import EmployeeForm from '../../components/employee-form/employee-form.component';
 import { Context } from '../../state/store';
+import { Actions } from '../../state/constants';
 
 const EmployeesWithSpinner = WithSpinner(EmployeesList);
 
@@ -19,7 +20,7 @@ const ProfilePage = () => {
     useEffect(() => {
         const fetchCompanyData = async () => {
             const response = await axios.get('/api/company');
-            dispatch({ type: 'SET_COMPANY', payload: response.data });
+            dispatch({ type: Actions.SET_COMPANY, payload: response.data });
             setLoading(false);
         };
 
@@ -30,13 +31,13 @@ const ProfilePage = () => {
 
     return (
         <PageContainer>
-            {user.isAdmin ? (
+        {user.isAdmin ? (
                 <Body>
                     <EmployeesWithSpinner isLoading={loading} />
                     <EmployeeForm />
-                </Body>
+          </Body>
             ) : null}
-        </PageContainer>
+      </PageContainer>
     );
 };
 

@@ -18,7 +18,7 @@ class MapDirectionsRenderer extends React.Component {
     componentDidMount() {
         let { places, travelMode } = this.props;
         places = places
-            .filter(container => container.level > 0)
+            .filter(container => container.level > 80)
             .map(container => ({latitude: container.latitude, longitude: container.longitude }));
 
         const waypoints = places.map(container =>({

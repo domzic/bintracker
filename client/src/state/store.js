@@ -1,13 +1,13 @@
-import React, {createContext, useReducer} from "react";
+import React, {createContext, useReducer} from 'react';
 import Reducer from './reducer';
-
+import { Filter, MapView } from './constants';
 
 const initialState = {
     user: null,
     company: null,
-    error: null,
     containers: [],
-    mapView: 'map'
+    filter: Filter.ALL,
+    mapView: MapView.MAP
 };
 
 const Store = ({children}) => {

@@ -93,9 +93,16 @@ const ContainerForm = (  ) => {
                                         : 'text-input'
                                 }
                             />
-                            {errors.longitude && touched.longitude && (
-                                <Error>{errors.longitude}</Error>
-                            )}
+
+                            <TextField
+                                label="Level (for testing)"
+                                id="level"
+                                placeholder="Enter level"
+                                type="number"
+                                value={values.level}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
 
                             <ButtonsContainer>
                                 <Button

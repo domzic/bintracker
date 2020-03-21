@@ -9,6 +9,7 @@ import { PageContainer,
     PageHeading,
     ActionsTitle } from './dashboard-page.styles';
 import { Context } from '../../state/store';
+import { Actions } from '../../state/constants';
 
 const MainBoardWithSpinner = WithSpinner(MainBoard);
 
@@ -22,7 +23,7 @@ const DashboardPage = () => {
     useEffect(() => {
         const fetchContainers = async () => {
             const response = await axios.get('/api/container');
-            dispatch({ type: 'SET_CONTAINERS', payload: response.data });
+            dispatch({ type: Actions.SET_CONTAINERS, payload: response.data });
             setLoading(false);
         };
 
