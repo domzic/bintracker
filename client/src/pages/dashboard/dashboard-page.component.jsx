@@ -35,8 +35,8 @@ const DashboardPage = () => {
         <PageContainer>
         <PageHeading>
             <ActionsTitle>
-                  Dashboard actions:
-                    </ActionsTitle>
+                  Actions:
+            </ActionsTitle>
             <FiltersContainer />
             </PageHeading>
         <MainBoardWithSpinner isLoading={loading} />
