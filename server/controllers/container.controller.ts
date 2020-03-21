@@ -1,29 +1,14 @@
 import { Request, Response } from 'express';
-import Container, {IContainer} from "../models/container.model";
-import {Error} from "mongoose";
+import Container from "../models/container.model";
 
-export const getContainers = (_: Request, res: Response) => {
+export const getContainers = async (req: Request, res: Response) => {
+    const containers = await Container.find({ company: req.user!!.company});
 
-    res.send([
-        {
-            id: 'S-001',
-            latitude: 54.906646,
-            longitude: 23.955046,
-            level: 25
-        },
-        {
-            id: 'S-002',
-            latitude: 54.914361,
-            longitude: 23.944826,
-            level: 80
-        },
-        {
-            id: 'S-003',
-            latitude: 54.900076,
-            longitude: 23.927305,
-            level: 60
-        }
-    ]);
+    if (!containers) {
+        res.sendStatus(500);
+    }
+
+    res.send(containers);
 };
 
 export const addContainer = async (req: Request, res: Response) => {
@@ -40,7 +25,7 @@ export const addContainer = async (req: Request, res: Response) => {
             latitude,
             longitude,
             ttnDeviceId,
-            status: 0,
+            level: 0,
             timesServiced: 0,
             company: req.user!!.company
         });

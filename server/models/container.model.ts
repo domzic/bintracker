@@ -6,10 +6,10 @@ const Container: Schema = new Schema({
     latitude: Number,
     longitude: Number,
     ttnDeviceId: {
-      type: String,
-      unique: true
+        type: String,
+        unique: true
     },
-    status: Number,
+    level: Number,
     company: {
         type: Schema.Types.ObjectId,
         ref: 'Company',
@@ -19,11 +19,11 @@ const Container: Schema = new Schema({
 }).plugin(validator);
 
 export interface IContainer extends Document {
-    latitude: number,
-    longitude: number,
-    ttnDeviceId: string,
-    status: number,
-    timesServiced: number
+    latitude: number;
+    longitude: number;
+    ttnDeviceId: string;
+    status: number;
+    timesServiced: number;
 }
 
 export interface IContainerRelationships extends  IContainer {

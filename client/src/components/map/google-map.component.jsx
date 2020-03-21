@@ -15,10 +15,10 @@ export class GoogleMap extends Component {
     renderMarkers() {
         const { containers } = this.props;
         return containers.map((container, index) => (
-          <Marker
+            <Marker
                 key={index}
-              id={container.id}
-              level={container.level}
+                id={container.id}
+                level={container.level}
                 position={{ lat: container.latitude, lng: container.longitude }}
                 icon={{
                     path: MAP_MARKER,
@@ -26,7 +26,7 @@ export class GoogleMap extends Component {
                     fillOpacity: 1,
                     anchor: { x: 24, y: 24 }
                 }}
-              onClick={this.onMarkerClick}
+                onClick={this.onMarkerClick}
             />
         ));
     }
@@ -52,25 +52,25 @@ export class GoogleMap extends Component {
         return (
             <Map
                 google={this.props.google}
-            zoom={12}
+                zoom={12}
                 initialCenter={{
                     lat: 54.906646,
                     lng: 23.955046
                 }}
-            onClick={this.onClose}
-          >
+                onClick={this.onClose}
+            >
                 {this.renderMarkers()}
-            <InfoWindow
-                  marker={this.state.activeMarker}
+                <InfoWindow
+                    marker={this.state.activeMarker}
                     visible={this.state.showingInfoWindow}
                     onClose={this.onClose}
                 >
-                  <span>
-                      Level is:{this.state.level}
+                    <span>
+                      Level is: {this.state.level}
                       %
-</span>
+                    </span>
                 </InfoWindow>
-          </Map>
+            </Map>
         );
     }
 
