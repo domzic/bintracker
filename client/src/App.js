@@ -11,6 +11,9 @@ import DashboardPage from './pages/dashboard/dashboard-page.component';
 import RegistrationPage from './pages/registration/registration-page.component';
 import StatisticsPage from './pages/statistics/statistics-page.component';
 import ProfilePage from './pages/profile/profile-page.component';
+import {ToastContainer} from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
 
@@ -29,6 +32,9 @@ const App = () => {
             <div className="App">
                 <BrowserRouter>
                     <Header />
+                    <ToastContainer
+                        autoClose={2000}
+                    />
                     <div className="App__Content">
                     <Switch>
                         <Route exact path='/' component={HomePage}/>
@@ -50,6 +56,6 @@ const App = () => {
                 </BrowserRouter>
             </div>
     );
-}
+};
 
 export default App;

@@ -1,4 +1,6 @@
 import { Request, Response } from 'express';
+import Container, {IContainer} from "../models/container.model";
+import {Error} from "mongoose";
 
 export const getContainers = (_: Request, res: Response) => {
 
@@ -22,4 +24,30 @@ export const getContainers = (_: Request, res: Response) => {
             level: 60
         }
     ]);
+};
+
+export const addContainer = async (req: Request, res: Response) => {
+    const { formData } = req.body;
+
+    if (!formData) {
+        res.sendStatus(500);
+    }
+
+    const {latitude, longitude, ttnDeviceId} = formData;
+
+    try {
+        const container = await Container.create({
+            latitude,
+            longitude,
+            ttnDeviceId,
+            status: 0,
+            timesServiced: 0,
+            company: req.user!!.company
+        });
+        res.status(200).send(container);
+    } catch (error) {
+        if (error) {
+            res.status(500).send('Device is already registered');
+        }
+    }
 };

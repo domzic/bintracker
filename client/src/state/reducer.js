@@ -20,6 +20,11 @@ const Reducer = (state, action) => {
                 ...state,
                 containers: action.payload
             };
+        case 'ADD_CONTAINER':
+            return {
+                ...state,
+                containers: state.containers.concat(action.payload)
+            };
         default:
             return state;
     }

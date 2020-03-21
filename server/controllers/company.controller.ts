@@ -76,6 +76,6 @@ export const addEmployee = async (req: Request, res: Response) => {
         await company.save();
         res.sendStatus(200);
     } catch (error) {
-        res.sendStatus(500).json({ message: error.message });
+        res.status(500).send(error.message);
     }
 };
