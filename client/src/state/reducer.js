@@ -25,6 +25,11 @@ const Reducer = (state, action) => {
                 ...state,
                 containers: state.containers.concat(action.payload)
             };
+        case 'SET_MAP_VIEW':
+            return {
+                ...state,
+                mapView: action.payload
+            };
         default:
             return state;
     }

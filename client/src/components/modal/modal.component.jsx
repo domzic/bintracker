@@ -4,6 +4,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 import { Title, ButtonText } from './modal.styles';
+import {actionButtonStyles} from "../board-actions/board-actions.component";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -18,7 +19,7 @@ const useStyles = makeStyles(theme => ({
 
 const CustomModal = ({ children, title, position, buttonText }) => {
     const classes = useStyles();
-
+    const buttonClasses = actionButtonStyles();
     const getModalStyle = () => ({
         top: `${position.top}%`,
         left: `${position.left}%`,
@@ -40,29 +41,29 @@ const CustomModal = ({ children, title, position, buttonText }) => {
     return (
         <div>
             <Button
-            variant="contained"
-            color="default"
-            style={{ width: '100%', height: 50, color: '#015408' }}
-            size="big"
-                className={classes.button}
+                variant="contained"
                 startIcon={<AddIcon />}
-            type="button"
-            onClick={handleOpen}
-          >
+                type="button"
+                onClick={handleOpen}
+                classes={{
+                    root: buttonClasses.root,
+                    label: buttonClasses.label
+                }}
+            >
                 <ButtonText>{buttonText}</ButtonText>
-          </Button>
+            </Button>
             <Modal
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
                 open={open}
-            onClose={handleClose}
-          >
+                onClose={handleClose}
+            >
                 <div style={modalStyle} className={classes.paper}>
                     <Title>{title}</Title>
                     {children}
-              </div>
-          </Modal>
-      </div>
+                </div>
+            </Modal>
+        </div>
     );
 };
 

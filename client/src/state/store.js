@@ -6,7 +6,8 @@ const initialState = {
     user: null,
     company: null,
     error: null,
-    containers: []
+    containers: [],
+    mapView: 'map'
 };
 
 const Store = ({children}) => {

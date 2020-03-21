@@ -30,13 +30,13 @@ const ProfilePage = () => {
 
     return (
         <PageContainer>
-        {user.isAdmin ? (
-            <Body>
-                  <EmployeesWithSpinner isLoading={loading} />
-                  <EmployeeForm />
+            {user.isAdmin ? (
+                <Body>
+                    <EmployeesWithSpinner isLoading={loading} />
+                    <EmployeeForm />
                 </Body>
-            ) : {}}
-      </PageContainer>
+            ) : null}
+        </PageContainer>
     );
 };
 
