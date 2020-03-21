@@ -1,43 +1,40 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import EmployeesList from '../../components/employees-list/employees-list.component';
-import { UserContext } from '../../contexts/user.context';
-import { CompanyContext } from '../../contexts/company.context';
 import WithSpinner from '../../components/with-spinner/with-spinner.component';
 
-import { PageContainer, Body, Title } from './profile-page.styles';
+import { PageContainer, Body } from './profile-page.styles';
 import EmployeeForm from '../../components/employee-form/employee-form.component';
+import { Context } from '../../state/store';
 
 const EmployeesWithSpinner = WithSpinner(EmployeesList);
 
 const ProfilePage = () => {
-    const { user } = useContext(UserContext);
-    const [loading, setLoading] = useState(true);
-    const [company, setCompany] = useState(null);
 
-    const providerValue = useMemo(() => ({ company, setCompany }), [company, setCompany]);
+    const [state, dispatch] = useContext(Context);
+    const { user, company } = state;
 
+    const [loading, setLoading] = useState(company == null);
 
     useEffect(() => {
         const fetchCompanyData = async () => {
-            const response = await axios.get('/api/company/');
-            setCompany(response.data);
-            console.log('Company: ', response.data);
+            const response = await axios.get('/api/company');
+            dispatch({ type: 'SET_COMPANY', payload: response.data });
             setLoading(false);
         };
 
-        fetchCompanyData();
-    }, []);
+        if (user.isAdmin && company == null) {
+            fetchCompanyData();
+        }
+    }, [company, dispatch, user]);
 
     return (
         <PageContainer>
         {user.isAdmin ? (
-            <CompanyContext.Provider value={providerValue}>
-                  <Body>
-                      <EmployeesWithSpinner isLoading={loading} />
-                      <EmployeeForm />
-                    </Body>
-                </CompanyContext.Provider>
+            <Body>
+                  <EmployeesWithSpinner isLoading={loading} />
+                  <EmployeeForm />
+                </Body>
             ) : {}}
       </PageContainer>
     );

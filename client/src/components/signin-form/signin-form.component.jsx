@@ -1,15 +1,11 @@
 import React from 'react';
-
-import FormInput from '../form-input/form-input.component';
 import CustomButton from '../button/button.component';
 
-import {
-    Headline,
-    FormContainer,
-    Buttons
-} from './signin-form.styles';
+import { Headline,
+    FormContainer } from './signin-form.styles';
 
 class SignIn extends React.Component {
+
     constructor(props) {
         super(props);
 
@@ -21,7 +17,7 @@ class SignIn extends React.Component {
     }
 
     signInWithGoogle = () => {
-        window.location.href = "/api/auth/google";
+        window.location.href = '/api/auth/google';
     };
 
     render() {
@@ -29,11 +25,12 @@ class SignIn extends React.Component {
             <FormContainer>
                 <Headline>Are you already registered within your company?</Headline>
                 <CustomButton theme={this.googleButtonTheme} onClick={this.signInWithGoogle}>
-                    Sign in with Google
+                Sign in with Google
                 </CustomButton>
-            </FormContainer>
-        )
+          </FormContainer>
+        );
     }
+
 }
 
 export default SignIn;

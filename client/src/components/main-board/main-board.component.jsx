@@ -4,22 +4,20 @@ import GoogleApiWrapper from '../map/google-map.component';
 import BoardActions from '../board-actions/board-actions.component';
 
 
-import {
-    Container,
-    MapWrapper
-} from './main-board.styles';
+import { Container,
+    MapWrapper } from './main-board.styles';
+import { Context } from '../../state/store';
 
-import { ContainerContext } from "../../contexts/container.context";
 
 const MainBoard = () => {
 
-    const containersContext = useContext(ContainerContext);
+    const { containers } = useContext(Context)[0];
 
     return (
-        <Container>
-            <BoardActions />
-            <MapWrapper>
-                <GoogleApiWrapper containersContext={containersContext}/>
+      <Container>
+          <BoardActions />
+          <MapWrapper>
+              <GoogleApiWrapper containers={containers} />
             </MapWrapper>
         </Container>
     );

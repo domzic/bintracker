@@ -1,22 +1,22 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { UserContext } from '../../contexts/user.context';
 
 import logo from '../../assets/logo.png';
 import CustomButton from '../button/button.component';
 
 import { HeaderContent,
     HeaderContainer,
-    LogoContainer,
     Navigation,
     Option,
     Logo } from './header.styles';
+import { Context } from '../../state/store';
 
 
 const Header = () => {
-    const { user } = useContext(UserContext);
 
-    const logout = event => {
+    const { user } = useContext(Context)[0];
+
+    const logout = () => {
         window.location.href = '/api/auth/logout';
     };
 
@@ -37,7 +37,7 @@ const Header = () => {
             { user ? (
                     <Navigation>
                 <Option to="/stats">
-                          Statisctics
+                          Statistics
                     </Option>
                         <Option to="/dashboard">
                         Dashboard

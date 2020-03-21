@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, forwardRef } from 'react';
+import React, { useContext, forwardRef } from 'react';
 import axios from 'axios';
 import MaterialTable from 'material-table';
 import './employees-list.styles.css';
@@ -18,7 +18,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import { CompanyContext } from '../../contexts/company.context';
+import { Context } from '../../state/store';
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -42,23 +42,22 @@ const tableIcons = {
 
 const EmployeesList = () => {
 
-    const { company } = useContext(CompanyContext);
+    const { company } = useContext(Context)[0];
 
-    const [state, setState] = useState({
+    const tableData = {
         columns: [
             { title: 'Display name', field: 'displayName' },
             { title: 'Email', field: 'email' }
         ],
         data: company.employees
-    });
+    };
 
     return (
         <div style={{ width: '100%' }}>
         <MaterialTable
-            isLoading={state.loading}
             title="Employees"
-            columns={state.columns}
-            data={state.data}
+            columns={tableData.columns}
+            data={tableData.data}
             icons={tableIcons}
             actions={[
                     {

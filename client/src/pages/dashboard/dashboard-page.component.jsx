@@ -1,51 +1,46 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
+import axios from 'axios';
 import FiltersContainer from '../../components/filters-container/filters-container.component';
 import MainBoard from '../../components/main-board/main-board.component';
 import WithSpinner from '../../components/with-spinner/with-spinner.component';
-import { ContainerContext } from "../../contexts/container.context";
 
-import axios from 'axios';
-
-import {
-    PageContainer,
+import { PageContainer,
     PageHeading,
-    ActionsTitle,
-    MainContent,
-    MapContainer
-} from './dashboard-page.styles';
+    ActionsTitle } from './dashboard-page.styles';
+import { Context } from '../../state/store';
 
 const MainBoardWithSpinner = WithSpinner(MainBoard);
 
 const DashboardPage = () => {
 
-    const [containers, setContainers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const providerValue = useMemo(() => ({containers, setContainers}), [containers, setContainers]);
+    const [state, dispatch] = useContext(Context);
+    const { containers } = state;
+
+    const [loading, setLoading] = useState(!containers.length);
 
     useEffect(() => {
         const fetchContainers = async () => {
-            const response = await axios.get("/api/container");
-            setContainers(response.data);
+            const response = await axios.get('/api/container');
+            dispatch({ type: 'SET_CONTAINERS', payload: response.data });
             setLoading(false);
-            console.log(response.data);
         };
 
-        fetchContainers();
-    }, []);
+        if (!containers.length) {
+            fetchContainers();
+        }
+    }, [containers, dispatch]);
 
     return (
         <PageContainer>
-            <ContainerContext.Provider value={providerValue}>
-                <PageHeading>
-                    <ActionsTitle>
-                        Dashboard actions:
+        <PageHeading>
+            <ActionsTitle>
+                  Dashboard actions:
                     </ActionsTitle>
-                    <FiltersContainer />
-                </PageHeading>
-                <MainBoardWithSpinner isLoading={loading}/>
-            </ContainerContext.Provider>
-        </PageContainer>
+            <FiltersContainer />
+            </PageHeading>
+        <MainBoardWithSpinner isLoading={loading} />
+      </PageContainer>
     );
 };
 
