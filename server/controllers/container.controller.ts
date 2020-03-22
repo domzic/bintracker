@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import Container from "../models/container.model";
+import Container, {IContainer} from "../models/container.model";
 
 export const getContainers = async (req: Request, res: Response) => {
     const containers = await Container.find({ company: req.user!!.company});
@@ -8,7 +8,20 @@ export const getContainers = async (req: Request, res: Response) => {
         res.sendStatus(500);
     }
 
-    res.send(containers);
+    let green: IContainer[] = [];
+    let yellow: IContainer[] = [];
+    let red : IContainer[] = [];
+    containers.map(container => {
+       if (container.level < 50) {
+           green.push(container);
+       } else if (container.level < 80) {
+           yellow.push(container);
+       } else {
+           red.push(container);
+       }
+    });
+
+    res.json({ green, yellow, red});
 };
 
 export const addContainer = async (req: Request, res: Response) => {
@@ -18,14 +31,14 @@ export const addContainer = async (req: Request, res: Response) => {
         res.sendStatus(500);
     }
 
-    const {latitude, longitude, ttnDeviceId} = formData;
+    const { latitude, longitude, ttnDeviceId, level } = formData;
 
     try {
         const container = await Container.create({
             latitude,
             longitude,
             ttnDeviceId,
-            level: 0,
+            level: level || 0,
             timesServiced: 0,
             company: req.user!!.company
         });

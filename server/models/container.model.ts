@@ -22,7 +22,7 @@ export interface IContainer extends Document {
     latitude: number;
     longitude: number;
     ttnDeviceId: string;
-    status: number;
+    level: number;
     timesServiced: number;
 }
 

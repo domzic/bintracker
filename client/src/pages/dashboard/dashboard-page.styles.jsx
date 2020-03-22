@@ -19,6 +19,7 @@ export const PageHeading = styled.div`
 
 export const ActionsTitle = styled.div`
     font-size: 24px;
+    flex-basis: 30%;
     color: grey;
     letter-spacing: 2px;
     text-transform: uppercase;

@@ -13,14 +13,20 @@ const Reducer = (state, action) => {
                 company: action.payload
             };
         case Actions.SET_CONTAINERS:
+            const { green, yellow, red } = action.payload;
             return {
                 ...state,
-                containers: action.payload
+                containers: { green, yellow, red }
             };
         case Actions.SET_MAP_VIEW:
             return {
                 ...state,
                 mapView: action.payload
+            };
+        case Actions.CHANGE_FILTER:
+            return {
+                ...state,
+                filter: action.payload
             };
         default:
             return state;

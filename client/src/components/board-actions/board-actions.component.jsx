@@ -9,7 +9,7 @@ import Modal from '../modal/modal.component';
 import ContainerForm from '../container-form/container-form.component';
 import { ButtonText } from '../modal/modal.styles';
 import { Context } from '../../state/store';
-import { Actions, MapView } from '../../state/constants';
+import { Actions, Filter, MapView } from '../../state/constants';
 
 export const actionButtonStyles = makeStyles({
     root: {
@@ -39,7 +39,12 @@ const BoardActions = (props) => {
 
     const showContainers = () => {
         dispatch({ type: Actions.SET_MAP_VIEW, payload: MapView.MAP });
-        toast.success('Showing containers.');
+
+        if (state.filter !== Filter.ALL) {
+            dispatch({ type: Actions.CHANGE_FILTER, payload: Filter.ALL });
+        }
+
+        toast.success('Showing all containers.');
     };
 
     return (
@@ -50,7 +55,7 @@ const BoardActions = (props) => {
             size="big"
             startIcon={<RestoreFromTrashIcon />}
                 type="button"
-            disabled={state.mapView === 'map'}
+            disabled={state.mapView === MapView.MAP && state.filter === Filter.ALL}
                 onClick={showContainers}
             classes={{
                     root: buttonClasses.root,
@@ -64,9 +69,9 @@ const BoardActions = (props) => {
                 color="default"
                 size="big"
             startIcon={<MapIcon />}
-            type="button"
-                disabled={state.mapView === 'directions'}
-            onClick={showDirections}
+                type="button"
+            disabled={state.mapView === 'directions'}
+                onClick={showDirections}
                 classes={{
                     root: buttonClasses.root,
                     label: buttonClasses.label

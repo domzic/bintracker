@@ -27,7 +27,7 @@ const ProfilePage = () => {
         if (user.isAdmin && company == null) {
             fetchCompanyData();
         }
-    }, [company, dispatch, user]);
+    }, []);
 
     return (
         <PageContainer>

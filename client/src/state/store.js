@@ -5,7 +5,11 @@ import { Filter, MapView } from './constants';
 const initialState = {
     user: null,
     company: null,
-    containers: [],
+    containers: {
+        green: [],
+        yellow: [],
+        red: []
+    },
     filter: Filter.ALL,
     mapView: MapView.MAP
 };

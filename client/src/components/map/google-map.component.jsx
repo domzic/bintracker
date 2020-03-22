@@ -87,6 +87,7 @@ const Map = withScriptjs(
                 defaultZoom={10}
                 onClick={onMapClick}
             >
+
                 {props.markers.map((marker, index) => {
                     const position = {lat: marker.latitude, lng: marker.longitude};
 

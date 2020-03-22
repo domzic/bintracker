@@ -23,6 +23,7 @@ const DashboardPage = () => {
     useEffect(() => {
         const fetchContainers = async () => {
             const response = await axios.get('/api/container');
+            console.log(response.data);
             dispatch({ type: Actions.SET_CONTAINERS, payload: response.data });
             setLoading(false);
         };
@@ -30,7 +31,7 @@ const DashboardPage = () => {
         if (!containers.length) {
             fetchContainers();
         }
-    }, [containers, dispatch]);
+    }, []);
 
     return (
         <PageContainer>
