@@ -49,3 +49,20 @@ export const addContainer = async (req: Request, res: Response) => {
         }
     }
 };
+
+export const removeContainer = async (req: Request, res: Response) => {
+    const { ttnDeviceId } = req.body;
+
+    if (!ttnDeviceId) {
+        res.sendStatus(500);
+    }
+
+    try {
+        await Container.deleteOne({ ttnDeviceId });
+        res.status(200).json({ message: 'Success'});
+    } catch (error) {
+        if (error) {
+            res.status(500).send('Could not find that device...');
+        }
+    }
+};

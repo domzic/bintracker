@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
-import AddIcon from '@material-ui/icons/Add';
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 import { Title, ButtonText } from './modal.styles';
@@ -9,7 +8,6 @@ import {actionButtonStyles} from "../board-actions/board-actions.component";
 const useStyles = makeStyles(theme => ({
     paper: {
         position: 'absolute',
-        width: 400,
         backgroundColor: theme.palette.background.paper,
         borderRadius: '5px',
         padding: theme.spacing(2, 4, 3),
@@ -17,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const CustomModal = ({ children, title, position, buttonText }) => {
+const CustomModal = ({ children, title, position, buttonText, icon }) => {
     const classes = useStyles();
     const buttonClasses = actionButtonStyles();
     const getModalStyle = () => ({
@@ -42,7 +40,7 @@ const CustomModal = ({ children, title, position, buttonText }) => {
         <div>
             <Button
                 variant="contained"
-                startIcon={<AddIcon />}
+                startIcon={icon}
                 type="button"
                 onClick={handleOpen}
                 classes={{

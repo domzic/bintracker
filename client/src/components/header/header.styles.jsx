@@ -35,7 +35,6 @@ export const Option = styled(Link)`
 
     &:hover {
         background: rgba(0, 0, 0, .2);
-        box-shadow: 0px 16px 29px 1px rgba(0,0,0,0.8);
     }
 
     &:active {
