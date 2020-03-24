@@ -62,8 +62,8 @@ export const removeEmployee = async (req: Request, res: Response) => {
 };
 
 export const addEmployee = async (req: Request, res: Response) => {
+    const { email } = req.body;
     try {
-        const { email } = req.body;
         console.log('email: ', email);
         const company = await Company.findById(req.user!!.company);
 
@@ -76,6 +76,6 @@ export const addEmployee = async (req: Request, res: Response) => {
         await company.save();
         res.sendStatus(200);
     } catch (error) {
-        res.status(500).send(error.message);
+        res.sendStatus(500).json({message: `Email ${email} is already registered`})
     }
 };
