@@ -10,6 +10,7 @@ import { PageContainer,
     ActionsTitle } from './dashboard-page.styles';
 import { Context } from '../../state/store';
 import { Actions } from '../../state/constants';
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const MainBoardWithSpinner = WithSpinner(MainBoard);
 
@@ -18,6 +19,7 @@ const DashboardPage = () => {
     const [state, dispatch] = useContext(Context);
     const { containers } = state;
 
+    const responsive = useMediaQuery('(max-width:768px)');
     const [loading, setLoading] = useState(!containers.length);
 
     useEffect(() => {
@@ -36,9 +38,11 @@ const DashboardPage = () => {
     return (
         <PageContainer>
         <PageHeading>
+            {!responsive && (
             <ActionsTitle>
                   Actions:
             </ActionsTitle>
+            )}
             <FiltersContainer />
             </PageHeading>
         <MainBoardWithSpinner isLoading={loading} />

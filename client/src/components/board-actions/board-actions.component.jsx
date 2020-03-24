@@ -22,7 +22,7 @@ export const actionButtonStyles = makeStyles({
         marginBottom: 25,
         transition: 'all .2s',
         '&:hover': {
-            transform: 'scale(1.05) translateX(10px) rotate(1deg)',
+            transform: 'scale(0.95)',
             backgroundColor: '#398340',
         },
     },

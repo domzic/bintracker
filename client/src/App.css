@@ -11,5 +11,10 @@
 
 .App__Content, .App__Content > div {
   min-height: calc(100vh - 100px);
-  padding: 10px;
+}
+
+@media only screen and (min-width: 768px) {
+  .App__Content, .App__Content > div {
+    padding: 10px;
+  }
 }

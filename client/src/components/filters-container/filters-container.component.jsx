@@ -11,6 +11,7 @@ import {Filter as FilterType, MapView} from '../../state/constants';
 import { Context } from '../../state/store';
 import { Actions } from '../../state/constants';
 import { toast } from 'react-toastify';
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 export const filterButtonStyles = makeStyles({
     root: {
@@ -41,6 +42,7 @@ const FiltersContainer = () => {
     const { containers } = state;
     const buttonClasses = filterButtonStyles();
 
+    const responsive = useMediaQuery('(max-width:768px)');
     const onFilterClick = filterType => {
 
         if (state.mapView === MapView.DIRECTIONS) {
@@ -75,7 +77,12 @@ const FiltersContainer = () => {
         }
     };
 
-    const getButtonText = count => count === 0 ? 'No containers' : count === 1 ? '1 container' : `${count} containers`;
+    const getButtonText = count => {
+        if (responsive) {
+            return count;
+        }
+        return count === 0 ? 'No containers' : count === 1 ? '1 container' : `${count} containers`;
+    };
 
     return (
         <Container>
@@ -84,7 +91,7 @@ const FiltersContainer = () => {
                     <Button
                         variant="outlined"
                         style={{ border: `1px solid ${green[500]}` }}
-                        size="big"
+                        size="small"
                         startIcon={
                             <RestoreFromTrashIcon
                                 fontSize="large"
@@ -93,7 +100,7 @@ const FiltersContainer = () => {
                         }
                         type="button"
                         onClick={() => onFilterClick(FilterType.GREEN)}
-                        disabled={state.filter === FilterType.GREEN}
+                        disabled={state.filter === FilterType.GREEN || state.mapView === MapView.DIRECTIONS}
                         classes={{
                             root: buttonClasses.root,
                             label: buttonClasses.label,
@@ -116,7 +123,7 @@ const FiltersContainer = () => {
                             />
                         }
                         type="button"
-                        disabled={state.filter === FilterType.YELLOW}
+                        disabled={state.filter === FilterType.YELLOW || state.mapView === MapView.DIRECTIONS}
                         onClick={() => onFilterClick(FilterType.YELLOW)}
                         classes={{
                             root: buttonClasses.root,
@@ -144,7 +151,7 @@ const FiltersContainer = () => {
                             label: buttonClasses.label,
                         }}
                         type="button"
-                        disabled={state.filter === FilterType.RED}
+                        disabled={state.filter === FilterType.RED || state.mapView === MapView.DIRECTIONS}
                         onClick={() => onFilterClick(FilterType.RED)}
                     >
                         <Count>

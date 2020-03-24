@@ -21,6 +21,7 @@ export const Filter = styled.div`
     cursor: pointer;
     width: 33%;
     display: flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
     transition: all .2s;
