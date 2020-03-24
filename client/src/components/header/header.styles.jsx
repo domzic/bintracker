@@ -42,6 +42,17 @@ export const Option = styled(Link)`
     }
 `;
 
+export const DropdownOption = styled(Link)`
+    text-decoration: none;
+    padding: 15px;
+    margin: 0 10px;
+    border-radius: 5px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: all .2s;
+    color: #026E1B;
+`;
+
 export const Logo = styled.img`
     padding-top: 10px;
     height: 80px;
