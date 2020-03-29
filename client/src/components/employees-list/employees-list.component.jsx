@@ -1,4 +1,4 @@
-import React, { useContext, forwardRef } from 'react';
+import React, {useContext, forwardRef, useState} from 'react';
 import axios from 'axios';
 import MaterialTable from 'material-table';
 import './employees-list.styles.css';
@@ -19,6 +19,13 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import { Context } from '../../state/store';
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
+import Slide from "@material-ui/core/Slide";
 
 export const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -40,9 +47,14 @@ export const tableIcons = {
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
+const Transition = forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
 const EmployeesList = () => {
 
     const { company } = useContext(Context)[0];
+    const [dialogState, setDialogState] = useState({ opened: false, selected: null });
 
     const tableData = {
         columns: [
@@ -52,27 +64,53 @@ const EmployeesList = () => {
         data: company.employees
     };
 
+    const handleClose = () => {
+        setDialogState( { selected: null, opened: false })
+    };
+
+    const onConfirm = () => {
+        axios.delete('/api/company/employee', { data: { employeeEmail: dialogState.selected } })
+            .then(() => window.location.reload());
+    };
+
     return (
-        <div style={{ width: '100%' }}>
-        <MaterialTable
-            title="Employees"
-            columns={tableData.columns}
-            data={tableData.data}
-            icons={tableIcons}
-            actions={[
+        <div style={{ width: '100%', marginTop: 10 }}>
+            <MaterialTable
+                title="Employees"
+                columns={tableData.columns}
+                data={tableData.data}
+                icons={tableIcons}
+                actions={[
                     {
                         icon: DeleteOutline,
-                        tooltip: 'Delete User',
-                        onClick: (event, employee) => {
-                            const confirmed = window.confirm(`Are you sure you want to remove ${employee.displayName}?`);
-                            if (confirmed) {
-                                axios.delete('/api/company/employee', { data: { employeeEmail: employee.email } })
-                                    .then(() => window.location.reload());
-                            }
-                        }
+                        tooltip: 'Delete Employee',
+                        onClick: (event, employee) => setDialogState({ selected: employee.email, opened: true})
                     }
                 ]}
-          />
+            />
+            <Dialog
+                open={dialogState.opened}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-slide-title"
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <DialogTitle id="alert-dialog-slide-title">{"Confirmation"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-slide-description">
+                        Are you sure you want to delete this employee? You won't be able to undo this action.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="secondary">
+                        Cancel
+                    </Button>
+                    <Button onClick={onConfirm} color="primary">
+                        Confirm
+                    </Button>
+                </DialogActions>
+            </Dialog>
       </div>
     );
 };
