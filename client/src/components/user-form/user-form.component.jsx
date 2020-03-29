@@ -15,7 +15,11 @@ const UserForm = () => {
         <Container>
             <Title>Update your profile</Title>
             <Formik
-                initialValues={{}}
+                initialValues={{
+                    displayName: user.displayName,
+                    phone: user.phone || '',
+                    position: user.position || ''
+                }}
                 onSubmit={async (formData, actions) => {
                     actions.setSubmitting(true);
                     await axios.post('/api/user', { formData });
@@ -47,7 +51,7 @@ const UserForm = () => {
                                     id="displayName"
                                     placeholder="Enter display name"
                                     type="text"
-                                    value={user.displayName}
+                                    value={values.displayName}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     className={
@@ -65,7 +69,7 @@ const UserForm = () => {
                                     id="phone"
                                     placeholder="Enter phone number"
                                     type="text"
-                                    value={user.phone || ''}
+                                    value={values.phone}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     className={
@@ -83,7 +87,7 @@ const UserForm = () => {
                                     id="position"
                                     placeholder="Enter your position"
                                     type="text"
-                                    value={user.position || ''}
+                                    value={values.position}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     className={
