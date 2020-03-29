@@ -7,6 +7,7 @@ import {PageContainer, Body, CompanyTitle} from './profile-page.styles';
 import EmployeeForm from '../../components/employee-form/employee-form.component';
 import { Context } from '../../state/store';
 import { Actions } from '../../state/constants';
+import UserForm from "../../components/user-form/user-form.component";
 
 const EmployeesWithSpinner = WithSpinner(EmployeesList);
 
@@ -33,13 +34,13 @@ const ProfilePage = () => {
             {user.isAdmin ? (
                 <Body>
                     <CompanyTitle>
-                        {company !== null ? `${company.name}'s management page` : ''}
+                        {company !== null ? `${company.name}'s employees management` : ''}
                     </CompanyTitle>
                     <EmployeeForm />
                     <EmployeesWithSpinner isLoading={loading} />
                 </Body>
             ) : null}
-
+            <UserForm/>
         </PageContainer>
     );
 };

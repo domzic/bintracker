@@ -21,15 +21,19 @@ const UserSchema: Schema = new Schema({
     confirmed: {
         type: Boolean,
         default: false
-    }
+    },
+    phone: Number,
+    position: String
 }).plugin(validator);
 
 interface IUserSchema extends Document {
     googleId?: string;
     displayName?: string;
     email: string;
-    isAdmin: boolean,
+    isAdmin: boolean;
     confirmed: boolean;
+    phone?: number;
+    position?: string;
 }
 
 export interface IUser extends IUserSchema {
