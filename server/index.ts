@@ -8,6 +8,8 @@ import path from 'path';
 import dotenv from 'dotenv';
 import routes from './routes';
 import { logger } from './middlewares/logger';
+import { CronJob } from 'cron';
+import { fetchData } from "./controllers/ttn.controller";
 
 dotenv.config();
 import "./controllers/passport.controller";
@@ -31,6 +33,11 @@ app.use(logger)
     .use(passport.session())
     .use(cors())
     .use('/api', routes);
+
+const ttnJob = new CronJob('*/5 * * * * *', function() {
+    fetchData();
+}, null, true);
+ttnJob.start();
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, 'client/build')));
