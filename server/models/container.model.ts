@@ -15,7 +15,8 @@ const Container: Schema = new Schema({
         ref: 'Company',
         required: true
     },
-    timesServiced: Number
+    timesServiced: Number,
+    height: Number
 }).plugin(validator);
 
 export interface IContainer extends Document {
@@ -24,6 +25,7 @@ export interface IContainer extends Document {
     ttnDeviceId: string;
     level: number;
     timesServiced: number;
+    height?: number;
 }
 
 export interface IContainerRelationships extends  IContainer {

@@ -15,16 +15,18 @@ class MapDirectionsRenderer extends React.Component {
         error: null
     };
 
-    componentDidMount() {
+    initDirections(userLocation) {
         let { places, travelMode } = this.props;
         places = places
             .filter(container => container.level > 80)
             .map(container => ({latitude: container.latitude, longitude: container.longitude }));
 
-        const waypoints = places.map(container =>({
+        let waypoints = [];
+        waypoints = places.map(container =>({
             location: {lat: container.latitude, lng: container.longitude},
             stopover: true
         }));
+        waypoints = [ userLocation, ...waypoints, userLocation];
 
         const origin = waypoints.shift().location;
         const destination = waypoints.pop().location;
@@ -35,7 +37,8 @@ class MapDirectionsRenderer extends React.Component {
                 origin: origin,
                 destination: destination,
                 travelMode: travelMode,
-                waypoints: waypoints
+                waypoints: waypoints,
+                optimizeWaypoints: true
             },
             (result, status) => {
                 if (status === google.maps.DirectionsStatus.OK) {
@@ -47,6 +50,17 @@ class MapDirectionsRenderer extends React.Component {
                 }
             }
         );
+    }
+
+    componentDidMount() {
+        let userLocation = {};
+        navigator.geolocation.getCurrentPosition(response => {
+            userLocation = {
+                stopover: true,
+                location: {lat: response.coords.latitude, lng: response.coords.longitude}
+            };
+            this.initDirections(userLocation);
+        });
     }
 
 
