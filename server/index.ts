@@ -9,7 +9,8 @@ import dotenv from 'dotenv';
 import routes from './routes';
 import { logger } from './middlewares/logger';
 import { CronJob } from 'cron';
-import { fetchData } from "./controllers/ttn.controller";
+import TTNController from "./controllers/ttn.controller";
+import Company from './models/company.model';
 
 dotenv.config();
 import "./controllers/passport.controller";
@@ -34,8 +35,9 @@ app.use(logger)
     .use(cors())
     .use('/api', routes);
 
-const ttnJob = new CronJob('*/5 * * * * *', function() {
-    fetchData();
+const ttnJob = new CronJob('*/5 * * * * *', async () => {
+    const company = await Company.findById('5e4d60964524ef1ff501d030');
+    TTNController.update(company);
 }, null, true);
 ttnJob.start();
 
@@ -50,3 +52,5 @@ if (process.env.NODE_ENV === 'production') {
 app.listen(port, () => {
     console.log('Server running on port ' + port);
 });
+
+// TODO - Company - add ttnAppName, lastUpdateDate

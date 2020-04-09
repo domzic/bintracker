@@ -1,8 +1,16 @@
 import { Request, Response } from 'express';
 import Container, {IContainer} from "../models/container.model";
+import moment from "moment";
+import TTNController from "./ttn.controller";
 
 export const getContainers = async (req: Request, res: Response) => {
-    const containers = await Container.find({ company: req.user!!.company});
+    const { company } = req.user!!;
+
+    if (moment.duration(Date.now(), company.lastUpdate).asHours() >= 1) {
+        await TTNController.update(company);
+    }
+
+    const containers = await Container.find({ company });
 
     if (!containers) {
         res.sendStatus(500);
