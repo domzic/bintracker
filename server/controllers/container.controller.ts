@@ -6,10 +6,16 @@ import Company from '../models/company.model';
 
 export const getContainers = async (req: Request, res: Response) => {
     const { company } = req.user!!;
+    const companyDoc = await Company.findById(company);
 
-    if (moment.duration(Date.now(), company.lastUpdate).asHours() >= 1) {
-        const companyDoc = await Company.findById(company);
+    if (!companyDoc) {
+        res.sendStatus(500).send('Company not found.');
+    }
+
+    if (moment.duration(moment(new Date()).diff(companyDoc!!.lastUpdate)).asHours() >= 1) {
         await TTNController.update(companyDoc!!);
+        companyDoc!!.lastUpdate = moment().toDate();
+        await companyDoc!!.save();
     }
 
     const containers = await Container.find({ company });
