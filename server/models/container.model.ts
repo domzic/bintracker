@@ -1,6 +1,6 @@
 import { Document, Schema, model } from 'mongoose';
 import validator from 'mongoose-unique-validator';
-import { ICompany } from "./company.model";
+import { ICompany } from './company.model';
 
 const Container: Schema = new Schema({
     latitude: Number,
@@ -28,7 +28,7 @@ export interface IContainer extends Document {
     height?: number;
 }
 
-export interface IContainerRelationships extends  IContainer {
+export interface IContainerRelationships extends IContainer {
     company: ICompany['_id'];
 }
 

@@ -124,6 +124,7 @@ const Map = withScriptjs(
                                     <div>
                                         <div>Device ID: {marker.ttnDeviceId}</div>
                                         <div>Level: {marker.level}%</div>
+                                        <div>Times serviced: {marker.timesServiced}</div>
                                         <div>Position: {marker.latitude}, {marker.longitude}</div>
                                     </div>
                                 </InfoWindow>)}

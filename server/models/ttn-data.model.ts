@@ -4,7 +4,7 @@ import { ICompany } from "./company.model";
 
 const TTNData: Schema = new Schema({
     date: Date,
-    responseBody: JSON,
+    responseBody: String,
     company: {
         type: Schema.Types.ObjectId,
         ref: 'Company',

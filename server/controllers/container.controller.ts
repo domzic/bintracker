@@ -1,13 +1,15 @@
 import { Request, Response } from 'express';
-import Container, {IContainer} from "../models/container.model";
-import moment from "moment";
-import TTNController from "./ttn.controller";
+import moment from 'moment';
+import Container, { IContainer } from '../models/container.model';
+import TTNController from './ttn.controller';
+import Company from '../models/company.model';
 
 export const getContainers = async (req: Request, res: Response) => {
     const { company } = req.user!!;
 
     if (moment.duration(Date.now(), company.lastUpdate).asHours() >= 1) {
-        await TTNController.update(company);
+        const companyDoc = await Company.findById(company);
+        await TTNController.update(companyDoc!!);
     }
 
     const containers = await Container.find({ company });
@@ -16,20 +18,20 @@ export const getContainers = async (req: Request, res: Response) => {
         res.sendStatus(500);
     }
 
-    let green: IContainer[] = [];
-    let yellow: IContainer[] = [];
-    let red : IContainer[] = [];
+    const green: IContainer[] = [];
+    const yellow: IContainer[] = [];
+    const red: IContainer[] = [];
     containers.map(container => {
-       if (container.level < 50) {
-           green.push(container);
-       } else if (container.level < 80) {
-           yellow.push(container);
-       } else {
-           red.push(container);
-       }
+        if (container.level < 50) {
+            green.push(container);
+        } else if (container.level < 80) {
+            yellow.push(container);
+        } else {
+            red.push(container);
+        }
     });
 
-    res.json({ green, yellow, red});
+    res.json({ green, yellow, red });
 };
 
 export const addContainer = async (req: Request, res: Response) => {
@@ -48,6 +50,7 @@ export const addContainer = async (req: Request, res: Response) => {
             ttnDeviceId,
             level: level || 0,
             timesServiced: 0,
+            height: 0,
             company: req.user!!.company
         });
         res.status(200).send(container);
@@ -67,7 +70,7 @@ export const removeContainer = async (req: Request, res: Response) => {
 
     try {
         await Container.deleteOne({ ttnDeviceId });
-        res.status(200).json({ message: 'Success'});
+        res.status(200).json({ message: 'Success' });
     } catch (error) {
         if (error) {
             res.status(500).send('Could not find that device...');
