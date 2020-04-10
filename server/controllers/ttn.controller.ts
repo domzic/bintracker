@@ -1,9 +1,10 @@
 import axios from 'axios';
 import moment from 'moment';
 import _ from 'lodash';
-import TTNData, { ITTNData } from '../models/ttn-data.model';
+import TTNData from '../models/ttn-data.model';
 import { ICompany } from '../models/company.model';
 import Container, { IContainer } from '../models/container.model';
+import Stat, { StatType } from '../models/stat.model';
 
 const fetch = async (requestUrl: string): Promise<Uplink[] | undefined> => {
     let data: Uplink[];
@@ -35,6 +36,10 @@ const updateContainer = async (uplink: Uplink): Promise<IContainer> => {
     const container = await Container.findOne({ ttnDeviceId: uplink.device_id });
 
     if (!container) {
+        await Stat.updateOne(
+            { key: StatType.notRegisteredDevices },
+            { $push: { devices: uplink.device_id } }
+        );
         return Promise.reject(`Container with ttnDeviceId: ${uplink.device_id} was not found.`);
     }
 
@@ -64,16 +69,25 @@ const update = async (company: ICompany): Promise<void> => {
         return;
     }
 
+    const servicedContainersStat = await Stat.findOne({ company, key: StatType.servicedContainersCount });
+
     const uniqueUplinks = parseLatestUplinks(response);
     await TTNData.create({ date: moment(), responseBody: JSON.stringify(uniqueUplinks), company });
 
     const results = await Promise.allSettled(uniqueUplinks.map(updateContainer));
+    let totalServiced = 0;
     results.forEach(result => {
         if (result.status === 'rejected') {
             console.log((result as PromiseRejectedResult).reason);
-
+            return;
         }
+        totalServiced++;
     });
+
+    if (servicedContainersStat?.value) {
+        servicedContainersStat.value += totalServiced;
+        await servicedContainersStat.save();
+    }
 
     console.log('Successfully updated data from TTN.');
 };
