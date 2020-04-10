@@ -114,7 +114,7 @@ const Map = withScriptjs(
                             onClick={() => onMarkerClick(index)}
                             icon={{
                                 path: MAP_MARKER,
-                                fillColor: marker.level < 50 ? '#26E947' : marker.level < 80 ? '#F0EA29' : '#F72D0D',
+                                fillColor: marker.level < 0 ? '#E1E1E1' : marker.level < 50 ? '#26E947' : marker.level < 80 ? '#F0EA29' : '#F72D0D',
                                 fillOpacity: 1,
                                 anchor: {x: 24, y: 24}
                             }}

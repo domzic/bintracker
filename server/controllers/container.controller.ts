@@ -53,7 +53,7 @@ export const addContainer = async (req: Request, res: Response) => {
             latitude,
             longitude,
             ttnDeviceId,
-            level: level || 0,
+            level: level || -1,
             timesServiced: 0,
             height: 0,
             company: req.user!!.company
