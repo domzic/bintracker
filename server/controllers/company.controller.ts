@@ -32,7 +32,6 @@ export const createCompany = async (req: Request, res: Response) => {
         });
 
     const stats: IStat[] = [
-        new Stat({ key: StatType.containersCount, value: 0, company }),
         new Stat({ key: StatType.servicedContainersCount, value: 0, company }),
         new Stat({ key: StatType.notRegisteredDevices, devices: [] })
     ];

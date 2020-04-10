@@ -66,7 +66,7 @@ const update = async (company: ICompany): Promise<void> => {
     const response = await fetch(requestUrl);
 
     if (!response) {
-        return;
+        return Promise.reject(`Seems like TTN application: ${company.ttnAppName} does not exist...`);
     }
 
     const servicedContainersStat = await Stat.findOne({ company, key: StatType.servicedContainersCount });
@@ -90,6 +90,7 @@ const update = async (company: ICompany): Promise<void> => {
     }
 
     console.log('Successfully updated data from TTN.');
+    return Promise.resolve();
 };
 
 const TTNController = {

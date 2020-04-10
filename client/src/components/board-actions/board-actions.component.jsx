@@ -13,6 +13,8 @@ import { Actions, Filter, MapView } from '../../state/constants';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import AddIcon from '@material-ui/icons/Add';
 import ContainersList from "../containers-list/containers-list.component";
+import CachedIcon from '@material-ui/icons/Cached';
+import axios from 'axios';
 
 export const actionButtonStyles = makeStyles({
     root: {
@@ -50,8 +52,34 @@ const BoardActions = props => {
         toast.success('Showing all containers.');
     };
 
+    const refreshData = async () => {
+        try {
+            await axios.get('/api/container/fetch');
+            window.location.reload();
+        } catch (error) {
+            console.log(error);
+        }
+
+    };
+
     return (
         <Container>
+            <Button
+                variant="contained"
+                color="default"
+                size="big"
+                startIcon={<CachedIcon />}
+                type="button"
+                onClick={refreshData}
+                classes={{
+                    root: buttonClasses.root,
+                    label: buttonClasses.label,
+                }}
+            >
+                <ButtonText>Refresh data</ButtonText>
+            </Button>
+            <br></br>
+            <br></br>
             <Button
                 variant="contained"
                 color="default"

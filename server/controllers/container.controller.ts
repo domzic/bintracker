@@ -13,7 +13,6 @@ export const getContainers = async (req: Request, res: Response) => {
     }
 
     if (moment.duration(moment(new Date()).diff(companyDoc!!.lastUpdate)).asHours() >= 1) {
-        await TTNController.update(companyDoc!!);
         companyDoc!!.lastUpdate = moment().toDate();
         await companyDoc!!.save();
     }
@@ -81,5 +80,17 @@ export const removeContainer = async (req: Request, res: Response) => {
         if (error) {
             res.status(500).send('Could not find that device...');
         }
+    }
+};
+
+export const updateContainersData = async (req: Request, res: Response) => {
+    const { company } = req.user!!;
+    const companyDoc = await Company.findById(company);
+
+    try {
+        await TTNController.update(companyDoc!!);
+        res.sendStatus(200);
+    } catch (error) {
+        res.sendStatus(500).json({ message: error.message });
     }
 };
