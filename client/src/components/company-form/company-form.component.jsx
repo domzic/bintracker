@@ -5,27 +5,26 @@ import Button from '../button/button.component';
 
 import validateEmails from '../../utils/validateEmails';
 
-import { Headline,
-    FormContainer,
-    Form } from './company-form.styles';
+import { Headline, FormContainer, Form } from './company-form.styles';
 
 const CompanyForm = () => {
-
     const [error, setError] = useState(null);
 
     const [formData, setFormData] = useState({
         name: '',
         admin: '',
-        employees: ''
+        employees: '',
     });
 
     const handleSubmit = async event => {
         event.preventDefault();
-        axios.post('/api/company', formData)
+        axios
+            .post('/api/company', formData)
             .then(result => result.json())
             .then(result => {
                 console.log('Success', result.data);
-            }).catch(error => {
+            })
+            .catch(error => {
                 console.log('Error: ', error.response);
             });
     };
@@ -39,36 +38,39 @@ const CompanyForm = () => {
             setError(null);
             setFormData({
                 ...formData,
-                employees: event.target.value
+                employees: event.target.value,
             });
         }
     };
 
     return (
         <FormContainer>
-
             <Headline>Register your own company</Headline>
-        <Form onSubmit={handleSubmit}>
-            <FormInput
+            <Form onSubmit={handleSubmit}>
+                <FormInput
                     type="text"
                     name="name"
-            label="Company name"
-            onChange={e => setFormData({
-                        ...formData,
-                        name: e.target.value
-                    })}
-            required
-          />
+                    label="Company name"
+                    onChange={e =>
+                        setFormData({
+                            ...formData,
+                            name: e.target.value,
+                        })
+                    }
+                    required
+                />
                 <FormInput
                     type="email"
                     name="admin"
-                    onChange={e => setFormData({
-                        ...formData,
-                        admin: e.target.value
-                    })}
+                    onChange={e =>
+                        setFormData({
+                            ...formData,
+                            admin: e.target.value,
+                        })
+                    }
                     label="Admin's gmail address"
-            required
-          />
+                    required
+                />
                 <FormInput
                     type="text"
                     name="employees"
@@ -76,10 +78,18 @@ const CompanyForm = () => {
                     label="Employees' gmail addresses"
                     error={error}
                     required
-          />
-                <Button type="submit" disabled={error}>Register company</Button>
-          </Form>
-      </FormContainer>
+                />
+                <FormInput
+                    type="text"
+                    name="ttnAppName"
+                    label="TTN application name"
+                    required
+                />
+                <Button type="submit" disabled={error}>
+                    Register company
+                </Button>
+            </Form>
+        </FormContainer>
     );
 };
 

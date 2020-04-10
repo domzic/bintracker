@@ -7,9 +7,9 @@ import Company, { ICompany } from '../models/company.model';
 import Stat, { IStat, StatType } from '../models/stat.model';
 
 export const createCompany = async (req: Request, res: Response) => {
-    const { emailsString, name, admin } = req.body;
+    const { emailsString, name, admin, ttnAppName } = req.body;
     const emails: string[] = emailsString.split(',').map((email: string) => email.trim());
-    let company: ICompany = new Company({ name, email: admin });
+    let company: ICompany = new Company({ name, email: admin, ttnAppName });
     try {
         company = await Company.create(company);
     } catch (error) {
