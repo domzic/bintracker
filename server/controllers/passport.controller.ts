@@ -24,13 +24,11 @@ passport.use(
         async (accessToken: string, refreshToken: string, profile: Profile, done: VerifyCallback) => {
             User.findOne({ email: profile._json.email }, async (error: string, existingUser: IUser) => {
                 if (!existingUser) {
-                    done('User is unauthorized', null);
-                    return;
+                    return done(undefined, false, { message: 'Email is not authorized' });
                 }
 
                 if (error) {
-                    done(error, null);
-                    return;
+                    return done(error, null);
                 }
 
                 if (!existingUser.confirmed) {
