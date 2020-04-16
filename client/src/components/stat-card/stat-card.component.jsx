@@ -10,6 +10,7 @@ const StatCard = ({ backgroundImage, title, value }) => {
     const useStyles = makeStyles({
         root: {
             minWidth: 225,
+            maxHeight: 80,
             backgroundImage,
             color: '#fff',
             borderRadius: 10
