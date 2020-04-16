@@ -39,16 +39,6 @@ const chartBorderColors = [
 const StatisticsPage = () => {
     const [state, dispatch] = useContext(Context);
     const { containers } = state;
-    useEffect(() => {
-        const fetchContainers = async () => {
-            const response = await axios.get('/api/container');
-            dispatch({ type: Actions.SET_CONTAINERS, payload: response.data });
-        };
-        
-        if (!state.containers.length) {
-            fetchContainers();
-        }
-    }, []);
     
     const allContainers = [...containers.red, ...containers.yellow, ...containers.green];
 

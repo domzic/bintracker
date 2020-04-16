@@ -25,10 +25,16 @@ const App = () => {
             const fetchedUser = await axios.get("/api/auth/current_user");
             dispatch({type: Actions.SET_USER, payload: fetchedUser.data});
         }
+        
+        const fetchContainers = async () => {
+            const response = await axios.get('/api/container');
+            dispatch({ type: Actions.SET_CONTAINERS, payload: response.data });
+        };
 
         fetchUser();
-    }, [dispatch]);
-
+        fetchContainers();
+    }, []);
+    console.log(state)
     return (
             <div className="App">
                 <BrowserRouter>
