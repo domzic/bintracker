@@ -1,11 +1,12 @@
 import React, {useContext, useEffect} from 'react';
 import {
-    PageContainer
+    PageContainer,
+    Header,
+    CardsList
 } from './statistics-page.styles';
 import {Context} from "../../state/store";
-import axios from "axios";
-import {Actions} from "../../state/constants";
 import {Bar} from "react-chartjs-2";
+import StatCard from "../../components/stat-card/stat-card.component";
 
 const chartBackgroundColors =  [
     'rgba(255, 99, 132, 0.6)',
@@ -41,10 +42,16 @@ const StatisticsPage = () => {
     const { containers } = state;
     
     const allContainers = [...containers.red, ...containers.yellow, ...containers.green];
-
+    
     return (
         <PageContainer>
-            <div>Your company has {allContainers.length} containers</div>
+            <Header>Company Statistics Overview</Header>
+            <CardsList>
+                <StatCard backgroundImage='linear-gradient(to right, #8B55FF, #995AFF)' title='Number of containers' value={allContainers.length}/>
+                <StatCard backgroundImage='linear-gradient(to right, #0EBD4D, #3CD372)' title='Some other statistic' value='74%'/>
+                <StatCard backgroundImage='linear-gradient(to right, #FDB059, #FFBB6C)' title='Number of employees' value={10}/>
+            </CardsList>
+            
             <Bar
                 data={{
                     labels: allContainers.map(c => c.ttnDeviceId),

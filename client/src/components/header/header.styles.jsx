@@ -54,6 +54,5 @@ export const DropdownOption = styled(Link)`
 `;
 
 export const Logo = styled.img`
-    padding-top: 10px;
-    height: 80px;
+    height: 100%;
 `;

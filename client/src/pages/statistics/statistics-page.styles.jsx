@@ -7,3 +7,21 @@ export const PageContainer = styled.div`
     align-items: center;
     justify-content: space-around;
 `;
+
+export const Header = styled.span`
+    font-weight: 800;
+    color: #fff;
+    font-size: 20px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    align-self: flex-start;
+`;
+
+export const CardsList = styled.div`
+    display: flex;
+    align-self: flex-start;
+    
+    & > * {
+        margin-right: 20px;
+    }
+`;
