@@ -11,7 +11,9 @@ export const FormContainer = styled.div`
     padding-right: 20px;
 `;
 
-export const Buttons = styled.div`
-    display: flex;
-    justify-content: space-between;
+export const Error = styled.span`
+    color: #F83F46;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin: 25px 0;
 `;

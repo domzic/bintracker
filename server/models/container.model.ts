@@ -1,6 +1,6 @@
 import { Document, Schema, model } from 'mongoose';
 import validator from 'mongoose-unique-validator';
-import { ICompany } from "./company.model";
+import { ICompany } from './company.model';
 
 const Container: Schema = new Schema({
     latitude: Number,
@@ -15,7 +15,8 @@ const Container: Schema = new Schema({
         ref: 'Company',
         required: true
     },
-    timesServiced: Number
+    timesServiced: Number,
+    height: Number
 }).plugin(validator);
 
 export interface IContainer extends Document {
@@ -24,9 +25,10 @@ export interface IContainer extends Document {
     ttnDeviceId: string;
     level: number;
     timesServiced: number;
+    height?: number;
 }
 
-export interface IContainerRelationships extends  IContainer {
+export interface IContainerRelationships extends IContainer {
     company: ICompany['_id'];
 }
 
