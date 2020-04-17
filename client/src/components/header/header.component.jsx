@@ -45,7 +45,7 @@ const Header = () => {
         <Navigation>
             <Option to="/stats">Statistics</Option>
             <Option to="/dashboard">Dashboard</Option>
-            <Option to="/profile">{getProfileName()}</Option>
+            <Option to="/profile">Account</Option>
             <CustomButton onClick={logout} theme={logoutTheme}>
                 Logout
             </CustomButton>
@@ -69,7 +69,7 @@ const Header = () => {
                     <DropdownOption to="/dashboard">Dashboard</DropdownOption>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
-                    <DropdownOption to="/profile">{getProfileName()}</DropdownOption>
+                    <DropdownOption to="/profile">Account</DropdownOption>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                     <DropdownOption onClick={logout}>
@@ -79,8 +79,6 @@ const Header = () => {
             </Menu>
         </Navigation>
     );
-
-    const getProfileName = () => (user.isAdmin ? 'Admin panel' : 'Profile');
 
     return (
         <HeaderContainer>

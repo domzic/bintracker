@@ -14,7 +14,7 @@ export const PageContainer = styled.div`
 export const Header = styled.span`
     margin-top: 50px;
     font-weight: 800;
-    color: #fff;
+    color: #D2FFBE;
     font-size: 20px;
     letter-spacing: 2px;
     text-transform: uppercase;

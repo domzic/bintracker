@@ -5,6 +5,9 @@ export const Container = styled.div`
     flex-direction: column;
     align-items: center;
     margin-top: 48px;
+    background-color: #333;
+    padding: 12px;
+    border-radius: 4px;
 `;
 
 export const Form = styled.form`
@@ -18,7 +21,7 @@ export const Form = styled.form`
 
 export const ButtonsContainer = styled.div`
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     margin-top: 20px;
 `;
 

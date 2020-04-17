@@ -3,7 +3,7 @@ import axios from 'axios';
 import EmployeesList from '../../components/employees-list/employees-list.component';
 import WithSpinner from '../../components/with-spinner/with-spinner.component';
 
-import {PageContainer, Body, CompanyTitle} from './profile-page.styles';
+import { Body, Header, PageContainer, Tabs, Tab } from './profile-page.styles';
 import EmployeeForm from '../../components/employee-form/employee-form.component';
 import { Context } from '../../state/store';
 import { Actions } from '../../state/constants';
@@ -11,11 +11,18 @@ import UserForm from "../../components/user-form/user-form.component";
 
 const EmployeesWithSpinner = WithSpinner(EmployeesList);
 
+const ActiveTab = {
+    COMPANY: 'company',
+    EMPLOYEES: 'employees',
+    PROFILE: 'profile',
+};
+
 const ProfilePage = () => {
     const [state, dispatch] = useContext(Context);
     const { user, company } = state;
 
     const [loading, setLoading] = useState(company == null);
+    const [activeTab, setActiveTab] = useState(ActiveTab.PROFILE);
 
     useEffect(() => {
         const fetchCompanyData = async () => {
@@ -29,18 +36,59 @@ const ProfilePage = () => {
         }
     }, []);
 
+    const handleTabClick = e =>  {
+        setActiveTab(e.target.getAttribute('data-tabname'));
+    };
+
+    const isActive = tab => (tab === activeTab ? 'active' : '');
+    
+    const renderComponent = () => {
+        switch (activeTab) {
+            case ActiveTab.PROFILE:
+                return <UserForm/>;
+            case ActiveTab.COMPANY:
+                return '';
+            case ActiveTab.EMPLOYEES:
+                return  (
+                    <Body>
+                        <EmployeesWithSpinner/>
+                        <EmployeeForm/>
+                    </Body>
+                );
+        }
+    }
+
     return (
         <PageContainer>
-            {user.isAdmin ? (
-                <Body>
-                    <CompanyTitle>
-                        {company !== null ? `${company.name}'s employees management` : ''}
-                    </CompanyTitle>
-                    <EmployeeForm />
-                    <EmployeesWithSpinner isLoading={loading} />
-                </Body>
-            ) : null}
-            <UserForm/>
+            <Header>Account Management</Header>
+            <Tabs>
+                <Tab
+                    data-tabname={ActiveTab.PROFILE}
+                    className={isActive(ActiveTab.PROFILE)}
+                    onClick={handleTabClick}
+                >
+                    Profile
+                </Tab>
+                {user.isAdmin ? (
+                    <Tab
+                        data-tabname={ActiveTab.COMPANY}
+                        className={isActive(ActiveTab.COMPANY)}
+                        onClick={handleTabClick}
+                    >
+                        Company
+                    </Tab>
+                ) : null}
+                {user.isAdmin ? (
+                    <Tab
+                        data-tabname={ActiveTab.EMPLOYEES}
+                        className={isActive(ActiveTab.EMPLOYEES)}
+                        onClick={handleTabClick}
+                    >
+                        Employees
+                    </Tab>
+                ) : null}
+            </Tabs>
+                {renderComponent()}
         </PageContainer>
     );
 };

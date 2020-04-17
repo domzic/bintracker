@@ -1,14 +1,56 @@
 import React, { useContext } from 'react';
 import axios from 'axios';
-import * as Yup from 'yup';
 import { Formik } from 'formik';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { Container, Form, ButtonsContainer, Title } from './user-form.styles';
 import { Context } from '../../state/store';
 import { toast } from 'react-toastify';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useButtonStyles = makeStyles({
+    root: {
+        borderColor: '#D2FFBE',
+        '&:hover': {
+            borderColor: '#67FB25',
+        },
+    },
+    label: {
+        color: '#fff',
+        '&:hover': {
+            color: '#D2FFBE',
+        },
+    },
+});
+
+const useTextFieldStyles = makeStyles({
+    input: {
+        color: '#C8C8C8',
+    },
+    underline: {
+        '&:before': {
+            borderBottom: '1px solid #000',
+        },
+        '&:after': {
+            borderBottom: `2px solid #D2FFBE`,
+        },
+        '&:hover:not($disabled):not($focused):not($error):before': {
+            borderBottom: `2px solid #D2FFBE`,
+        },
+    },
+    label: {
+        color: '#83936F',
+
+        '&.Mui-focused': {
+            color: '#D2FFBE',
+        },
+    },
+});
 
 const UserForm = () => {
+    const textFieldClasses = useTextFieldStyles();
+    const buttonClasses = useButtonStyles();
+
     const [state, dispatch] = useContext(Context);
     const { user } = state;
     return (
@@ -18,7 +60,7 @@ const UserForm = () => {
                 initialValues={{
                     displayName: user.displayName,
                     phone: user.phone || '',
-                    position: user.position || ''
+                    position: user.position || '',
                 }}
                 onSubmit={async (formData, actions) => {
                     actions.setSubmitting(true);
@@ -46,7 +88,13 @@ const UserForm = () => {
                         <Form onSubmit={handleSubmit}>
                             <div>
                                 <TextField
-                                    style={{ width: '100%' }}
+                                    fullWidth
+                                    InputProps={{
+                                        classes: textFieldClasses,
+                                    }}
+                                    InputLabelProps={{
+                                        className: textFieldClasses.label,
+                                    }}
                                     label="Display name"
                                     id="displayName"
                                     placeholder="Enter display name"
@@ -64,7 +112,13 @@ const UserForm = () => {
                             </div>
                             <div>
                                 <TextField
-                                    style={{ width: '100%' }}
+                                    fullWidth
+                                    InputProps={{
+                                        classes: textFieldClasses,
+                                    }}
+                                    InputLabelProps={{
+                                        className: textFieldClasses.label,
+                                    }}
                                     label="Phone number"
                                     id="phone"
                                     placeholder="Enter phone number"
@@ -73,8 +127,7 @@ const UserForm = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     className={
-                                        errors.phone &&
-                                        touched.phone
+                                        errors.phone && touched.phone
                                             ? 'text-input error'
                                             : 'text-input'
                                     }
@@ -82,7 +135,13 @@ const UserForm = () => {
                             </div>
                             <div>
                                 <TextField
-                                    style={{ width: '100%' }}
+                                    fullWidth
+                                    InputProps={{
+                                        classes: textFieldClasses,
+                                    }}
+                                    InputLabelProps={{
+                                        className: textFieldClasses.label,
+                                    }}
                                     label="Position"
                                     id="position"
                                     placeholder="Enter your position"
@@ -91,8 +150,7 @@ const UserForm = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     className={
-                                        errors.position &&
-                                        touched.position
+                                        errors.position && touched.position
                                             ? 'text-input error'
                                             : 'text-input'
                                     }
@@ -100,17 +158,8 @@ const UserForm = () => {
                             </div>
                             <ButtonsContainer>
                                 <Button
-                                    variant="outlined"
-                                    color="secondary"
-                                    type="button"
-                                    className="outline"
-                                    onClick={handleReset}
-                                    disabled={!dirty || isSubmitting}
-                                >
-                                    Reset
-                                </Button>
-                                <Button
                                     type="submit"
+                                    classes={buttonClasses}
                                     disabled={isSubmitting}
                                     variant="outlined"
                                     color="primary"
