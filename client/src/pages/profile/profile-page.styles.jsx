@@ -73,6 +73,8 @@ export const Body = styled.div`
     justify-content: center;
     flex-direction: column;
     width: 100%;
+    height: 500px;
+    margin-top: 48px;
 `;
 export const CompanyTitle = styled.div`
     text-transform: uppercase;

@@ -4,10 +4,6 @@ export const Headline = styled.h2`
     margin-bottom: 24px;
     font-size: 18px;
     text-align: center;
-    
-    @media (min-width: 768px) {
-        font-size: 24px;
-    }
 `;
 
 export const FormContainer = styled.div`
@@ -17,7 +13,7 @@ export const FormContainer = styled.div`
     justify-content: center;
     flex-direction: column;
     padding-right: 20px;
-        background-color: #333;
+    background-color: #333;
     padding: 12px;
     border-radius: 4px;
     margin-bottom: 16px;

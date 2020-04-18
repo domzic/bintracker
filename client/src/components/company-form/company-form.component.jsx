@@ -1,20 +1,19 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import axios from 'axios';
-import validateEmails from '../../utils/validateEmails';
 import * as Yup from 'yup';
 import {
     Headline,
     FormContainer,
     Form,
     FormError,
+    Row,
 } from './company-form.styles';
 import { useFormButtonStyles, useTextFieldStyles } from '../utils/mui-styles';
 import TextField from '@material-ui/core/TextField';
 import { ErrorMessage, Formik } from 'formik';
 import { Context } from '../../state/store';
-import { Button } from '@material-ui/core';
 import { toast } from 'react-toastify';
-import { Actions } from '../../state/constants';
+import Button from '@material-ui/core/Button';
 
 const CompanyFormSchema = Yup.object().shape({
     name: Yup.string()
@@ -36,7 +35,7 @@ const CompanyFormSchema = Yup.object().shape({
         .of(Yup.string().email(({ value }) => `${value} is not a valid email`)),
 });
 
-const CompanyForm = () => {
+const CompanyForm = ({ title, showAdminField }) => {
     const [state, dispatch] = useContext(Context);
     const { company, user } = state;
     const textFieldClasses = useTextFieldStyles();
@@ -44,7 +43,7 @@ const CompanyForm = () => {
 
     return (
         <FormContainer>
-            <Headline>Register your own company</Headline>
+            <Headline>{title ? title : 'Register your own company'}</Headline>
             <Formik
                 initialValues={{
                     name: company ? company.name : '',
@@ -63,12 +62,12 @@ const CompanyForm = () => {
                         setTimeout(() => {
                             window.location.href = '/signin?success=true';
                         }, 1000);
-                        
                     } catch (error) {
                         actions.setErrors(
-                            Array.isArray(error.response.data) && error.response.data.length > 1
+                            Array.isArray(error.response.data) &&
+                                error.response.data.length > 1
                                 ? {
-                                    emailsString: `Already registered: ${error.response.data.join(
+                                      emailsString: `Already registered: ${error.response.data.join(
                                           ', '
                                       )}`,
                                   }
@@ -88,7 +87,6 @@ const CompanyForm = () => {
                                                   'This TTN application is already registered!';
                                               break;
                                           default:
-                                              console.log(obj);
                                               value = `Email already registered: ${key}!`;
                                               key = 'emailsString';
                                       }
@@ -113,110 +111,117 @@ const CompanyForm = () => {
                     return (
                         <Form onSubmit={handleSubmit}>
                             <div>
-                                <TextField
-                                    fullWidth
-                                    InputProps={{
-                                        classes: textFieldClasses,
-                                        error: errors.name && touched.name,
-                                    }}
-                                    InputLabelProps={{
-                                        className:
-                                            errors.name && touched.name
-                                                ? 'form-label errored'
-                                                : 'form-label',
-                                    }}
-                                    autoComplete="off"
-                                    label="Company name"
-                                    id="name"
-                                    placeholder="Enter company name"
-                                    type="text"
-                                    value={values.name}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                <FormError>
-                                    <ErrorMessage name="name" />
-                                </FormError>
-                            </div>
-                            <div>
-                                <TextField
-                                    fullWidth
-                                    InputProps={{
-                                        classes: textFieldClasses,
-                                        error: errors.admin && touched.admin,
-                                    }}
-                                    InputLabelProps={{
-                                        className:
-                                            errors.admin && touched.admin
-                                                ? 'form-label errored'
-                                                : 'form-label',
-                                    }}
-                                    autoComplete="off"
-                                    label="Administrator email"
-                                    id="admin"
-                                    placeholder="Enter your email"
-                                    type="email"
-                                    value={values.admin}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                <FormError>
-                                    <ErrorMessage name="admin" />
-                                </FormError>
-                            </div>
-                            <div>
-                                <TextField
-                                    fullWidth
-                                    InputProps={{
-                                        classes: textFieldClasses,
-                                        error:
-                                            errors.ttnAppName &&
-                                            touched.ttnAppName,
-                                    }}
-                                    InputLabelProps={{
-                                        className:
-                                            errors.ttnAppName &&
-                                            touched.ttnAppName
-                                                ? 'form-label errored'
-                                                : 'form-label',
-                                    }}
-                                    autoComplete="off"
-                                    label="TTN application name"
-                                    id="ttnAppName"
-                                    placeholder="Enter TTN application name"
-                                    type="text"
-                                    value={values.ttnAppName}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                <FormError>
-                                    <ErrorMessage name="ttnAppName" />
-                                </FormError>
-                            </div>
-                            {!user ? (
-                                <div>
+                                <Row>
                                     <TextField
                                         fullWidth
                                         InputProps={{
                                             classes: textFieldClasses,
+                                            error: errors.name && touched.name,
                                         }}
                                         InputLabelProps={{
-                                            className: 'form-label',
+                                            className:
+                                                errors.name && touched.name
+                                                    ? 'form-label errored'
+                                                    : 'form-label',
                                         }}
                                         autoComplete="off"
-                                        label="Employees"
-                                        id="emailsString"
-                                        placeholder="Enter employees emails"
+                                        label="Company name"
+                                        id="name"
+                                        placeholder="Enter company name"
                                         type="text"
-                                        value={values.emailsString}
+                                        value={values.name}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
                                     <FormError>
-                                        <ErrorMessage name="emailsString" />
+                                        <ErrorMessage name="name" />
                                     </FormError>
-                                </div>
-                            ) : null}
+                                </Row>
+                                {showAdminField ? (
+                                    <Row>
+                                        <TextField
+                                            fullWidth
+                                            InputProps={{
+                                                classes: textFieldClasses,
+                                                error:
+                                                    errors.admin &&
+                                                    touched.admin,
+                                            }}
+                                            InputLabelProps={{
+                                                className:
+                                                    errors.admin &&
+                                                    touched.admin
+                                                        ? 'form-label errored'
+                                                        : 'form-label',
+                                            }}
+                                            autoComplete="off"
+                                            label="Administrator email"
+                                            id="admin"
+                                            placeholder="Enter your email"
+                                            type="email"
+                                            value={values.admin}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                        <FormError>
+                                            <ErrorMessage name="admin" />
+                                        </FormError>
+                                    </Row>
+                                ) : null}
+                                <Row>
+                                    <TextField
+                                        fullWidth
+                                        InputProps={{
+                                            classes: textFieldClasses,
+                                            error:
+                                                errors.ttnAppName &&
+                                                touched.ttnAppName,
+                                        }}
+                                        InputLabelProps={{
+                                            className:
+                                                errors.ttnAppName &&
+                                                touched.ttnAppName
+                                                    ? 'form-label errored'
+                                                    : 'form-label',
+                                        }}
+                                        autoComplete="off"
+                                        label="TTN application name"
+                                        id="ttnAppName"
+                                        placeholder="Enter TTN application name"
+                                        type="text"
+                                        value={values.ttnAppName}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    <FormError>
+                                        <ErrorMessage name="ttnAppName" />
+                                    </FormError>
+                                </Row>
+                                {!user ? (
+                                    <Row>
+                                        <TextField
+                                            fullWidth
+                                            InputProps={{
+                                                classes: textFieldClasses,
+                                            }}
+                                            InputLabelProps={{
+                                                className: 'form-label',
+                                            }}
+                                            autoComplete="off"
+                                            label="Employees"
+                                            id="emailsString"
+                                            placeholder="Enter employees emails"
+                                            type="text"
+                                            value={values.emailsString}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                        <FormError>
+                                            <ErrorMessage name="emailsString" />
+                                        </FormError>
+                                    </Row>
+                                ) : null}
+                            </div>
                             <Button
                                 type="submit"
                                 classes={buttonClasses}

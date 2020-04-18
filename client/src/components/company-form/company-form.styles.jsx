@@ -4,10 +4,9 @@ export const Headline = styled.h2`
     margin-bottom: 30px;
     text-align: center;
     font-size: 18px;
-    
-    @media (min-width: 768px) {
-        font-size: 24px;
-    }
+    font-weight: 200;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 `;
 
 export const FormContainer = styled.div`
@@ -21,7 +20,7 @@ export const FormContainer = styled.div`
     height: 500px;
     width: 100%;
     @media (min-width: 768px) {
-        max-width: 500px;
+        max-width: 475px;
     }
 `;
 
@@ -36,4 +35,9 @@ export const FormError = styled.div`
     color: #FFAAAA;
     margin-top: 4px;
     font-size: 14px;
+`;
+
+export const Row = styled.div`
+    margin-bottom: 20px;
+    height: 64px;
 `;

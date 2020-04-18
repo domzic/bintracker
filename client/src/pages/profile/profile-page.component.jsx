@@ -8,6 +8,7 @@ import EmployeeForm from '../../components/employee-form/employee-form.component
 import { Context } from '../../state/store';
 import { Actions } from '../../state/constants';
 import UserForm from "../../components/user-form/user-form.component";
+import CompanyForm from "../../components/company-form/company-form.component";
 
 const EmployeesWithSpinner = WithSpinner(EmployeesList);
 
@@ -47,16 +48,16 @@ const ProfilePage = () => {
             case ActiveTab.PROFILE:
                 return <UserForm/>;
             case ActiveTab.COMPANY:
-                return '';
+                return <CompanyForm title="Update your company" showAdminField={false}/>;
             case ActiveTab.EMPLOYEES:
                 return  (
-                    <Body>
+                    <div>
                         <EmployeesWithSpinner/>
                         <EmployeeForm/>
-                    </Body>
+                    </div>
                 );
         }
-    }
+    };
 
     return (
         <PageContainer>
@@ -88,7 +89,9 @@ const ProfilePage = () => {
                     </Tab>
                 ) : null}
             </Tabs>
-                {renderComponent()}
+                <Body>
+                    {renderComponent()}
+                </Body>
         </PageContainer>
     );
 };

@@ -32,6 +32,7 @@ const Header = () => {
 
     const logout = () => {
         axios.get('/api/auth/logout');
+        dispatch({ type: Actions.SET_COMPANY, payload: null });
         dispatch({ type: Actions.SET_USER, payload: null });
     };
 
