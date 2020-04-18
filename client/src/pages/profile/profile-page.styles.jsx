@@ -9,13 +9,13 @@ export const PageContainer = styled.div`
 `;
 
 export const Header = styled.span`
-    margin-top: 50px;
+    margin: 24px 0;
+    align-self: center;
     font-weight: 800;
     color: #D2FFBE;
     font-size: 20px;
     letter-spacing: 2px;
     text-transform: uppercase;
-    align-self: flex-start;
 `;
 
 export const Tabs = styled.div`
@@ -29,7 +29,7 @@ export const Tab = styled.button`
     color: grey;
     border: none;
     outline: none;
-    margin: 0 25px;
+    margin: 0 12px;
     font-size: 16px;
     text-transform: uppercase;
     transition: all .2s;
@@ -64,6 +64,10 @@ export const Tab = styled.button`
             left: 0;
             right: 0;
         }
+    }
+    
+    @media (min-width: 768px) {
+        margin: 0 25px;
     }
 `;
 

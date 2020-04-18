@@ -48,10 +48,10 @@ const ProfilePage = () => {
             case ActiveTab.PROFILE:
                 return <UserForm/>;
             case ActiveTab.COMPANY:
-                return <CompanyForm title="Update your company" showAdminField={false}/>;
+                return <CompanyForm title="Update your company" showAdminField={true}/>;
             case ActiveTab.EMPLOYEES:
                 return  (
-                    <div>
+                    <div style={{width: '100%'}}>
                         <EmployeesWithSpinner/>
                         <EmployeeForm/>
                     </div>

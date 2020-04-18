@@ -4,12 +4,14 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #333;
+    background-color: #424242;
     padding: 12px;
     border-radius: 4px;
     flex-grow: 1;
     width: 100%;
-    max-width: 475px;
+    @media (min-width: 768px) {
+        max-width: 475px;
+    }
 `;
 
 export const Form = styled.form`

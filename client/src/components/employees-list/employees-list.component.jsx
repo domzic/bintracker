@@ -76,7 +76,7 @@ const EmployeesList = () => {
     return (
         <div style={{ width: '100%', marginTop: 10 }}>
             <MaterialTable
-                title="Employees"
+                title="Company employees"
                 columns={tableData.columns}
                 data={tableData.data}
                 icons={tableIcons}

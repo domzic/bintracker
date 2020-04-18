@@ -48,7 +48,7 @@ export const DropdownOption = styled(Link)`
     letter-spacing: 2px;
     text-transform: uppercase;
     transition: all .2s;
-    color: #026E1B;
+    color: #D2FFBE;
 `;
 
 export const Logo = styled.img`
