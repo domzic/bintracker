@@ -5,7 +5,7 @@ import { Headline,
     FormContainer,
     Error } from './signin-form.styles';
 
-const SignInForm = ({ error }) => {
+const SignInForm = ({ error, text }) => {
 
     const googleButtonTheme = {
         hBorder: 'none',
@@ -19,11 +19,11 @@ const SignInForm = ({ error }) => {
 
     return (
         <FormContainer>
-            {error ? <Error>{error}</Error> : null}
-            <Headline>Are you already registered within your company?</Headline>
+            <Headline>{text ? text : 'Are you already registered within your company?'}</Headline>
             <CustomButton theme={googleButtonTheme} onClick={signInWithGoogle}>
             Sign in with Google
             </CustomButton>
+            {error ? <Error>{error}</Error> : null}
       </FormContainer>
     );
 };

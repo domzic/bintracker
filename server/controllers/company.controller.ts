@@ -7,38 +7,66 @@ import Company, { ICompany } from '../models/company.model';
 import Stat, { IStat, StatType } from '../models/stat.model';
 
 export const createCompany = async (req: Request, res: Response) => {
-    const { emailsString, name, admin, ttnAppName } = req.body;
-    const emails: string[] = emailsString.split(',').map((email: string) => email.trim());
-    let company: ICompany = new Company({ name, email: admin, ttnAppName });
-    try {
-        company = await Company.create(company);
-    } catch (error) {
-        return res.sendStatus(500).json({ message: error.message });
+    const { emailsString, name, admin, ttnAppName } = req.body.formData;
+    let company: ICompany = new Company({ name, ttnAppName });
+    let employees: IUser[] = [];
+    employees.push(new User({ email: admin, company, isAdmin: true, confirmed: false }));
+    if (emailsString) {
+        const emails: string[] = emailsString.split(',').map((email: string) => email.trim());
+        employees = employees.concat(emails.map(employee => new User({
+            email: employee,
+            company,
+            isAdmin: false,
+            confirmed: false
+        })));
     }
 
-    const employees = emails.map(employee => new User({ email: employee, company, isAdmin: false, confirmed: false }));
-    employees.push(new User({ email: admin, company, isAdmin: true, confirmed: false }));
+    const existingName = await Company.existsByName(name);
+    if (existingName) {
+        return res.status(422).send(['name']);
+    }
 
-    User.insertMany(employees)
-        .then(employees => {
-            company.employees.concat(employees);
-            company.save();
-        })
-        .catch(error => {
-            if (error instanceof Error.ValidationError) {
-                error.message = 'User with this username already exists';
+    const existingUser = await User.existsByEmail(admin);
+    if (existingUser) {
+        return res.status(422).send(['admin']);
+    }
+
+    const existingTTNApp = await Company.existsByTTNName(ttnAppName);
+    if (existingTTNApp) {
+        return res.status(422).send(['ttnAppName']);
+    }
+
+    if (emailsString) {
+        const invalidEmails = await Promise.all(employees.map(async (employee, index) => {
+            if (index === 0) {
+                return Promise.resolve();
             }
-            return res.sendStatus(500).json({ message: error.message });
-        });
+            const existing = await User.existsByEmail(employee.email);
+            if (existing) {
+
+                return Promise.resolve(employee.email);
+            } return Promise.resolve();
+        }));
+
+        if (invalidEmails.filter(email => email).length) {
+            return res.status(422).send(invalidEmails.filter(email => email));
+        }
+    }
 
     const stats: IStat[] = [
         new Stat({ key: StatType.servicedContainersCount, value: 0, company }),
-        new Stat({ key: StatType.notRegisteredDevices, devices: [] })
+        new Stat({ key: StatType.notRegisteredDevices, devices: [], company })
     ];
-
     await Stat.insertMany(stats);
 
-    res.sendStatus(200);
+    try {
+        const users = await User.insertMany(employees);
+        company.employees.concat(users);
+        company = await Company.create(company);
+        return res.sendStatus(200);
+    } catch (error) {
+        return res.status(500).send('Oops...');
+    }
 };
 
 export const getCompany = async (req: Request, res: Response) => {

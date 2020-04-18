@@ -9,16 +9,20 @@ import {
 
 const RegistrationPage = () => {
     const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
     
     useEffect(() => {
         if (new URL(window.location.href).searchParams.get("authorized")) {
             setError('This email is not yet registered.');
         }
+        if (new URL(window.location.href).searchParams.get("success")) {
+            setSuccess('You can now login.');
+        }
     }, []);
     
     return (
         <PageContainer>
-            <SignInForm error={error}/>
+            <SignInForm text={success} error={error}/>
             <CompanyForm />
         </PageContainer>
     );

@@ -21,26 +21,25 @@ const App = () => {
     const [state, dispatch] = useContext(Context);
 
     useEffect(() => {
-        async function fetchUser() {
+        async function fetchInitData() {
             const fetchedUser = await axios.get("/api/auth/current_user");
-            dispatch({type: Actions.SET_USER, payload: fetchedUser.data});
+            
+            if (fetchedUser.data) {
+                dispatch({type: Actions.SET_USER, payload: fetchedUser.data});
+                const response = await axios.get('/api/container');
+                dispatch({ type: Actions.SET_CONTAINERS, payload: response.data });
+            }
         }
-        
-        const fetchContainers = async () => {
-            const response = await axios.get('/api/container');
-            dispatch({ type: Actions.SET_CONTAINERS, payload: response.data });
-        };
-
-        fetchUser();
-        fetchContainers();
+    
+        fetchInitData();
     }, []);
-    console.log(state)
+
     return (
             <div className="App">
                 <BrowserRouter>
                     <Header />
                     <ToastContainer
-                        autoClose={2000}
+                        autoClose={1000}
                     />
                     <div className="App__Content">
                     <Switch>

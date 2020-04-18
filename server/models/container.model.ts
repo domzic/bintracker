@@ -1,14 +1,10 @@
 import { Document, Schema, model } from 'mongoose';
-import validator from 'mongoose-unique-validator';
 import { ICompany } from './company.model';
 
 const Container: Schema = new Schema({
     latitude: Number,
     longitude: Number,
-    ttnDeviceId: {
-        type: String,
-        unique: true
-    },
+    ttnDeviceId: String,
     level: Number,
     company: {
         type: Schema.Types.ObjectId,
@@ -17,7 +13,7 @@ const Container: Schema = new Schema({
     },
     timesServiced: Number,
     height: Number
-}).plugin(validator);
+});
 
 export interface IContainer extends Document {
     latitude: number;

@@ -5,4 +5,9 @@ export const PageContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-around;
+    flex-direction: column;
+    
+    @media (min-width: 768px) {
+        flex-direction: row;
+    }
 `;

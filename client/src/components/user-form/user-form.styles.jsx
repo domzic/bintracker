@@ -32,3 +32,7 @@ export const Title = styled.span`
     font-weight: 200;
 `;
 
+export const TextFieldLabel = styled.span`
+    color: 'red';
+`;
+

@@ -1,4 +1,4 @@
-import { Document, Schema, model } from 'mongoose';
+import { Document, Schema, model, Model } from 'mongoose';
 import validator from 'mongoose-unique-validator';
 import { IUser } from './user.model';
 
@@ -17,4 +17,19 @@ export interface ICompany extends Document {
     lastUpdate: Date;
 }
 
-export default model<ICompany>('Company', CompanySchema, 'companies');
+CompanySchema.statics.existsByName = async function (name: string) {
+    const company = await this.findOne({ name });
+    return !!company;
+};
+
+CompanySchema.statics.existsByTTNName = async function (ttnAppName: string) {
+    const company = await this.findOne({ ttnAppName });
+    return !!company;
+};
+
+export interface ICompanyModel extends Model<ICompany> {
+    existsByName(name: string): Promise<boolean>;
+    existsByTTNName(ttnAppName: string): Promise<boolean>;
+}
+
+export default model<ICompany, ICompanyModel>('Company', CompanySchema, 'companies');

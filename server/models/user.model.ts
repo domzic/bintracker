@@ -13,7 +13,7 @@ const UserSchema: Schema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Company',
         required: true
-    },  
+    },
     isAdmin: {
         type: Boolean,
         default: false
@@ -44,12 +44,18 @@ export interface IUserRelationships extends IUserSchema {
     company: ICompany;
 }
 
-UserSchema.statics.findWithCompany = async function(email: String) {
-    return this.find({ email: email}).populate("company").exec()
+UserSchema.statics.findWithCompany = async function (email: string) {
+    return this.find({ email }).populate('company').exec();
+};
+
+UserSchema.statics.existsByEmail = async function (email: string) {
+    const user = await this.findOne({ email });
+    return !!user;
 };
 
 export interface IUserModel extends Model<IUser> {
     findWithCompany(id: string): Promise<IUserRelationships>;
+    existsByEmail(email: string): Promise<boolean>;
 }
 
 export default mongoose.model<IUser, IUserModel>('User', UserSchema, 'users');

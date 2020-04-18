@@ -19,3 +19,15 @@
     padding: 10px;
   }
 }
+
+.form-label {
+  color: #83936F !important;
+}
+
+.form-label.Mui-focused {
+  color: #D2FFBE !important;
+}
+
+.MuiButton-outlinedPrimary {
+  color: #607A2E !important;
+}
