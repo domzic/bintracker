@@ -6,6 +6,7 @@ export const Title = styled.div`
     letter-spacing: 2px;
     text-transform: uppercase;
     margin-bottom: 10px;
+    color: #D2FFBE;
 `;
 
 export const ButtonText = styled.span`

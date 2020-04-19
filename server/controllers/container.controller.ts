@@ -40,16 +40,14 @@ export const getContainers = async (req: Request, res: Response) => {
 };
 
 export const addContainer = async (req: Request, res: Response) => {
-    const { formData } = req.body;
+    const { latitude, longitude, ttnDeviceId, level } = req.body.formData;
 
-    if (!formData) {
-        res.sendStatus(500);
+    const exists = await Container.companyDeviceExists(ttnDeviceId, req.user!!.company);
+    if (exists) {
+        res.status(422).send(['ttnDeviceId']);
     }
-
-    const { latitude, longitude, ttnDeviceId, level } = formData;
-
     try {
-        const container = await Container.create({
+        await Container.create({
             latitude,
             longitude,
             ttnDeviceId,
@@ -58,12 +56,11 @@ export const addContainer = async (req: Request, res: Response) => {
             height: 0,
             company: req.user!!.company
         });
-        res.status(200).send(container);
     } catch (error) {
-        if (error) {
-            res.status(500).send('Device is already registered');
-        }
+        res.sendStatus(422);
     }
+
+    res.sendStatus(200);
 };
 
 export const removeContainer = async (req: Request, res: Response) => {

@@ -27,3 +27,8 @@ export const Error = styled.div`
     margin-top: 5px;
     font-style: italic;
 `;
+
+export const Row = styled.div`
+    margin-bottom: 20px;
+    height: 64px;
+`;

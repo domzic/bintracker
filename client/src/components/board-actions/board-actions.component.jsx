@@ -123,7 +123,7 @@ const BoardActions = props => {
                 <ContainersList/>
             </Modal>
             <Modal
-                title="Container form"
+                title="Add container"
                 icon={<AddIcon/>}
                 position={{ top: 50, left: 50 }}
                 buttonText="Add container"

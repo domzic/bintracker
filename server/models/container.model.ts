@@ -1,7 +1,7 @@
-import { Document, Schema, model } from 'mongoose';
-import { ICompany } from './company.model';
+import { Document, Schema, model, Model } from 'mongoose';
+import * as mongoose from 'mongoose';
 
-const Container: Schema = new Schema({
+const ContainerSchema: Schema = new Schema({
     latitude: Number,
     longitude: Number,
     ttnDeviceId: String,
@@ -24,8 +24,13 @@ export interface IContainer extends Document {
     height?: number;
 }
 
-export interface IContainerRelationships extends IContainer {
-    company: ICompany['_id'];
+ContainerSchema.statics.companyDeviceExists = async function (ttnDeviceId: string, companyId: mongoose.Types.ObjectId) {
+    const container = await this.findOne({ ttnDeviceId, company: companyId });
+    return !!container;
+};
+
+export interface IContainerModel extends Model<IContainer> {
+    companyDeviceExists(ttnDeviceId: string, companyId: mongoose.Types.ObjectId): Promise<boolean>;
 }
 
-export default model<IContainer>('Container', Container, 'containers');
+export default model<IContainer, IContainerModel>('Container', ContainerSchema, 'containers');
