@@ -1,28 +1,33 @@
-import React, {useContext, forwardRef, useState} from 'react';
+import React, { useContext, forwardRef, useState } from 'react';
 import axios from 'axios';
 import MaterialTable from 'material-table';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import { Context } from '../../state/store';
-import Dialog from "@material-ui/core/Dialog";
-import Button from "@material-ui/core/Button";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Slide from "@material-ui/core/Slide";
+import Dialog from '@material-ui/core/Dialog';
+import Button from '@material-ui/core/Button';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
 import { tableIcons } from '../employees-list/employees-list.component';
+import { makeStyles } from '@material-ui/core/styles';
+import { useFormButtonStyles } from '../utils/mui-styles';
 
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const ContainersList = () => {
-
+    const buttonClasses = useFormButtonStyles();
     const { containers } = useContext(Context)[0];
-    const [dialogState, setDialogState] = useState({ opened: false, selected: null });
+    const [dialogState, setDialogState] = useState({
+        opened: false,
+        selected: null,
+    });
 
     const handleClose = () => {
-        setDialogState( { selected: null, opened: false })
+        setDialogState({ selected: null, opened: false });
     };
 
     const tableData = {
@@ -31,15 +36,16 @@ const ContainersList = () => {
             { title: 'Latitude', field: 'latitude' },
             { title: 'Longitude', field: 'longitude' },
             { title: 'Current level', field: 'level' },
-            { title: 'Times serviced', field: 'timesServiced' }
+            { title: 'Times serviced', field: 'timesServiced' },
         ],
-        data: containers.green
-            .concat(containers.yellow)
-            .concat(containers.red)
+        data: containers.green.concat(containers.yellow).concat(containers.red),
     };
 
     const onConfirm = () => {
-        axios.delete('/api/container', { data: { ttnDeviceId: dialogState.selected } })
+        axios
+            .delete('/api/container', {
+                data: { ttnDeviceId: dialogState.selected },
+            })
             .then(() => window.location.reload());
     };
 
@@ -54,8 +60,12 @@ const ContainersList = () => {
                     {
                         icon: DeleteOutline,
                         tooltip: 'Delete Container',
-                        onClick: (event, container) => setDialogState({ selected: container.ttnDeviceId, opened: true})
-                    }
+                        onClick: (event, container) =>
+                            setDialogState({
+                                selected: container.ttnDeviceId,
+                                opened: true,
+                            }),
+                    },
                 ]}
             />
             <Dialog
@@ -66,17 +76,45 @@ const ContainersList = () => {
                 aria-labelledby="alert-dialog-slide-title"
                 aria-describedby="alert-dialog-slide-description"
             >
-                <DialogTitle id="alert-dialog-slide-title">{"Confirmation"}</DialogTitle>
+                <DialogTitle id="alert-dialog-slide-title">
+                    {'Confirmation'}
+                </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
-                        Are you sure you want to delete this container? You won't be able to undo this action.
+                        Are you sure you want to delete this container? You
+                        won't be able to undo this action.
                     </DialogContentText>
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} color="secondary">
+                <DialogActions style={{ justifyContent: 'space-between' }}>
+                    <Button
+                        classes={makeStyles({
+                            root: {
+                                borderColor: '#FFAAAA',
+
+                                '&:hover': {
+                                    borderColor: '#FF5D5D',
+                                },
+                            },
+                            label: {
+                                color: '#fff',
+                                '&:hover': {
+                                    color: '#FFAAAA',
+                                },
+                            },
+                        })()}
+                        onClick={handleClose}
+                        variant="outlined"
+                        color="primary"
+                        className="cancel"
+                    >
                         Cancel
                     </Button>
-                    <Button onClick={onConfirm} color="primary">
+                    <Button
+                        onClick={onConfirm}
+                        classes={buttonClasses}
+                        variant="outlined"
+                        color="primary"
+                    >
                         Confirm
                     </Button>
                 </DialogActions>
