@@ -31,7 +31,7 @@ const StatCard = ({ backgroundImage, title, value }) => {
     const classes = useStyles();
     
     return (
-        <Card className={classes.root} variant="outlined">
+        <Card className={classes.root} variant="outlined" styles={{width: '100%'}}>
             <CardContent>
                 <Typography className={classes.title}>
                     {title}

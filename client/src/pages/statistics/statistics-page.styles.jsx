@@ -19,6 +19,7 @@ export const PageContainer = styled.div`
 `;
 
 export const Header = styled.span`
+    padding-left: 5px;
     margin: 36px 0;
     font-weight: 800;
     color: #D2FFBE;
@@ -38,11 +39,21 @@ export const TopStats = styled.div`
 
 export const StatCards = styled.div`
     display: flex;
+    flex-direction: column;
     background-color: #424242;
     padding: 24px;
     border-radius: 4px;
+    width: 100%;
     & > *:not(:last-child) {
-        margin-right: 20px;
+        margin: 0 0 24px 0;
+    }
+    
+    @media (min-width: 768px) {
+        flex-direction: row;
+        
+        & > *:not(:last-child) {
+            margin: 0 24px 0 0;
+        }
     }
 `;
 
@@ -75,11 +86,15 @@ export const Main = styled.div`
 export const ButtonsContainer = styled.div`
     display: flex;
     flex-direction: column;
-    background-color: #424242;
     padding: 10px;
     border-radius: 5px;
     margin-right: 24px;
-    width: 33%;
+    width: 100%;
+    
+    @media (min-width: 768px) {
+        width: 33%;
+        background-color: #424242;
+    }
 `;
 
 export const View = styled.div`

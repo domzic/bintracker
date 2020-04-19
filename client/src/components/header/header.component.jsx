@@ -11,6 +11,7 @@ import {
     Logo,
     DropdownOption
 } from './header.styles';
+import ListIcon from '@material-ui/icons/List';
 import { Context } from '../../state/store';
 import { Actions } from '../../state/constants';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -55,7 +56,7 @@ const Header = () => {
 
     const renderResponsiveHeader = () => (
         <Navigation>
-            <Option onClick={handleClick}>Navigation</Option>
+            <Option onClick={handleClick}>{responsive ? <ListIcon/> : 'Navigation'}</Option>
             <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}
@@ -84,7 +85,7 @@ const Header = () => {
     return (
         <HeaderContainer>
             <HeaderContent>
-                <Link to="/">
+                <Link to="/" style={{width: 180}}>
                     <Logo src={logo} alt="Logo" />
                 </Link>
                 {user ? (
