@@ -5,13 +5,13 @@ export const Container = styled.div`
     flex-direction: column;
     align-items: center;
     flex-basis: 60%;
+        margin: -50px 0 20px 0;
 `;
 
 export const Form = styled.form`
     display: flex;
     flex-direction: column;
     border-radius: 5px;
-    border: 1px solid #015408;
     min-width: 250px;
     padding: 10px;
 `;

@@ -31,3 +31,11 @@
 .MuiButton-outlinedPrimary {
   color: #607A2E !important;
 }
+
+.MuiButton-outlinedPrimary.cancel {
+  color: #FF5D5D !important;
+}
+
+.MuiInput-underline:after:not(.Mui-Error) {
+  border-bottom: 2px solid #D2FFBE !important;
+}

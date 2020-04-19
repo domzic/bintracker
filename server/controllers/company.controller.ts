@@ -124,20 +124,20 @@ export const removeEmployee = async (req: Request, res: Response) => {
 };
 
 export const addEmployee = async (req: Request, res: Response) => {
-    const { email } = req.body;
-    try {
-        console.log('email: ', email);
-        const company = await Company.findById(req.user!!.company);
+    const { email } = req.body.formData;
 
-        if (!company) {
-            throw new Error('Internal server error');
-        }
-
-        const employee = await User.create({ email: email.toLowerCase(), company: req.user!!.company, isAdmin: false, confirmed: false });
-        company.employees.push(employee);
-        await company.save();
-        res.sendStatus(200);
-    } catch (error) {
-        res.sendStatus(500).json({ message: `Email ${email} is already registered` });
+    const userExists = await User.existsByEmail(email);
+    if (userExists) {
+        res.status(422).send(['email']);
     }
+
+    const company = await Company.findById(req.user!!.company).populate('employees');
+    if (!company) {
+        res.sendStatus(422);
+    }
+
+    const employee = await User.create({ email: email.toLowerCase(), company: req.user!!.company, isAdmin: false, confirmed: false });
+    company!!.employees.push(employee);
+    await company!!.save();
+    res.status(200).send(company);
 };
