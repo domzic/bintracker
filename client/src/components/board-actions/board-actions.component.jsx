@@ -18,19 +18,16 @@ import axios from 'axios';
 
 export const actionButtonStyles = makeStyles({
     root: {
-        height: 50,
         width: '100%',
-        backgroundColor: '#398340',
         marginBottom: 25,
         transition: 'all .2s',
+        backgroundColor: 'rgba(255, 255, 255, .04)',
+        
         '&:hover': {
             transform: 'scale(0.95)',
-            backgroundColor: '#398340',
+            borderColor: '#607A2E',
         },
-    },
-    label: {
-        color: '#fff',
-    },
+    }
 });
 
 const BoardActions = props => {
@@ -65,23 +62,20 @@ const BoardActions = props => {
     return (
         <Container>
             <Button
-                variant="contained"
+                variant="outlined"
                 color="default"
                 size="big"
                 startIcon={<CachedIcon />}
                 type="button"
                 onClick={refreshData}
-                classes={{
-                    root: buttonClasses.root,
-                    label: buttonClasses.label,
-                }}
+                classes={buttonClasses}
             >
                 <ButtonText>Refresh data</ButtonText>
             </Button>
             <br></br>
             <br></br>
             <Button
-                variant="contained"
+                variant="outlined"
                 color="default"
                 size="big"
                 startIcon={<RestoreFromTrashIcon />}
@@ -90,25 +84,19 @@ const BoardActions = props => {
                     state.mapView === MapView.MAP && state.filter === Filter.ALL
                 }
                 onClick={showContainers}
-                classes={{
-                    root: buttonClasses.root,
-                    label: buttonClasses.label,
-                }}
+                classes={buttonClasses}
             >
                 <ButtonText>See containers</ButtonText>
             </Button>
             <Button
-                variant="contained"
+                variant="outlined"
                 color="default"
+                classes={buttonClasses}
                 size="big"
                 startIcon={<MapIcon />}
                 type="button"
                 disabled={state.mapView === 'directions'}
                 onClick={showDirections}
-                classes={{
-                    root: buttonClasses.root,
-                    label: buttonClasses.label,
-                }}
             >
                 <ButtonText>See directions</ButtonText>
             </Button>

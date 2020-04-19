@@ -2,8 +2,7 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
     display: flex;
-    align-items: center;
-    justify-content: flex-end;
+    justify-content: space-evenly;
     margin-bottom: 10px;
     flex: 1;
 `;
@@ -33,7 +32,8 @@ export const Filter = styled.div`
 
 export const Count = styled.span`
     color: #fff;
-    font-size: 16px;
+    font-size: 12px;
+    font-weight: 200;
     transition: all .2s;
     letter-spacing: 2px;
 `;

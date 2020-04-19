@@ -18,7 +18,7 @@ const DashboardPage = () => {
         <PageHeading>
             {!responsive && (
             <ActionsTitle>
-                  Actions:
+                  Actions
             </ActionsTitle>
             )}
             <FiltersContainer />

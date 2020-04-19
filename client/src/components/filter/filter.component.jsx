@@ -10,6 +10,6 @@ const Filter = ( { children }) => {
             {children}
         </Container>
     );
-}
+};
 
 export default Filter;

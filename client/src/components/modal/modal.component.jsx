@@ -39,14 +39,11 @@ const CustomModal = ({ children, title, position, buttonText, icon }) => {
     return (
         <div>
             <Button
-                variant="contained"
+                variant="outlined"
                 startIcon={icon}
                 type="button"
                 onClick={handleOpen}
-                classes={{
-                    root: buttonClasses.root,
-                    label: buttonClasses.label
-                }}
+                classes={buttonClasses}
             >
                 <ButtonText>{buttonText}</ButtonText>
             </Button>

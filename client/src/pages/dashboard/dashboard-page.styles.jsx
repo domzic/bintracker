@@ -17,12 +17,13 @@ export const PageHeading = styled.div`
 `;
 
 export const ActionsTitle = styled.div`
-    font-size: 24px;
+    font-size: 20px;
     flex-basis: 30%;
-    color: grey;
+    color: #D2FFBE;
     letter-spacing: 2px;
     text-transform: uppercase;
     padding: 25px;
+    font-weight: 800;
 `;
 
 export const MainContent = styled.div`
