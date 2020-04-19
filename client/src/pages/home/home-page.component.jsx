@@ -6,7 +6,7 @@ import {
 
 const HomePage = () => (
     <PageContainer>
-        <h3>This is home page</h3>
+        <h3>Welcome</h3>
     </PageContainer>
 );
 

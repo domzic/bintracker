@@ -1,11 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
     TopStats,
     Header,
     PageContainer,
     StatCards,
     DoughnutWrapper,
-    BarWrapper
+    BarWrapper,
+    Main,
+    ButtonsContainer,
+    View,
+    Selection,
 } from './statistics-page.styles';
 import { Context } from '../../state/store';
 import { Bar, Doughnut } from 'react-chartjs-2';
@@ -28,9 +32,16 @@ const barColors = [
 
 const doughnutColors = ['#78CA2F', '#EDDF4E', '#FF7575'];
 
+const ActiveTab = {
+    PERCENTAGE: 'percentage',
+    SERVICES: 'services',
+    WEEKLY: 'weekly',
+};
+
 const StatisticsPage = () => {
     const [state, dispatch] = useContext(Context);
     const { containers } = state;
+    const [activeTab, setActiveTab] = useState(ActiveTab.PERCENTAGE);
 
     const allContainers = [
         ...containers.red,
@@ -40,6 +51,120 @@ const StatisticsPage = () => {
 
     const calcPercentage = count =>
         Math.round((count / allContainers.length) * 100);
+
+    const renderTab = tab => {
+        switch (activeTab) {
+            case ActiveTab.PERCENTAGE:
+                return (
+                    <DoughnutWrapper>
+                        <Doughnut
+                            data={{
+                                labels: ['Green', 'Yellow', 'Red'],
+                                datasets: [
+                                    {
+                                        label: 'Currently containers',
+                                        barPercentage: 0.5,
+                                        data: [
+                                            calcPercentage(
+                                                containers.green.length
+                                            ),
+                                            calcPercentage(
+                                                containers.yellow.length
+                                            ),
+                                            calcPercentage(
+                                                containers.red.length
+                                            ),
+                                        ],
+                                        backgroundColor: doughnutColors,
+                                        borderColor: doughnutColors,
+                                    },
+                                ],
+                            }}
+                            options={{
+                                maintainAspectRatio: false,
+                                legend: {
+                                    display: false,
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Containers distribution, %',
+                                    fontSize: 20,
+                                    fontColor: '#ddd',
+                                },
+                            }}
+                        />
+                    </DoughnutWrapper>
+                );
+            case ActiveTab.SERVICES:
+                return (
+                    <BarWrapper>
+                        <Bar
+                            height={450}
+                            gridLines={{
+                                color: 'rgba(0, 0, 0, 0)',
+                            }}
+                            data={{
+                                labels: allContainers.map(c => c.ttnDeviceId),
+                                datasets: [
+                                    {
+                                        label: '# of times serviced',
+                                        barPercentage: 0.5,
+                                        data: allContainers.map(
+                                            c => c.timesServiced
+                                        ),
+                                        backgroundColor: barColors,
+                                    },
+                                ],
+                            }}
+                            options={{
+                                scales: {
+                                    yAxes: [
+                                        {
+                                            gridLines: {
+                                                display: true,
+                                                color: '#81876E',
+                                            },
+                                            ticks: {
+                                                fontColor: '#81876E'
+                                            },
+                                        },
+                                    ],
+                                    xAxes: [
+                                        {
+                                            gridLines: {
+                                                display: false
+                                            },
+                                            ticks: {
+                                                fontColor: '#DDD'
+                                            },
+                                        },
+                                    ],
+                                },
+                                maintainAspectRatio: false,
+                                legend: {
+                                    display: false,
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Containers services count',
+                                    fontSize: 20,
+                                    fontColor: '#ddd',
+                                },
+                            }}
+                        />
+                    </BarWrapper>
+                );
+            case ActiveTab.WEEKLY: {
+                return '';
+            }
+        }
+    };
+
+    const handleTabClick = e =>
+        setActiveTab(e.target.getAttribute('data-tabname'));
+
+    const isActive = tab => (tab === activeTab ? 'active' : '');
+
     return (
         <PageContainer>
             <Header>Company Statistics Overview</Header>
@@ -55,57 +180,39 @@ const StatisticsPage = () => {
                         title="Number of employees"
                         value={10}
                     />
-                </StatCards>
-                <DoughnutWrapper>
-                    <Doughnut
-                        data={{
-                            labels: ['Green', 'Yellow', 'Red'],
-                            datasets: [
-                                {
-                                    label: 'Currently containers',
-                                    barPercentage: 0.5,
-                                    data: [
-                                        calcPercentage(containers.green.length),
-                                        calcPercentage(containers.yellow.length),
-                                        calcPercentage(containers.red.length),
-                                    ],
-                                    backgroundColor: doughnutColors,
-                                    borderColor: doughnutColors,
-                                },
-                            ],
-                        }}
-                        options={{
-                            maintainAspectRatio: false,
-                        }}
+                    <StatCard
+                        backgroundImage="linear-gradient(to right, #96B836, #BBDE58)"
+                        title="Random number"
+                        value="64%"
                     />
-                </DoughnutWrapper>
+                </StatCards>
             </TopStats>
-            <BarWrapper>
-                <Bar
-                    data={{
-                        labels: allContainers.map(c => c.ttnDeviceId),
-                        datasets: [
-                            {
-                                label: '# of times serviced',
-                                barPercentage: 0.5,
-                                data: allContainers.map(c => c.timesServiced),
-                                backgroundColor: barColors,
-                            },
-                        ],
-                    }}
-                    options={{
-                        scales: {
-                            yAxes: [
-                                {
-                                    ticks: {
-                                        beginAtZero: true,
-                                    },
-                                },
-                            ],
-                        },
-                    }}
-                />
-            </BarWrapper>
+            <Main>
+                <ButtonsContainer>
+                    <Selection
+                        data-tabname={ActiveTab.PERCENTAGE}
+                        className={isActive(ActiveTab.PERCENTAGE)}
+                        onClick={handleTabClick}
+                    >
+                        Containers distribution
+                    </Selection>
+                    <Selection
+                        data-tabname={ActiveTab.SERVICES}
+                        className={isActive(ActiveTab.SERVICES)}
+                        onClick={handleTabClick}
+                    >
+                        Containers service count
+                    </Selection>
+                    <Selection
+                        data-tabname={ActiveTab.WEEKLY}
+                        className={isActive(ActiveTab.WEEKLY)}
+                        onClick={handleTabClick}
+                    >
+                        Weekly results
+                    </Selection>
+                </ButtonsContainer>
+                <View>{renderTab(activeTab)}</View>
+            </Main>
         </PageContainer>
     );
 };

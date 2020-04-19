@@ -52,8 +52,8 @@ const ProfilePage = () => {
             case ActiveTab.EMPLOYEES:
                 return  (
                     <div style={{width: '100%'}}>
-                        <EmployeeForm/>
                         <EmployeesWithSpinner/>
+                        <EmployeeForm/>
                     </div>
                 );
         }

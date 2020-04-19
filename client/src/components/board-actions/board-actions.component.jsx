@@ -64,7 +64,6 @@ const BoardActions = props => {
             <Button
                 variant="outlined"
                 color="default"
-                size="big"
                 startIcon={<CachedIcon />}
                 type="button"
                 onClick={refreshData}
@@ -77,7 +76,6 @@ const BoardActions = props => {
             <Button
                 variant="outlined"
                 color="default"
-                size="big"
                 startIcon={<RestoreFromTrashIcon />}
                 type="button"
                 disabled={
@@ -92,7 +90,6 @@ const BoardActions = props => {
                 variant="outlined"
                 color="default"
                 classes={buttonClasses}
-                size="big"
                 startIcon={<MapIcon />}
                 type="button"
                 disabled={state.mapView === 'directions'}

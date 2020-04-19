@@ -115,7 +115,6 @@ const FiltersContainer = () => {
                     <Button
                         variant="outlined"
                         style={{ border: `1px solid ${yellow[500]}` }}
-                        size="big"
                         startIcon={
                             <RestoreFromTrashIcon
                                 fontSize="large"
@@ -139,7 +138,6 @@ const FiltersContainer = () => {
                     <Button
                         variant="outlined"
                         style={{ border: `1px solid ${red[500]}` }}
-                        size="big"
                         startIcon={
                             <RestoreFromTrashIcon
                                 fontSize="large"
