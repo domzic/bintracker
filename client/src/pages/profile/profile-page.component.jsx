@@ -48,7 +48,7 @@ const ProfilePage = () => {
             case ActiveTab.PROFILE:
                 return <UserForm/>;
             case ActiveTab.COMPANY:
-                return <CompanyForm title="Update your company" showAdminField={true}/>;
+                return <CompanyForm title="Update your company" showAdminField={false} creationForm={false}/>;
             case ActiveTab.EMPLOYEES:
                 return  (
                     <div style={{width: '100%'}}>

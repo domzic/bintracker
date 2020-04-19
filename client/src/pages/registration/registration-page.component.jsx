@@ -23,7 +23,7 @@ const RegistrationPage = () => {
     return (
         <PageContainer>
             <SignInForm text={success} error={error}/>
-            <CompanyForm showAdminField={true}/>
+            <CompanyForm showAdminField={true} creationForm={true}/>
         </PageContainer>
     );
 };

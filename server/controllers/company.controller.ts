@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import _ from 'lodash';
-import { Error } from 'mongoose';
+import { Error, mongo } from 'mongoose';
+import * as mongoose from 'mongoose';
 import User, { IUser } from '../models/user.model';
 import Company, { ICompany } from '../models/company.model';
 
@@ -67,6 +68,31 @@ export const createCompany = async (req: Request, res: Response) => {
     } catch (error) {
         return res.status(500).send('Oops...');
     }
+};
+
+export const updateCompany = async (req: Request, res: Response) => {
+    const { ttnAppName, name } = req.body.formData;
+    const company = await Company.findById(req.user!!.company).populate('employees');
+    console.log('ID  ', company);
+    if (!company) {
+        return res.sendStatus(422);
+    }
+
+    let existing = await Company.existsByNameExcept(name, company.id);
+    if (existing) {
+        return res.status(422).send(['name']);
+    }
+
+    existing = await Company.existsByTTNNameExcept(ttnAppName, company.id);
+    if (existing) {
+        return res.status(422).send(['ttnAppName']);
+    }
+
+    company.ttnAppName = ttnAppName;
+    company.name = name;
+
+    await company.save();
+    return res.status(200).send(company);
 };
 
 export const getCompany = async (req: Request, res: Response) => {
