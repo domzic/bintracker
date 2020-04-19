@@ -15,7 +15,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 export const filterButtonStyles = makeStyles({
     root: {
-        height: 40,
+        height: 50,
         width: '80%',
         transition: 'all .2s',
         '&:hover': {

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
     margin-bottom: 10px;
     flex: 1;
 `;
@@ -32,7 +33,7 @@ export const Filter = styled.div`
 
 export const Count = styled.span`
     color: #fff;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 200;
     transition: all .2s;
     letter-spacing: 2px;
