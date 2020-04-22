@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, {useContext, useEffect} from 'react';
 
 import FiltersContainer from '../../components/filters-container/filters-container.component';
 import MainBoard from '../../components/main-board/main-board.component';
@@ -8,6 +8,7 @@ import { PageContainer,
     ActionsTitle } from './dashboard-page.styles';
 import { Context } from '../../state/store';
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import {Actions} from "../../state/constants";
 
 const DashboardPage = () => {
 

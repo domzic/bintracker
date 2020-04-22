@@ -49,7 +49,7 @@ const updateContainer = async (uplink: Uplink): Promise<IContainer> => {
         container.height = newDistance;
     }
 
-    const newLevel = Math.round(newDistance / container.height * 100);
+    const newLevel = 100 - Math.round(newDistance / container.height * 100);
     if (container.level - newLevel > 10) {
         container.timesServiced++;
     }
@@ -70,7 +70,6 @@ const update = async (company: ICompany): Promise<void> => {
     }
 
     const servicedContainersStat = await Stat.findOne({ company, key: StatType.servicedContainersCount });
-
     const uniqueUplinks = parseLatestUplinks(response);
     await TTNData.create({ date: moment(), responseBody: JSON.stringify(uniqueUplinks), company });
 

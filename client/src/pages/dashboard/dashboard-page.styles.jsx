@@ -6,6 +6,7 @@ export const PageContainer = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    color: #000;
 `;
 
 export const PageHeading = styled.div`

@@ -31,4 +31,5 @@ export const Error = styled.div`
 export const Row = styled.div`
     margin-bottom: 20px;
     height: 64px;
+    position: relative;
 `;

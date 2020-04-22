@@ -1,24 +1,35 @@
 /* global google */
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
-    withGoogleMap,
-    GoogleMap,
-    withScriptjs,
-    Marker,
     DirectionsRenderer,
+    GoogleMap,
     InfoWindow,
+    Marker,
+    withGoogleMap,
+    withScriptjs,
 } from 'react-google-maps';
+import { Context } from '../../state/store';
+import { Actions } from '../../state/constants';
+
 const MAP_MARKER =
     'M19 4h-3.5l-1-1h-5l-1 1H5v2h14zM6 7v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zm8 7v4h-4v-4H8l4-4 4 4h-2z';
 
-class MapDirectionsRenderer extends React.Component {
-    state = {
+const MapDirectionsRenderer = ({ places, travelMode }) => {
+    const [state, dispatch] = useContext(Context);
+    const [localState, setLocalState] = useState({
         directions: null,
         error: null,
-    };
+    });
 
-    initDirections(userLocation) {
-        let { places, travelMode } = this.props;
+    useEffect(() => {
+        let userWaypoint = {
+            stopOver: true,
+            location: state.userLocation,
+        };
+        initDirections(userWaypoint);
+    }, []);
+
+    const initDirections = userLocation => {
         places = places
             .filter(container => container.level > 80)
             .map(container => ({
@@ -47,44 +58,28 @@ class MapDirectionsRenderer extends React.Component {
             },
             (result, status) => {
                 if (status === google.maps.DirectionsStatus.OK) {
-                    this.setState({
-                        directions: result,
-                    });
+                    setLocalState({ ...localState, directions: result });
                 } else {
-                    this.setState({ error: result });
+                    setLocalState({ ...localState, error: result });
                 }
             }
         );
-    }
+    };
 
-    componentDidMount() {
-        let userLocation = {};
-        navigator.geolocation.getCurrentPosition(response => {
-            userLocation = {
-                stopover: true,
-                location: {
-                    lat: response.coords.latitude,
-                    lng: response.coords.longitude,
-                },
-            };
-            this.initDirections(userLocation);
-        });
-    }
-
-    render() {
-        if (this.state.error) {
-            return <h1>{this.state.error}</h1>;
-        }
-        return (
-            this.state.directions && (
-                <DirectionsRenderer directions={this.state.directions} />
-            )
-        );
-    }
-}
+    return (
+        <div>
+            {localState.error ? (
+                <h1>{localState.error}</h1>
+            ) : localState.directions ? (
+                <DirectionsRenderer directions={localState.directions} />
+            ) : null}
+        </div>
+    );
+};
 
 const Map = withScriptjs(
     withGoogleMap(props => {
+        const { userLocation } = useContext(Context)[0];
         const [state, setState] = useState({
             marker: {},
             showingInfoWindowMarkerId: '',
@@ -106,7 +101,7 @@ const Map = withScriptjs(
 
         return (
             <GoogleMap
-                defaultCenter={{ lat: 54.903617, lng: 23.913986 }}
+                defaultCenter={userLocation ? {lat: userLocation.lat, lng: userLocation.lng } : { lat: 54.903617, lng: 23.913986 }}
                 defaultZoom={10}
                 onClick={onMapClick}
                 defaultOptions={{
@@ -242,6 +237,10 @@ const Map = withScriptjs(
                                         <div>
                                             Position: {marker.latitude},{' '}
                                             {marker.longitude}
+                                        </div>
+                                        <div>
+                                            Height:{' '}
+                                            {Math.round(marker.height / 100)} m
                                         </div>
                                     </div>
                                 </InfoWindow>

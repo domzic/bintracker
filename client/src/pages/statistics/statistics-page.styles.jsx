@@ -62,8 +62,8 @@ export const DoughnutWrapper = styled.div`
     background-color: #424242;
     padding: 10px;
     border-radius: 5px;
-    width: 100%;
-    height: 100%;
+    width: 80%;
+    height: 80%;
 `;
 
 export const BarWrapper = styled.div`
@@ -103,6 +103,9 @@ export const View = styled.div`
     padding: 10px;
     border-radius: 5px;
     flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 
 export const Selection = styled.div`

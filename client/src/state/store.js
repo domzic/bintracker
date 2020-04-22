@@ -11,7 +11,8 @@ const initialState = {
         red: []
     },
     filter: Filter.ALL,
-    mapView: MapView.MAP
+    mapView: MapView.MAP,
+    userLocation: { lat: 56.212348929999976, lng: 23.920154569999994 }
 };
 
 const Store = ({children}) => {

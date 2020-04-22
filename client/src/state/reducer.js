@@ -28,6 +28,11 @@ const Reducer = (state, action) => {
                 ...state,
                 filter: action.payload
             };
+        case Actions.SET_USER_LOCATION:
+            return {
+                ...state,
+                userLocation: action.payload
+            };
         default:
             return state;
     }

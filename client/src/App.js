@@ -39,7 +39,18 @@ const App = () => {
                 });
             }
         }
-
+/*
+        navigator.geolocation.getCurrentPosition(response => {
+            console.log(response);
+            dispatch({
+                type: Actions.SET_USER_LOCATION,
+                payload: {
+                    lat: response.coords.latitude,
+                    lng: response.coords.longitude,
+                },
+            });
+        });
+*/
         fetchInitData();
     }, []);
 

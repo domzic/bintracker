@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, {useContext, useState} from 'react';
 import axios from 'axios';
 import * as Yup from 'yup';
 import {ErrorMessage, Formik} from 'formik';
@@ -13,6 +13,10 @@ import { Context } from '../../state/store';
 import { toast } from 'react-toastify';
 import {useFormButtonStyles, useTextFieldStyles} from "../utils/mui-styles";
 import {FormError} from "../company-form/company-form.styles";
+import MyLocationIcon from '@material-ui/icons/MyLocation';
+import Fab from '@material-ui/core/Fab';
+import Tooltip from '@material-ui/core/Tooltip';
+import AddIcon from "@material-ui/icons/Add";
 
 const ContainerFormSchema = Yup.object().shape({
     ttnDeviceId: Yup.string()
@@ -34,6 +38,9 @@ const ContainerForm = () => {
     const [state, dispatch] = useContext(Context);
     const textFieldClasses = useTextFieldStyles();
     const buttonClasses = useFormButtonStyles();
+    
+    const [fillLocation, setFillLocation] = useState(false);
+    
     const handleSubmit = async (formData, actions) => {
         actions.setSubmitting(true);
         try {
@@ -54,16 +61,19 @@ const ContainerForm = () => {
             );
         }
     };
+    
+    const prefillLocation = () => setFillLocation(true);
 
     return (
         <Container>
             <Formik
                 initialValues={{
                     ttnDeviceId: '',
-                    latitude: '',
-                    longitude: '',
+                    latitude: fillLocation ? state.userLocation.lat.toFixed(4) : '',
+                    longitude: fillLocation ? state.userLocation.lng.toFixed(4) : '',
                     level: '',
                 }}
+                enableReinitialize
                 onSubmit={handleSubmit}
                 validationSchema={ContainerFormSchema}
             >
@@ -133,6 +143,19 @@ const ContainerForm = () => {
                                 <FormError>
                                     <ErrorMessage name="latitude" />
                                 </FormError>
+                                <Tooltip placement="top" title="Use my location" aria-label="my location">
+                                    <MyLocationIcon
+                                        htmlColor="#D2FFBE"
+                                        style={{
+                                            position: 'absolute',
+                                            cursor: 'pointer',
+                                            right: 4,
+                                            top: 16,
+                                        }}
+                                        onClick={prefillLocation}
+                                    />
+                                </Tooltip>
+                                
                             </Row>
                             <Row>
                                 <TextField
