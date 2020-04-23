@@ -104,7 +104,6 @@ export const View = styled.div`
     border-radius: 5px;
     flex-grow: 1;
     display: flex;
-    align-items: center;
     justify-content: center;
 `;
 

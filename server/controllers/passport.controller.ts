@@ -22,7 +22,7 @@ passport.use(
             callbackURL: '/api/auth/google/callback'
         },
         async (accessToken: string, refreshToken: string, profile: Profile, done: VerifyCallback) => {
-            User.findOne({ email: profile._json.email }, async (error: string, existingUser: IUser) => {
+            User.findOne({ email: profile._json.email }, async (error: string, existingUser: IUserRelationships) => {
                 if (!existingUser) {
                     return done(undefined, false, { message: 'Email is not authorized' });
                 }

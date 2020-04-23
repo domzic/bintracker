@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import moment from 'moment';
+import { Mongoose } from 'mongoose';
+import * as mongoose from 'mongoose';
 import Container, { IContainer } from '../models/container.model';
 import TTNController from './ttn.controller';
 import Company from '../models/company.model';
@@ -86,8 +88,27 @@ export const updateContainersData = async (req: Request, res: Response) => {
 
     try {
         await TTNController.update(companyDoc!!);
-        res.sendStatus(200);
+        const containers = await Container.find({ company });
+
+        if (!containers) {
+            res.sendStatus(500);
+        }
+
+        const green: IContainer[] = [];
+        const yellow: IContainer[] = [];
+        const red: IContainer[] = [];
+        containers.map(container => {
+            if (container.level < 50) {
+                green.push(container);
+            } else if (container.level < 80) {
+                yellow.push(container);
+            } else {
+                red.push(container);
+            }
+        });
+
+        res.status(200).json({ green, yellow, red });
     } catch (error) {
-        res.sendStatus(500).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };

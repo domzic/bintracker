@@ -51,8 +51,11 @@ const BoardActions = props => {
 
     const refreshData = async () => {
         try {
-            await axios.get('/api/container/fetch');
-            //window.location.reload();
+            const response = await axios.get('/api/container/fetch');
+            dispatch({
+                type: Actions.SET_CONTAINERS,
+                payload: response.data,
+            });
         } catch (error) {
             console.log(error);
         }

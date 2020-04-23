@@ -240,7 +240,7 @@ const Map = withScriptjs(
                                         </div>
                                         <div>
                                             Height:{' '}
-                                            {Math.round(marker.height / 100)} m
+                                            {(marker.height/100).toFixed(1)} m
                                         </div>
                                     </div>
                                 </InfoWindow>

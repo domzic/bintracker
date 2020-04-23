@@ -69,6 +69,8 @@ const update = async (company: ICompany): Promise<void> => {
         return Promise.reject(`Seems like TTN application: ${company.ttnAppName} does not exist...`);
     }
 
+    console.log(response);
+
     const servicedContainersStat = await Stat.findOne({ company, key: StatType.servicedContainersCount });
     const uniqueUplinks = parseLatestUplinks(response);
     await TTNData.create({ date: moment(), responseBody: JSON.stringify(uniqueUplinks), company });
