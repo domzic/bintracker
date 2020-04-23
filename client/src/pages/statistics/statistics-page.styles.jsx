@@ -58,7 +58,7 @@ export const StatCards = styled.div`
 `;
 
 export const DoughnutWrapper = styled.div`
-    align-self: flex-end;
+    align-self: center;
     background-color: #424242;
     padding: 10px;
     border-radius: 5px;
