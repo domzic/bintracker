@@ -81,7 +81,7 @@ const FiltersContainer = () => {
         if (responsive) {
             return count;
         }
-        return count === 0 ? 'No containers' : count === 1 ? '1 container' : `${count} containers`;
+        return count === 0 ? 'No bins' : count === 1 ? '1 bin' : `${count} bins`;
     };
 
     return (
