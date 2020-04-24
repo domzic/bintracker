@@ -45,6 +45,10 @@ const updateContainer = async (uplink: Uplink): Promise<IContainer> => {
 
     const newDistance = +uplink.distance;
 
+    if (newDistance > 400 || newDistance < 0) {
+        return Promise.reject(undefined);
+    }
+
     if (!container.height || container.height < newDistance) {
         container.height = newDistance;
     }
