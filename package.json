@@ -60,6 +60,7 @@
   "jest": {
     "transform": {
       ".ts": "ts-jest"
-    }
+    },
+    "testEnvironment": "node"
   }
 }

@@ -43,9 +43,9 @@ const updateContainer = async (uplink: Uplink): Promise<IContainer> => {
         return Promise.reject(`Container with ttnDeviceId: ${uplink.device_id} was not found.`);
     }
 
-    const newDistance = +uplink.distance;
+    const newDistance = uplink.distance;
 
-    if (newDistance > 400 || newDistance < 0) {
+    if (newDistance > 400 || newDistance <= 0) {
         return Promise.reject(undefined);
     }
 
@@ -109,13 +109,13 @@ export default TTNController;
 
 export interface Uplink {
     device_id: string;
-    distance: string;
+    distance: number;
     time: string;
 }
 
 const defaultUplinkMock: Uplink = {
     device_id: 'mockedDeviceId',
-    distance: '2.3',
+    distance: 230,
     time: '2020-04-05'
 };
 
