@@ -1,11 +1,11 @@
 import passport from 'passport';
 import passportGoogle, { Profile, VerifyCallback } from 'passport-google-oauth20';
 
-import User, { IUser, IUserRelationships } from '../models/user.model';
+import User, { IUser } from '../models/user.model';
 
 const GoogleStrategy = passportGoogle.Strategy;
 
-passport.serializeUser((user: IUserRelationships, done) => {
+passport.serializeUser((user: IUser, done) => {
     done(null, user.id);
 });
 
@@ -22,7 +22,7 @@ passport.use(
             callbackURL: '/api/auth/google/callback'
         },
         async (accessToken: string, refreshToken: string, profile: Profile, done: VerifyCallback) => {
-            User.findOne({ email: profile._json.email }, async (error: string, existingUser: IUserRelationships) => {
+            User.findOne({ email: profile._json.email }, async (error: string, existingUser: IUser) => {
                 if (!existingUser) {
                     return done(undefined, false, { message: 'Email is not authorized' });
                 }
@@ -36,7 +36,7 @@ passport.use(
                     existingUser.confirmed = true;
                     existingUser.googleId = profile.id;
                     try {
-                        existingUser = await existingUser.update(existingUser);
+                        existingUser = await existingUser.save();
                     } catch (error) {
                         done(error, existingUser);
                     }
