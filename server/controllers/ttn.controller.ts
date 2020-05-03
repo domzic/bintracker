@@ -12,7 +12,7 @@ const fetch = async (requestUrl: string): Promise<Uplink[] | undefined> => {
     try {
         ({ data } = await axios.get<Uplink[]>(requestUrl, {
             headers: {
-                Authorization: `key ${process.env.TTN_ACCESS_KEY}`
+                Authorization: 'key ttn-account-v2.W8o285nAVPRyoxnE_dhPzpGyXHIffYpSca0TxLEDLrk'
             },
             responseType: 'json',
             timeout: 5000

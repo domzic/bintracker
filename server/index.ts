@@ -23,7 +23,7 @@ app.use(logger)
     .use(bodyParser.urlencoded({ extended: true }))
     .use(cookieSession({
         maxAge: 30 * 24 * 60 * 60 * 1000,
-        keys: [process.env.COOKIE_KEY as string]
+        keys: ['asdasdfkgsmdofgsjdgoasdvasdkfnwer2o43ir3j4ctoerjtqwc']
     }))
     .use(passport.initialize())
     .use(passport.session())
@@ -43,8 +43,8 @@ app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
 
-const db = mongoose.connection
+const db = mongoose.connection;
 db.once('open', _ => {
-  console.log('Database connected:', process.env.MONGO_URI)
+    console.log('Database connected:', process.env.MONGO_URI);
 });
 // TODO - Company - add ttnAppName, lastUpdateDate
