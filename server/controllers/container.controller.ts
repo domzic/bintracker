@@ -42,7 +42,7 @@ export const getContainers = async (req: Request, res: Response) => {
 };
 
 export const addContainer = async (req: Request, res: Response) => {
-    const { latitude, longitude, ttnDeviceId, level } = req.body.formData;
+    const { latitude, longitude, ttnDeviceId, level, address } = req.body.formData;
 
     const exists = await Container.companyDeviceExists(ttnDeviceId, req.user!!.company);
     if (exists) {
@@ -53,6 +53,7 @@ export const addContainer = async (req: Request, res: Response) => {
             latitude,
             longitude,
             ttnDeviceId,
+            address: address || '',
             level: level || -1,
             timesServiced: 0,
             height: 0,

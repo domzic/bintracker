@@ -6,25 +6,21 @@ import MainBoard from '../../components/main-board/main-board.component';
 import { PageContainer,
     PageHeading,
     ActionsTitle } from './dashboard-page.styles';
-import { Context } from '../../state/store';
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import {Actions} from "../../state/constants";
-
+import BoardActions from "../../components/board-actions/board-actions.component";
+import {Container, Right} from "../../components/main-board/main-board.styles";
+import ContainersList from "../../components/containers-list/containers-list.component";
 const DashboardPage = () => {
 
     const responsive = useMediaQuery('(max-width:768px)');
 
     return (
         <PageContainer>
-        <PageHeading>
-            {!responsive && (
-            <ActionsTitle>
-                  Actions
-            </ActionsTitle>
-            )}
-            <FiltersContainer />
-            </PageHeading>
-        <MainBoard/>
+    
+            <BoardActions />
+            <MainBoard/>
+    
+            <ContainersList/>
       </PageContainer>
     );
 };

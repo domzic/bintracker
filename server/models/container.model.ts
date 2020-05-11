@@ -6,6 +6,7 @@ const ContainerSchema: Schema = new Schema({
     longitude: Number,
     ttnDeviceId: String,
     level: Number,
+    address: String,
     company: {
         type: Schema.Types.ObjectId,
         ref: 'Company',
@@ -22,6 +23,7 @@ export interface IContainer extends Document {
     level: number;
     timesServiced: number;
     height?: number;
+    address: string;
 }
 
 ContainerSchema.statics.companyDeviceExists = async function (ttnDeviceId: string, companyId: mongoose.Types.ObjectId) {

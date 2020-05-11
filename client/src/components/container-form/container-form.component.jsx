@@ -1,3 +1,4 @@
+/* global google */
 import React, {useContext, useState} from 'react';
 import axios from 'axios';
 import * as Yup from 'yup';
@@ -34,6 +35,8 @@ const ContainerForm = () => {
     const [state, dispatch] = useContext(Context);
     const textFieldClasses = useTextFieldStyles();
     const buttonClasses = useFormButtonStyles();
+    const geocoder = new google.maps.Geocoder;
+    geocoder.geocode({ location: { lat: 56.2123, lng: 23.9202 }}, () => console.log('ok'));
     
     const handleSubmit = async (formData, actions) => {
         actions.setSubmitting(true);

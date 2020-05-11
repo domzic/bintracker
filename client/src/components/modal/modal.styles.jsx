@@ -10,8 +10,9 @@ export const Title = styled.div`
 `;
 
 export const ButtonText = styled.span`
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 400;
     letter-spacing: 2px;
+    padding-left: 8px;
     text-transform: uppercase;
 `;

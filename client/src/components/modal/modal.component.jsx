@@ -4,6 +4,9 @@ import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 import { Title, ButtonText } from './modal.styles';
 import {actionButtonStyles} from "../board-actions/board-actions.component";
+import MapIcon from "@material-ui/icons/Map";
+import {Selection} from "../board-actions/board-actions.styles";
+import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -17,7 +20,6 @@ const useStyles = makeStyles(theme => ({
 
 const CustomModal = ({ children, title, position, buttonText, icon }) => {
     const classes = useStyles();
-    const buttonClasses = actionButtonStyles();
     const getModalStyle = () => ({
         top: `${position.top}%`,
         left: `${position.left}%`,
@@ -38,15 +40,10 @@ const CustomModal = ({ children, title, position, buttonText, icon }) => {
 
     return (
         <div>
-            <Button
-                variant="outlined"
-                startIcon={icon}
-                type="button"
-                onClick={handleOpen}
-                classes={buttonClasses}
-            >
+            <Selection>
+                {icon}
                 <ButtonText>{buttonText}</ButtonText>
-            </Button>
+            </Selection>
             <Modal
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"

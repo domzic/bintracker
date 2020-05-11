@@ -4,7 +4,7 @@ import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
 import Button from '@material-ui/core/Button';
 import { toast } from 'react-toastify';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, Option } from './board-actions.styles';
+import {Container, Option, Selection} from './board-actions.styles';
 import Modal from '../modal/modal.component';
 import ContainerForm from '../container-form/container-form.component';
 import { ButtonText } from '../modal/modal.styles';
@@ -33,7 +33,6 @@ export const actionButtonStyles = makeStyles({
 const BoardActions = props => {
     const buttonClasses = actionButtonStyles();
     const [state, dispatch] = useContext(Context);
-
     const showDirections = () => {
         dispatch({ type: Actions.SET_MAP_VIEW, payload: MapView.DIRECTIONS });
         toast.success('Showing directions.');
@@ -64,60 +63,27 @@ const BoardActions = props => {
 
     return (
         <Container>
-            <Button
-                variant="outlined"
-                color="default"
-                startIcon={<CachedIcon />}
-                type="button"
-                onClick={refreshData}
-                classes={buttonClasses}
-            >
+            <Selection onClick={refreshData}>
+                <CachedIcon />
                 <ButtonText>Refresh data</ButtonText>
-            </Button>
-            <br></br>
-            <br></br>
-            <Button
-                variant="outlined"
-                color="default"
-                startIcon={<RestoreFromTrashIcon />}
-                type="button"
-                disabled={
-                    state.mapView === MapView.MAP && state.filter === Filter.ALL
-                }
-                onClick={showContainers}
-                classes={buttonClasses}
-            >
+            </Selection>
+            <Selection>
+                <RestoreFromTrashIcon />
                 <ButtonText>See containers</ButtonText>
-            </Button>
-            <Button
-                variant="outlined"
-                color="default"
-                classes={buttonClasses}
-                startIcon={<MapIcon />}
-                type="button"
-                disabled={state.mapView === 'directions'}
-                onClick={showDirections}
-            >
+            </Selection>
+            <Selection>
+                <MapIcon />
                 <ButtonText>See directions</ButtonText>
-            </Button>
-            <br></br>
-            <br></br>
+            </Selection>
             <Modal
-                title="Containers list"
-                icon={<FormatListBulletedIcon/>}
-                position={{ top: 50, left: 50 }}
-                buttonText="Containers list"
-            >
-                <ContainersList/>
-            </Modal>
-            <Modal
-                title="Add container"
                 icon={<AddIcon/>}
+                title="Add container"
                 position={{ top: 50, left: 50 }}
                 buttonText="Add container"
             >
                 <ContainerForm />
             </Modal>
+
         </Container>
     );
 };
