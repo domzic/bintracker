@@ -89,9 +89,10 @@ const FiltersContainer = () => {
             <Filter>
                 <Tooltip title={`Green containers (${containers.green.length})`} aria-label="green">
                     <Fab disabled={
-                            state.filter === FilterType.GREEN ||
-                            state.mapView === MapView.DIRECTIONS
-                        }
+                            state.filter === FilterType.GREEN
+                            || state.mapView === MapView.DIRECTIONS
+                            || !containers.green.length
+                    }
                          color="default"
                          size="small"
                     >
@@ -104,8 +105,9 @@ const FiltersContainer = () => {
             <Filter>
                 <Tooltip title={`Yellow containers (${containers.yellow.length})`} aria-label="yellow">
                     <Fab disabled={
-                        state.filter === FilterType.YELLOW ||
-                        state.mapView === MapView.DIRECTIONS
+                        state.filter === FilterType.YELLOW
+                        || state.mapView === MapView.DIRECTIONS
+                        || !containers.yellow.length
                     }
                          color="default"
                          size="small"
@@ -119,8 +121,9 @@ const FiltersContainer = () => {
             <Filter>
                 <Tooltip title={`Red containers (${containers.red.length})`} aria-label="red">
                     <Fab disabled={
-                        state.filter === FilterType.RED ||
-                        state.mapView === MapView.DIRECTIONS
+                        state.filter === FilterType.RED
+                        || state.mapView === MapView.DIRECTIONS
+                        || !containers.red.length
                     }
                          color="default"
                          size="small"
