@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
-import { Title, ButtonText } from './modal.styles';
-import {actionButtonStyles} from "../board-actions/board-actions.component";
-import MapIcon from "@material-ui/icons/Map";
-import {Selection} from "../board-actions/board-actions.styles";
-import AddIcon from '@material-ui/icons/Add';
+import { Title, Trigger, Wrapper } from './modal.styles';
+import Fab from "@material-ui/core/Fab";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -18,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const CustomModal = ({ children, title, position, buttonText, icon }) => {
+const CustomModal = ({ children, title, position, tooltipText, icon }) => {
     const classes = useStyles();
     const getModalStyle = () => ({
         top: `${position.top}%`,
@@ -39,11 +36,18 @@ const CustomModal = ({ children, title, position, buttonText, icon }) => {
     };
 
     return (
-        <div>
-            <Selection>
-                {icon}
-                <ButtonText>{buttonText}</ButtonText>
-            </Selection>
+        <Wrapper>
+            <Trigger>
+                <Tooltip title={tooltipText} aria-label="add">
+                    <Fab
+                         color="default"
+                         size="small"
+                         onClick={handleOpen}
+                    >
+                        {icon}
+                    </Fab>
+                </Tooltip>
+            </Trigger>
             <Modal
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
@@ -55,7 +59,7 @@ const CustomModal = ({ children, title, position, buttonText, icon }) => {
                     {children}
                 </div>
             </Modal>
-        </div>
+        </Wrapper>
     );
 };
 

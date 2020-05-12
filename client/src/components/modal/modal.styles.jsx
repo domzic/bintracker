@@ -9,10 +9,13 @@ export const Title = styled.div`
     color: #D2FFBE;
 `;
 
-export const ButtonText = styled.span`
-    font-size: 12px;
-    font-weight: 400;
-    letter-spacing: 2px;
-    padding-left: 8px;
-    text-transform: uppercase;
+export const Trigger = styled.div`
+    position: absolute;
+    z-index: 100;
+    top: 12px;
+    left: 140px;
+`;
+
+export const Wrapper = styled.div`
+    position: relative;
 `;

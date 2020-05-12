@@ -13,6 +13,9 @@ import Slide from '@material-ui/core/Slide';
 import { tableIcons } from '../employees-list/employees-list.component';
 import { makeStyles } from '@material-ui/core/styles';
 import { useFormButtonStyles } from '../utils/mui-styles';
+import ContainerForm from "../container-form/container-form.component";
+import Modal from "../modal/modal.component";
+import AddIcon from '@material-ui/icons/Add';
 
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -50,7 +53,16 @@ const ContainersList = () => {
     };
 
     return (
-        <div style={{ width: '100%' }}>
+        <div style={{ width: '100%', marginTop: 12 }}>
+    
+            <Modal
+                icon={<AddIcon/>}
+                title="Add container"
+                position={{ top: 50, left: 50 }}
+                tooltipText="Add container"
+            >
+                <ContainerForm />
+            </Modal>
             <MaterialTable
                 title="Containers"
                 columns={tableData.columns}

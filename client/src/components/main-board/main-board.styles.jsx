@@ -23,7 +23,9 @@ export const MapWrapper = styled.div`
 
 export const Right = styled.div`
     display: flex;
-    padding: 2px;
+    flex: 1;
+    margin-left: 12px;
+    border-radius: 4px;
     flex-direction: column;
     background-color: #424242
 `;
