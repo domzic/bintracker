@@ -1,7 +1,9 @@
-import express from "express";
+import express from 'express';
+import { getActions } from '../controllers/stat.controller';
+import { authenticated } from '../middlewares/authenticated';
 
 const router = express.Router();
 
-router.get('/', () => console.log('stats'));
+router.get('/actions', authenticated, getActions);
 
 export default router;

@@ -13,7 +13,7 @@ export const Trigger = styled.div`
     position: absolute;
     z-index: 100;
     top: 12px;
-    left: 140px;
+    left: 25%;
 `;
 
 export const Wrapper = styled.div`

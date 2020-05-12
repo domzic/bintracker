@@ -39,3 +39,46 @@
 .MuiInput-underline:after:not(.Mui-Error) {
   border-bottom: 2px solid #D2FFBE !important;
 }
+
+.vertical-timeline-element-subtitle {
+  font-size: 14px;
+}
+
+.vertical-timeline-element-content {
+  padding: 4px !important;
+}
+
+.vertical-timeline-element {
+  margin: 16px 0 !important;
+}
+
+.vertical-timeline {
+  width: 100% !important;
+  padding: 4px 8px !important;
+  max-height: 70vh;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  margin: 0 !important;
+  align-items: center !important;
+}
+
+.vertical-timeline::before {
+  display: none !important;
+}
+
+.vertical-timeline::-webkit-scrollbar {
+  display: none;
+}
+.vertical-timeline-element::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 18px;
+  height: calc(100% + 16px);
+  width: 4px;
+  background: #fff;
+}
+
+.vertical-timeline-element-content .vertical-timeline-element-date {
+  padding: 4px 0 !important;
+}

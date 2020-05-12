@@ -12,7 +12,7 @@ export const Container = styled.div`
 `;
 
 export const MapWrapper = styled.div`
-    flex-basis: 80%;
+    flex-basis: 75%;
     flex-shrink: 0;
     position: relative;
     
@@ -24,8 +24,13 @@ export const MapWrapper = styled.div`
 export const Right = styled.div`
     display: flex;
     flex: 1;
-    margin-left: 12px;
+    margin-top: 12px;
     border-radius: 4px;
     flex-direction: column;
-    background-color: #424242
+    background-color: #424242;
+    
+    @media (min-width: 768px) {
+        margin-top: 0;
+        margin-left: 12px;
+    }
 `;

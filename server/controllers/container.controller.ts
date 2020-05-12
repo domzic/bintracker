@@ -1,10 +1,9 @@
 import { Request, Response } from 'express';
 import moment from 'moment';
-import { Mongoose } from 'mongoose';
-import * as mongoose from 'mongoose';
 import Container, { IContainer } from '../models/container.model';
 import TTNController from './ttn.controller';
 import Company from '../models/company.model';
+import Stat, { Action, StatType } from '../models/stat.model';
 
 export const getContainers = async (req: Request, res: Response) => {
     const { company } = req.user!!;
@@ -63,6 +62,14 @@ export const addContainer = async (req: Request, res: Response) => {
         res.sendStatus(422);
     }
 
+    await Stat.create({
+        key: StatType.Action,
+        value: `Container ${ttnDeviceId} was added by ${req.user!!.displayName}`,
+        company: req.user!!.company,
+        action: Action.Add,
+        date: moment()
+    });
+
     res.sendStatus(200);
 };
 
@@ -75,9 +82,17 @@ export const removeContainer = async (req: Request, res: Response) => {
 
     try {
         await Container.deleteOne({ ttnDeviceId });
+        await Stat.create({
+            key: StatType.Action,
+            value: `Container ${ttnDeviceId} was deleted by ${req.user!!.displayName}`,
+            company: req.user!!.company,
+            action: Action.Remove,
+            date: moment()
+        });
         res.status(200).json({ message: 'Success' });
     } catch (error) {
         if (error) {
+            console.log(error);
             res.status(500).send('Could not find that device...');
         }
     }

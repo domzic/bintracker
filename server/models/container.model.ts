@@ -24,6 +24,7 @@ export interface IContainer extends Document {
     timesServiced: number;
     height?: number;
     address: string;
+    company?: number;
 }
 
 ContainerSchema.statics.companyDeviceExists = async function (ttnDeviceId: string, companyId: mongoose.Types.ObjectId) {

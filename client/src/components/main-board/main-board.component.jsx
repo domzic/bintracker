@@ -1,16 +1,10 @@
 import React, {useContext} from 'react';
-
-import BoardActions from '../board-actions/board-actions.component';
-
 import { Container,
     MapWrapper, Right } from './main-board.styles';
 import { Context } from '../../state/store';
 import Map from '../map/google-map.component';
 import {Filter, MapView} from "../../state/constants";
-import VerticalTimeline from "../vertical-timeline/vertical-timeline.component";
-import FiltersContainer from "../filters-container/filters-container.component";
-import {PageContainer} from "../../pages/dashboard/dashboard-page.styles";
-import ContainersList from "../containers-list/containers-list.component";
+import Timeline from "../timeline/timeline.component";
 
 const MainBoard = ( props ) => {
     const state = useContext(Context)[0];
@@ -57,7 +51,7 @@ const MainBoard = ( props ) => {
                 />
             </MapWrapper>
             <Right>
-                <VerticalTimeline/>
+                <Timeline/>
             </Right>
         </Container>
     );

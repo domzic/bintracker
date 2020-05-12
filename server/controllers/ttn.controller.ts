@@ -4,7 +4,7 @@ import _ from 'lodash';
 import TTNData from '../models/ttn-data.model';
 import { ICompany } from '../models/company.model';
 import Container, { IContainer } from '../models/container.model';
-import Stat, { StatType } from '../models/stat.model';
+import Stat, { Action, StatType } from '../models/stat.model';
 
 const fetch = async (requestUrl: string): Promise<Uplink[] | undefined> => {
     let data: Uplink[];
@@ -32,6 +32,27 @@ const parseLatestUplinks = (response: Uplink[]): Uplink[] => _(response)
     .uniqBy('device_id')
     .value();
 
+const newStatus = (current: number, next: number): string | undefined => {
+    if (current < 50) {
+        if (next < 50) {
+            return undefined;
+        }
+        if (next < 80) {
+            return 'medium';
+        }
+        return 'full';
+    }
+
+    if (current < 80) {
+        if (next < 80) {
+            return undefined;
+        }
+        return 'full';
+    }
+
+    return undefined;
+};
+
 const updateContainer = async (uplink: Uplink): Promise<IContainer> => {
     const container = await Container.findOne({ ttnDeviceId: uplink.device_id });
 
@@ -56,6 +77,24 @@ const updateContainer = async (uplink: Uplink): Promise<IContainer> => {
     const newLevel = 100 - Math.round(newDistance / container.height * 100);
     if (container.level - newLevel > 10) {
         container.timesServiced++;
+        await Stat.create({
+            key: StatType.Action,
+            value: `Container ${container.ttnDeviceId} was serviced`,
+            company: container.company,
+            action: Action.Serviced,
+            date: moment()
+        });
+    }
+
+    const changedStatus = newStatus(container.level, newLevel);
+    if (changedStatus) {
+        await Stat.create({
+            key: StatType.Action,
+            value: `Container ${container.ttnDeviceId} changed status to ${changedStatus}`,
+            company: container.company,
+            action: Action.StatusChange,
+            date: moment()
+        });
     }
 
     container.level = newLevel;
@@ -72,27 +111,19 @@ const update = async (company: ICompany): Promise<void> => {
     if (!response) {
         return Promise.reject(`Seems like TTN application: ${company.ttnAppName} does not exist...`);
     }
-
+    console.log('ok');
     console.log(response);
 
-    const servicedContainersStat = await Stat.findOne({ company, key: StatType.servicedContainersCount });
     const uniqueUplinks = parseLatestUplinks(response);
     await TTNData.create({ date: moment(), responseBody: JSON.stringify(uniqueUplinks), company });
 
     const results = await Promise.allSettled(uniqueUplinks.map(updateContainer));
-    let totalServiced = 0;
     results.forEach(result => {
         if (result.status === 'rejected') {
             console.log((result as PromiseRejectedResult).reason);
-            return;
-        }
-        totalServiced++;
-    });
 
-    if (servicedContainersStat?.value) {
-        servicedContainersStat.value += totalServiced;
-        await servicedContainersStat.save();
-    }
+        }
+    });
 
     console.log('Successfully updated data from TTN.');
     return Promise.resolve();
