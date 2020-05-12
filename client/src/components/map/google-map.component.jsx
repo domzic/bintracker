@@ -105,6 +105,7 @@ const Map = withScriptjs(
                 defaultZoom={10}
                 onClick={onMapClick}
                 defaultOptions={{
+                    mapTypeControl: false,
                     styles: [
                         {
                             elementType: 'geometry',

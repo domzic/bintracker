@@ -6,12 +6,20 @@ import { green, yellow, red } from '@material-ui/core/colors';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
-import { Container, Filter, Count, Text, Filters } from './filters-container.styles';
+import {
+    Container,
+    Filter,
+    Count,
+    Text,
+    Filters,
+} from './filters-container.styles';
 import { Filter as FilterType, MapView } from '../../state/constants';
 import { Context } from '../../state/store';
 import { Actions } from '../../state/constants';
 import { toast } from 'react-toastify';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Fab from "@material-ui/core/Fab";
+import Tooltip from "@material-ui/core/Tooltip";
 
 export const filterButtonStyles = makeStyles({
     root: {
@@ -22,7 +30,7 @@ export const filterButtonStyles = makeStyles({
             transform: 'scale(0.9)',
         },
         '&:disabled': {
-            backgroundColor: 'rgba(255, 255, 255, 0.08)'
+            backgroundColor: 'rgba(255, 255, 255, 0.08)',
         },
     },
     label: {
@@ -78,84 +86,51 @@ const FiltersContainer = () => {
 
     return (
         <Container>
-            <MuiThemeProvider theme={theme}>
-                <Text>Filter by level</Text>
-                <Filters>
-                    <Filter>
-                        <Button
-                            variant="outlined"
-                            style={{ border: `1px solid ${green[500]}` }}
-                            size="small"
-                            startIcon={
-                                <RestoreFromTrashIcon
-                                    fontSize="large"
-                                    style={{ color: green[500] }}
-                                />
-                            }
-                            type="button"
-                            onClick={() => onFilterClick(FilterType.GREEN)}
-                            disabled={
-                                state.filter === FilterType.GREEN ||
-                                state.mapView === MapView.DIRECTIONS
-                            }
-                            classes={{
-                                root: buttonClasses.root,
-                                label: buttonClasses.label,
-                            }}
-                        >
-                            <Count>{containers.green.length}</Count>
-                        </Button>
-                    </Filter>
-                    <Filter>
-                        <Button
-                            variant="outlined"
-                            style={{ border: `1px solid ${yellow[500]}` }}
-                            startIcon={
-                                <RestoreFromTrashIcon
-                                    fontSize="large"
-                                    style={{ color: yellow[500] }}
-                                />
-                            }
-                            type="button"
-                            disabled={
-                                state.filter === FilterType.YELLOW ||
-                                state.mapView === MapView.DIRECTIONS
-                            }
-                            onClick={() => onFilterClick(FilterType.YELLOW)}
-                            classes={{
-                                root: buttonClasses.root,
-                                label: buttonClasses.label,
-                            }}
-                        >
-                            <Count>{containers.yellow.length}</Count>
-                        </Button>
-                    </Filter>
-                    <Filter>
-                        <Button
-                            variant="outlined"
-                            style={{ border: `1px solid ${red[500]}` }}
-                            startIcon={
-                                <RestoreFromTrashIcon
-                                    fontSize="large"
-                                    style={{ color: red[500] }}
-                                />
-                            }
-                            classes={{
-                                root: buttonClasses.root,
-                                label: buttonClasses.label,
-                            }}
-                            type="button"
-                            disabled={
-                                state.filter === FilterType.RED ||
-                                state.mapView === MapView.DIRECTIONS
-                            }
-                            onClick={() => onFilterClick(FilterType.RED)}
-                        >
-                            <Count>{containers.red.length}</Count>
-                        </Button>
-                    </Filter>
-                </Filters>
-            </MuiThemeProvider>
+            <Filter>
+                <Tooltip title={`Green containers (${containers.green.length})`} aria-label="green">
+                    <Fab disabled={
+                            state.filter === FilterType.GREEN ||
+                            state.mapView === MapView.DIRECTIONS
+                        }
+                         color="default"
+                         size="small"
+                    >
+                        <RestoreFromTrashIcon
+                            style={{ color: green[500] }}
+                            onClick={() => onFilterClick(FilterType.GREEN)} />
+                    </Fab>
+                </Tooltip>
+            </Filter>
+            <Filter>
+                <Tooltip title={`Yellow containers (${containers.yellow.length})`} aria-label="yellow">
+                    <Fab disabled={
+                        state.filter === FilterType.YELLOW ||
+                        state.mapView === MapView.DIRECTIONS
+                    }
+                         color="default"
+                         size="small"
+                    >
+                        <RestoreFromTrashIcon
+                            style={{ color: yellow[700] }}
+                            onClick={() => onFilterClick(FilterType.YELLOW)} />
+                    </Fab>
+                </Tooltip>
+            </Filter>
+            <Filter>
+                <Tooltip title={`Red containers (${containers.red.length})`} aria-label="red">
+                    <Fab disabled={
+                        state.filter === FilterType.RED ||
+                        state.mapView === MapView.DIRECTIONS
+                    }
+                         color="default"
+                         size="small"
+                    >
+                        <RestoreFromTrashIcon
+                            style={{ color: red[500] }}
+                            onClick={() => onFilterClick(FilterType.RED)} />
+                    </Fab>
+                </Tooltip>
+            </Filter>
         </Container>
     );
 };

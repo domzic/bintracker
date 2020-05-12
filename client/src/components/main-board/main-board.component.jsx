@@ -57,8 +57,6 @@ const MainBoard = ( props ) => {
                 />
             </MapWrapper>
             <Right>
-    
-                <FiltersContainer />
                 <VerticalTimeline/>
             </Right>
         </Container>

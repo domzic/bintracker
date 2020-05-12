@@ -1,20 +1,16 @@
-import React, { useContext } from 'react';
+import React, {useContext, useState} from 'react';
 import MapIcon from '@material-ui/icons/Map';
 import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
-import Button from '@material-ui/core/Button';
 import { toast } from 'react-toastify';
 import { makeStyles } from '@material-ui/core/styles';
-import {Container, Option, Selection} from './board-actions.styles';
-import Modal from '../modal/modal.component';
-import ContainerForm from '../container-form/container-form.component';
-import { ButtonText } from '../modal/modal.styles';
+import {Container, Top, Selection} from './board-actions.styles';
 import { Context } from '../../state/store';
 import { Actions, Filter, MapView } from '../../state/constants';
-import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
-import AddIcon from '@material-ui/icons/Add';
-import ContainersList from "../containers-list/containers-list.component";
 import CachedIcon from '@material-ui/icons/Cached';
 import axios from 'axios';
+import Fab from "@material-ui/core/Fab";
+import Tooltip from "@material-ui/core/Tooltip";
+import FiltersContainer from "../filters-container/filters-container.component";
 
 export const actionButtonStyles = makeStyles({
     root: {
@@ -33,14 +29,17 @@ export const actionButtonStyles = makeStyles({
 const BoardActions = props => {
     const buttonClasses = actionButtonStyles();
     const [state, dispatch] = useContext(Context);
+    const [active, setActive] = useState('all');
+    
     const showDirections = () => {
         dispatch({ type: Actions.SET_MAP_VIEW, payload: MapView.DIRECTIONS });
+        setActive('directions');
         toast.success('Showing directions.');
     };
 
     const showContainers = () => {
         dispatch({ type: Actions.SET_MAP_VIEW, payload: MapView.MAP });
-
+        setActive('all');
         if (state.filter !== Filter.ALL) {
             dispatch({ type: Actions.CHANGE_FILTER, payload: Filter.ALL });
         }
@@ -63,26 +62,39 @@ const BoardActions = props => {
 
     return (
         <Container>
-            <Selection onClick={refreshData}>
-                <CachedIcon />
-                <ButtonText>Refresh data</ButtonText>
+            <Top>
+            <Selection>
+                <Tooltip title="All containers" aria-label="all">
+                    <Fab disabled={active === 'all' && state.mapView === MapView.MAP && state.filter === Filter.ALL}
+                         color="default"
+                         size="small"
+                    >
+                        <RestoreFromTrashIcon onClick={showContainers} />
+                    </Fab>
+                </Tooltip>
+            </Selection>
+            <FiltersContainer/>
+            </Top>
+            <Selection>
+                <Tooltip title="Directions" aria-label="directions">
+                    <Fab disabled={active === 'directions'}
+                        color="default"
+                        size="small"
+                    >
+                        <MapIcon onClick={showDirections} />
+                    </Fab>
+                </Tooltip>
             </Selection>
             <Selection>
-                <RestoreFromTrashIcon />
-                <ButtonText>See containers</ButtonText>
+                <Tooltip title="Refresh data" aria-label="refresh">
+                    <Fab
+                        color="default"
+                        size="small"
+                    >
+                        <CachedIcon onClick={refreshData} />
+                    </Fab>
+                </Tooltip>
             </Selection>
-            <Selection>
-                <MapIcon />
-                <ButtonText>See directions</ButtonText>
-            </Selection>
-            <Modal
-                icon={<AddIcon/>}
-                title="Add container"
-                position={{ top: 50, left: 50 }}
-                buttonText="Add container"
-            >
-                <ContainerForm />
-            </Modal>
 
         </Container>
     );
