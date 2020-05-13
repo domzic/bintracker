@@ -36,17 +36,22 @@ const ContainerForm = () => {
     const textFieldClasses = useTextFieldStyles();
     const buttonClasses = useFormButtonStyles();
     const geocoder = new google.maps.Geocoder;
-    geocoder.geocode({ location: { lat: 56.2123, lng: 23.9202 }}, () => console.log('ok'));
+    
+    const parseAddress = data =>
+        `${data[0].address_components[1].long_name} ${data[0].address_components[0].long_name}, ${data[0].address_components[2].long_name}`;
     
     const handleSubmit = async (formData, actions) => {
         actions.setSubmitting(true);
         try {
-            const response = await axios.post('/api/container', { formData });
+            geocoder.geocode({ location: { lat: 56.2123, lng: 23.9202 }}, async data => {
+                const response = await axios.post('/api/container',
+                    { formData: {...formData, address: parseAddress(data) }});
+            });
             actions.setSubmitting(false);
             toast.success('Success!');
-            setTimeout(() => {
+            /*setTimeout(() => {
                 window.location.reload();
-            }, 1000);
+            }, 1000);*/
         } catch (error) {
             actions.setErrors(
                 error.response.data.reduce((obj, key) => {

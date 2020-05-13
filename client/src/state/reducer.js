@@ -33,6 +33,11 @@ const Reducer = (state, action) => {
                 ...state,
                 userLocation: action.payload
             };
+        case Actions.SET_ACTIVE_MARKER:
+            return {
+                ...state,
+                activeMarker: action.payload
+            };
         default:
             return state;
     }

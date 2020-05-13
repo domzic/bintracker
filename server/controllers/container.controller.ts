@@ -42,7 +42,6 @@ export const getContainers = async (req: Request, res: Response) => {
 
 export const addContainer = async (req: Request, res: Response) => {
     const { latitude, longitude, ttnDeviceId, level, address } = req.body.formData;
-
     const exists = await Container.companyDeviceExists(ttnDeviceId, req.user!!.company);
     if (exists) {
         res.status(422).send(['ttnDeviceId']);

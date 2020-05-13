@@ -50,6 +50,7 @@ const Timeline = () => {
         }
         return (
             <VerticalTimelineElement
+                key={Math.random()}
                 date={new Date(event.date).toUTCString()}
                 iconStyle={{ background, color: '#fff' }}
                 icon={icon}

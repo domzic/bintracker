@@ -79,24 +79,16 @@ const MapDirectionsRenderer = ({ places, travelMode }) => {
 
 const Map = withScriptjs(
     withGoogleMap(props => {
-        const { userLocation } = useContext(Context)[0];
-        const [state, setState] = useState({
-            marker: {},
-            showingInfoWindowMarkerId: '',
-        });
+        const [state, dispatch] = useContext(Context);
+        const { userLocation, activeMarker } = state;
 
-        const onMarkerClick = index => {
-            setState({
-                ...state,
-                showingInfoWindowMarkerId: index,
-            });
+        const onMarkerClick = id => {
+            console.log(id);
+            dispatch({ type: Actions.SET_ACTIVE_MARKER, payload: id });
         };
 
         const onMapClick = () => {
-            setState({
-                ...state,
-                showingInfoWindowMarkerId: '',
-            });
+            dispatch({ type: Actions.SET_ACTIVE_MARKER, payload: '' });
         };
 
         return (
@@ -206,10 +198,10 @@ const Map = withScriptjs(
                     return (
                         <Marker
                             key={index}
-                            id={marker.id}
+                            id={marker._id}
                             position={position}
                             level={marker.level}
-                            onClick={() => onMarkerClick(index)}
+                            onClick={() => onMarkerClick(marker._id)}
                             icon={{
                                 path: MAP_MARKER,
                                 fillColor:
@@ -224,7 +216,7 @@ const Map = withScriptjs(
                                 anchor: { x: 24, y: 24 },
                             }}
                         >
-                            {state.showingInfoWindowMarkerId === index && (
+                            {activeMarker === marker._id && (
                                 <InfoWindow>
                                     <div>
                                         <div>

@@ -12,7 +12,8 @@ const initialState = {
     },
     filter: Filter.ALL,
     mapView: MapView.MAP,
-    userLocation: { lat: 56.212348929999976, lng: 23.920154569999994 }
+    userLocation: { lat: 56.212348929999976, lng: 23.920154569999994 },
+    activeMarker: ''
 };
 
 const Store = ({children}) => {

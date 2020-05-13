@@ -16,6 +16,7 @@ import { useFormButtonStyles } from '../utils/mui-styles';
 import ContainerForm from "../container-form/container-form.component";
 import Modal from "../modal/modal.component";
 import AddIcon from '@material-ui/icons/Add';
+import {Actions} from "../../state/constants";
 
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -28,6 +29,7 @@ const ContainersList = () => {
         opened: false,
         selected: null,
     });
+    const [state, dispatch] = useContext(Context);
 
     const handleClose = () => {
         setDialogState({ selected: null, opened: false });
@@ -36,8 +38,7 @@ const ContainersList = () => {
     const tableData = {
         columns: [
             { title: 'Device id', field: 'ttnDeviceId' },
-            { title: 'Latitude', field: 'latitude' },
-            { title: 'Longitude', field: 'longitude' },
+            { title: 'Address', field: 'address' },
             { title: 'Level, %', field: 'level' },
             { title: 'Height, cm', field: 'height' },
             { title: 'Times serviced', field: 'timesServiced' },
@@ -51,6 +52,11 @@ const ContainersList = () => {
                 data: { ttnDeviceId: dialogState.selected },
             })
             .then(() => window.location.reload());
+    };
+    
+    const onRowClick = (event, rowData, togglePannel) => {
+        dispatch({ type: Actions.SET_ACTIVE_MARKER, payload: rowData._id });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     return (
@@ -66,6 +72,7 @@ const ContainersList = () => {
             </Modal>
             <MaterialTable
                 title="Containers"
+                onRowClick={onRowClick}
                 columns={tableData.columns}
                 data={tableData.data}
                 icons={tableIcons}
