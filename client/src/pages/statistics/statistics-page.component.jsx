@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
     TopStats,
     Header,
@@ -14,6 +14,8 @@ import {
 import { Context } from '../../state/store';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import StatCard from '../../components/stat-card/stat-card.component';
+import axios from "axios";
+import {Actions} from "../../state/constants";
 
 const barColors = [
     'rgba(255,99,132,1)',
@@ -40,7 +42,7 @@ const ActiveTab = {
 
 const StatisticsPage = () => {
     const [state, dispatch] = useContext(Context);
-    const { containers } = state;
+    const { containers, company, user } = state;
     const [activeTab, setActiveTab] = useState(ActiveTab.PERCENTAGE);
 
     const allContainers = [
@@ -164,7 +166,7 @@ const StatisticsPage = () => {
         setActiveTab(e.target.getAttribute('data-tabname'));
 
     const isActive = tab => (tab === activeTab ? 'active' : '');
-
+    console.log(state);
     return (
         <PageContainer>
             <Header>Company Statistics Overview</Header>
@@ -178,7 +180,7 @@ const StatisticsPage = () => {
                     <StatCard
                         backgroundImage="linear-gradient(to right, #FDB059, #FFBB6C)"
                         title="Number of employees"
-                        value={10}
+                        value={company.employees.length}
                     />
                     <StatCard
                         backgroundImage="linear-gradient(to right, #96B836, #BBDE58)"

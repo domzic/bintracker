@@ -29,9 +29,10 @@ const App = () => {
     useEffect(() => {
         async function fetchInitData() {
             const fetchedUser = await axios.get('/api/auth/current_user');
-
+            const response = await axios.get('/api/company');
+            dispatch({type: Actions.SET_COMPANY, payload: response.data});
             if (fetchedUser.data) {
-                dispatch({ type: Actions.SET_USER, payload: fetchedUser.data });
+                dispatch({type: Actions.SET_USER, payload: fetchedUser.data});
                 const response = await axios.get('/api/container');
                 dispatch({
                     type: Actions.SET_CONTAINERS,
@@ -39,18 +40,6 @@ const App = () => {
                 });
             }
         }
-/*
-        navigator.geolocation.getCurrentPosition(response => {
-            console.log(response);
-            dispatch({
-                type: Actions.SET_USER_LOCATION,
-                payload: {
-                    lat: response.coords.latitude,
-                    lng: response.coords.longitude,
-                },
-            });
-        });
-*/
         fetchInitData();
     }, []);
 
