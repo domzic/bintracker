@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
     TopStats,
     Header,
@@ -12,10 +12,11 @@ import {
     Selection,
 } from './statistics-page.styles';
 import { Context } from '../../state/store';
-import { Bar, Doughnut } from 'react-chartjs-2';
+import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import StatCard from '../../components/stat-card/stat-card.component';
-import axios from "axios";
-import {Actions} from "../../state/constants";
+import axios from 'axios';
+import _ from 'lodash';
+import moment from 'moment';
 
 const barColors = [
     'rgba(255,99,132,1)',
@@ -37,20 +38,29 @@ const doughnutColors = ['#78CA2F', '#EDDF4E', '#FF7575'];
 const ActiveTab = {
     PERCENTAGE: 'percentage',
     SERVICES: 'services',
-    WEEKLY: 'weekly',
+    REPORTS: 'reports',
 };
 
 const StatisticsPage = () => {
     const [state, dispatch] = useContext(Context);
     const { containers, company, user } = state;
     const [activeTab, setActiveTab] = useState(ActiveTab.PERCENTAGE);
-
+    const [monthly, setMonthly] = useState([]);
     const allContainers = [
         ...containers.red,
         ...containers.yellow,
         ...containers.green,
     ];
 
+    useEffect(() => {
+        async function fetchMonthly() {
+            const { data } = await axios.get('/api/stat/monthly');
+            setMonthly(data);
+        }
+    
+        fetchMonthly();
+    }, []);
+    
     const calcPercentage = count =>
         Math.round((count / allContainers.length) * 100);
 
@@ -127,17 +137,17 @@ const StatisticsPage = () => {
                                                 color: '#81876E',
                                             },
                                             ticks: {
-                                                fontColor: '#81876E'
+                                                fontColor: '#81876E',
                                             },
                                         },
                                     ],
                                     xAxes: [
                                         {
                                             gridLines: {
-                                                display: false
+                                                display: false,
                                             },
                                             ticks: {
-                                                fontColor: '#DDD'
+                                                fontColor: '#DDD',
                                             },
                                         },
                                     ],
@@ -156,8 +166,68 @@ const StatisticsPage = () => {
                         />
                     </BarWrapper>
                 );
-            case ActiveTab.WEEKLY: {
-                return '';
+            case ActiveTab.REPORTS: {
+                return (
+                    <BarWrapper>
+                        <Line
+                            data={{
+                                labels: monthly.map(
+                                    report => report.key
+                                ),
+                                datasets: [
+                                    {
+                                        label: 'Monthly report',
+                                        barPercentage: 0.5,
+                                        fill: false,
+                                        borderColor: '#6FB984',
+                                        data: monthly.map(
+                                            report => report.value
+                                        ),
+                                        backgroundColor: '#6FB984',
+                                    },
+                                ]
+                            }}
+                            options={{
+                                title: {
+                                    display: true,
+                                    text: 'Containers serviced per month',
+                                    fontColor: '#EEFFF3',
+                                    fontSize: 16
+                                },
+                                legend: {
+                                    display: false
+                                },
+                                scales: {
+                                    yAxes: [
+                                        {
+                                            gridLines: {
+                                                display: true,
+                                                color: '#81876E',
+                                            },
+                                            ticks: {
+                                                fontColor: '#81876E',
+                                                stepSize: 1,
+                                                beginAtZero: true
+                                            },
+                                        },
+                                    ],
+                                    xAxes: [
+                                        {
+                                            gridLines: {
+                                                display: true,
+                                                color: '#81876E',
+                                            },
+                                            ticks: {
+                                                fontColor: '#81876E',
+                                                stepSize: 1,
+                                            },
+                                        },
+                                    ],
+                                }
+                            }}
+                        />
+                    </BarWrapper>
+                );
             }
         }
     };
@@ -166,7 +236,7 @@ const StatisticsPage = () => {
         setActiveTab(e.target.getAttribute('data-tabname'));
 
     const isActive = tab => (tab === activeTab ? 'active' : '');
-    console.log(state);
+
     return (
         <PageContainer>
             <Header>Company Statistics Overview</Header>
@@ -196,21 +266,21 @@ const StatisticsPage = () => {
                         className={isActive(ActiveTab.PERCENTAGE)}
                         onClick={handleTabClick}
                     >
-                        Containers distribution
+                        Current distribution
                     </Selection>
                     <Selection
                         data-tabname={ActiveTab.SERVICES}
                         className={isActive(ActiveTab.SERVICES)}
                         onClick={handleTabClick}
                     >
-                        Containers service count
+                        Containers services
                     </Selection>
                     <Selection
-                        data-tabname={ActiveTab.WEEKLY}
-                        className={isActive(ActiveTab.WEEKLY)}
+                        data-tabname={ActiveTab.REPORTS}
+                        className={isActive(ActiveTab.REPORTS)}
                         onClick={handleTabClick}
                     >
-                        Weekly results
+                        Monthly report
                     </Selection>
                 </ButtonsContainer>
                 <View>{renderTab(activeTab)}</View>
