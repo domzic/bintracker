@@ -100,8 +100,8 @@ const StatisticsPage = () => {
                                 title: {
                                     display: true,
                                     text: 'Containers distribution, %',
-                                    fontSize: 20,
-                                    fontColor: '#ddd',
+                                    fontSize: 18,
+                                    fontColor: '#A9DAC4',
                                 },
                             }}
                         />
@@ -147,7 +147,7 @@ const StatisticsPage = () => {
                                                 display: false,
                                             },
                                             ticks: {
-                                                fontColor: '#DDD',
+                                                fontColor: '#81876E',
                                             },
                                         },
                                     ],
@@ -159,8 +159,8 @@ const StatisticsPage = () => {
                                 title: {
                                     display: true,
                                     text: 'Containers services count',
-                                    fontSize: 20,
-                                    fontColor: '#ddd',
+                                    fontSize: 18,
+                                    fontColor: '#A9DAC4',
                                 },
                             }}
                         />
@@ -170,14 +170,14 @@ const StatisticsPage = () => {
                 return (
                     <BarWrapper>
                         <Line
+                            height={200}
                             data={{
                                 labels: monthly.map(
                                     report => report.key
                                 ),
                                 datasets: [
                                     {
-                                        label: 'Monthly report',
-                                        barPercentage: 0.5,
+                                        label: 'Containers serviced',
                                         fill: false,
                                         borderColor: '#6FB984',
                                         data: monthly.map(
@@ -191,8 +191,8 @@ const StatisticsPage = () => {
                                 title: {
                                     display: true,
                                     text: 'Containers serviced per month',
-                                    fontColor: '#EEFFF3',
-                                    fontSize: 16
+                                    fontColor: '#A9DAC4',
+                                    fontSize: 18
                                 },
                                 legend: {
                                     display: false
