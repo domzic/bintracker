@@ -236,6 +236,11 @@ const StatisticsPage = () => {
         setActiveTab(e.target.getAttribute('data-tabname'));
 
     const isActive = tab => (tab === activeTab ? 'active' : '');
+    
+    const servicedMonthCount = () => {
+        const month = monthly.find(report => report.key === moment(new Date()).format('MMMM'));
+        return month ? month.value : 0;
+    };
 
     return (
         <PageContainer>
@@ -254,8 +259,13 @@ const StatisticsPage = () => {
                     />
                     <StatCard
                         backgroundImage="linear-gradient(to right, #96B836, #BBDE58)"
+                        title="Serviced this month"
+                        value={servicedMonthCount()}
+                    />
+                    <StatCard
+                        backgroundImage="linear-gradient(to right, #9E6053, #C07D70)"
                         title="Random number"
-                        value="64%"
+                        value="68%"
                     />
                 </StatCards>
             </TopStats>
