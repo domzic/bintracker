@@ -6,4 +6,5 @@ export const PageContainer = styled.div`
     align-items: center;
     justify-content: center;
     text-align: center;
+    flex-direction: column;
 `;

@@ -228,8 +228,7 @@ const Map = withScriptjs(
                                             {marker.timesServiced}
                                         </div>
                                         <div>
-                                            Position: {marker.latitude},{' '}
-                                            {marker.longitude}
+                                            Address: {marker.address}
                                         </div>
                                         <div>
                                             Height:{' '}

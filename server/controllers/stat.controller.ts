@@ -5,7 +5,7 @@ import Stat, { Action, StatType } from '../models/stat.model';
 
 export const getActions = async (req: Request, res: Response) => {
     const { company } = req.user!!;
-    const actions = await Stat.find({ company, key: StatType.Action }).limit(25);
+    const actions = await Stat.find({ company, key: StatType.Action }).sort({ date: -1 }).limit(25);
 
     res.send(_.orderBy(actions, ['date'], ['desc']));
 };
@@ -29,6 +29,12 @@ export const getMonthlyReport = async (req: Request, res: Response) => {
     res.send(_.sortBy(reports, r => moment().month(r.key).format('M')));
 };
 
+export const getUnregisteredDevices = async (req: Request, res: Response) => {
+    const { company } = req.user!!;
+    const stat = await Stat.findOne({ company, key: StatType.notRegisteredDevices });
+
+    res.send(stat!!.devices);
+};
 
 interface Report {
     key: string;

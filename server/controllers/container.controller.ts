@@ -1,9 +1,28 @@
 import { Request, Response } from 'express';
 import moment from 'moment';
+import _ from 'lodash';
 import Container, { IContainer } from '../models/container.model';
 import TTNController from './ttn.controller';
 import Company from '../models/company.model';
 import Stat, { Action, StatType } from '../models/stat.model';
+
+const getContainersTypes = (containers: IContainer[]) => {
+    const green: IContainer[] = [];
+    const yellow: IContainer[] = [];
+    const red: IContainer[] = [];
+    containers = _.sortBy(containers, ['ttnDeviceId']);
+    containers.map(container => {
+        if (container.level < 50) {
+            green.push(container);
+        } else if (container.level < 80) {
+            yellow.push(container);
+        } else {
+            red.push(container);
+        }
+    });
+
+    return { green, yellow, red };
+};
 
 export const getContainers = async (req: Request, res: Response) => {
     const { company } = req.user!!;
@@ -24,20 +43,7 @@ export const getContainers = async (req: Request, res: Response) => {
         res.sendStatus(500);
     }
 
-    const green: IContainer[] = [];
-    const yellow: IContainer[] = [];
-    const red: IContainer[] = [];
-    containers.map(container => {
-        if (container.level < 50) {
-            green.push(container);
-        } else if (container.level < 80) {
-            yellow.push(container);
-        } else {
-            red.push(container);
-        }
-    });
-
-    res.json({ green, yellow, red });
+    res.json(getContainersTypes(containers));
 };
 
 export const addContainer = async (req: Request, res: Response) => {
@@ -69,7 +75,20 @@ export const addContainer = async (req: Request, res: Response) => {
         date: moment()
     });
 
-    res.sendStatus(200);
+    const notRegisteredDevices = await Stat.findOne({
+        company: req.user!!.company, key: StatType.notRegisteredDevices
+    });
+
+    console.log('devices ', notRegisteredDevices!!.devices, ' ttndeviceid ', ttnDeviceId);
+    if (notRegisteredDevices && notRegisteredDevices.devices?.includes(ttnDeviceId)) {
+        console.log('YES');
+        notRegisteredDevices.devices = notRegisteredDevices.devices.filter(d => d !== ttnDeviceId);
+        console.log('after removal ', notRegisteredDevices.devices);
+        await notRegisteredDevices.save();
+    }
+
+    const containers = await Container.find({ company: req.user!!.company });
+    res.status(200).json(getContainersTypes(containers));
 };
 
 export const removeContainer = async (req: Request, res: Response) => {
@@ -88,7 +107,8 @@ export const removeContainer = async (req: Request, res: Response) => {
             action: Action.Remove,
             date: moment()
         });
-        res.status(200).json({ message: 'Success' });
+        const containers = await Container.find({ company: req.user!!.company });
+        res.status(200).json(getContainersTypes(containers));
     } catch (error) {
         if (error) {
             console.log(error);
@@ -109,20 +129,7 @@ export const updateContainersData = async (req: Request, res: Response) => {
             res.sendStatus(500);
         }
 
-        const green: IContainer[] = [];
-        const yellow: IContainer[] = [];
-        const red: IContainer[] = [];
-        containers.map(container => {
-            if (container.level < 50) {
-                green.push(container);
-            } else if (container.level < 80) {
-                yellow.push(container);
-            } else {
-                red.push(container);
-            }
-        });
-
-        res.status(200).json({ green, yellow, red });
+        res.status(200).json(getContainersTypes(containers));
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

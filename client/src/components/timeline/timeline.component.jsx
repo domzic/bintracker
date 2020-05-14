@@ -61,7 +61,7 @@ const Timeline = () => {
     };
     
     return (
-        <VerticalTimeline layout='1-column'>
+        <VerticalTimeline animate={false} layout='1-column'>
             {actions.map(renderElement)}
         </VerticalTimeline>
     )

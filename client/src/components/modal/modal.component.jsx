@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Title, Trigger, Wrapper } from './modal.styles';
 import Fab from "@material-ui/core/Fab";
 import Tooltip from "@material-ui/core/Tooltip";
+import ContainerForm from "../container-form/container-form.component";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -15,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const CustomModal = ({ children, title, position, tooltipText, icon }) => {
+const CustomModal = ({ title, position, tooltipText, icon }) => {
     const classes = useStyles();
     const getModalStyle = () => ({
         top: `${position.top}%`,
@@ -56,7 +57,7 @@ const CustomModal = ({ children, title, position, tooltipText, icon }) => {
             >
                 <div style={modalStyle} className={classes.paper}>
                     <Title>{title}</Title>
-                    {children}
+                    <ContainerForm closeModal={handleClose}/>
                 </div>
             </Modal>
         </Wrapper>

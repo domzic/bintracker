@@ -14,6 +14,7 @@ import { Context } from '../../state/store';
 import { toast } from 'react-toastify';
 import {useFormButtonStyles, useTextFieldStyles} from "../utils/mui-styles";
 import {FormError} from "../company-form/company-form.styles";
+import {Actions} from "../../state/constants";
 
 const ContainerFormSchema = Yup.object().shape({
     ttnDeviceId: Yup.string()
@@ -31,7 +32,7 @@ const ContainerFormSchema = Yup.object().shape({
     
 });
 
-const ContainerForm = () => {
+const ContainerForm = ({ deviceId, closeModal }) => {
     const [state, dispatch] = useContext(Context);
     const textFieldClasses = useTextFieldStyles();
     const buttonClasses = useFormButtonStyles();
@@ -39,19 +40,19 @@ const ContainerForm = () => {
     
     const parseAddress = data =>
         `${data[0].address_components[1].long_name} ${data[0].address_components[0].long_name}, ${data[0].address_components[2].long_name}`;
-    
+    console.log(closeModal);
     const handleSubmit = async (formData, actions) => {
         actions.setSubmitting(true);
         try {
-            geocoder.geocode({ location: { lat: 56.2123, lng: 23.9202 }}, async data => {
-                const response = await axios.post('/api/container',
-                    { formData: {...formData, address: parseAddress(data) }});
+            geocoder.geocode({ location: { lat: parseInt(formData.latitude, 10), lng: parseInt(formData.longitude, 10) }}, async geo => {
+                const { data } = await axios.post('/api/container',
+                    { formData: {...formData, address: parseAddress(geo)}});
+                actions.setSubmitting(false);
+                closeModal();
+                dispatch({ type: Actions.SET_CONTAINERS, payload: data});
+                toast.success('Success!');
             });
-            actions.setSubmitting(false);
-            toast.success('Success!');
-            /*setTimeout(() => {
-                window.location.reload();
-            }, 1000);*/
+           
         } catch (error) {
             actions.setErrors(
                 error.response.data.reduce((obj, key) => {
@@ -68,7 +69,7 @@ const ContainerForm = () => {
         <Container>
             <Formik
                 initialValues={{
-                    ttnDeviceId: '',
+                    ttnDeviceId: deviceId ? deviceId.device : '',
                     latitude: state.userLocation ? state.userLocation.lat.toFixed(4) : '',
                     longitude: state.userLocation ? state.userLocation.lng.toFixed(4) : '',
                     level: '',

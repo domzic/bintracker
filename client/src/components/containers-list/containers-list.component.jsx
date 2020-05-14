@@ -51,7 +51,11 @@ const ContainersList = () => {
             .delete('/api/container', {
                 data: { ttnDeviceId: dialogState.selected },
             })
-            .then(() => window.location.reload());
+            .then(response => {
+                handleClose();
+                console.log(response.data);
+                dispatch({ type: Actions.SET_CONTAINERS, payload: response.data })
+            });
     };
     
     const onRowClick = (event, rowData, togglePannel) => {
@@ -68,7 +72,6 @@ const ContainersList = () => {
                 position={{ top: 50, left: 50 }}
                 tooltipText="Add container"
             >
-                <ContainerForm />
             </Modal>
             <MaterialTable
                 title="Containers"

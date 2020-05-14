@@ -82,3 +82,10 @@
 .vertical-timeline-element-content .vertical-timeline-element-date {
   padding: 4px 0 !important;
 }
+
+.alert {
+  position: fixed;
+  z-index: 100;
+  top: 6%;
+  right: 10%;
+}

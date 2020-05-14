@@ -9,6 +9,7 @@ const Stat: Schema = new Schema({
         ref: 'Company',
         required: true
     },
+    devices: [String],
     date: Date
 });
 
@@ -17,6 +18,7 @@ export interface IStat extends Document {
     value?: string;
     date: Date;
     action?: string;
+    devices?: string[];
 }
 
 export default model<IStat>('Stat', Stat, 'stats');
