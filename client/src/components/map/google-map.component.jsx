@@ -144,6 +144,7 @@ const Map = withScriptjs(
                 </Modal>
                 <GoogleMap
                     ref={it => (_map = it)}
+                    tilt={0}
                     defaultCenter={
                         userLocation
                             ? { lat: userLocation.lat, lng: userLocation.lng }
@@ -255,7 +256,7 @@ const Map = withScriptjs(
                                 path:MAP_MARKER,
                                 fillColor: 'rgba(255, 255, 255, 0.2)',
                                 fillOpacity: 1,
-                                anchor: { x: 32, y: 32 },
+                                anchor: { x: 16, y: 16 },
                             }}
                         >
                             <InfoWindow>
