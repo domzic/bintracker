@@ -34,7 +34,11 @@ const responseMock: Uplink[] = [
         time: '2020-04-08T19:39:23.950944319Z'
     }
 ];
-beforeEach(() => Container.prototype.save = jest.fn());
+beforeEach(() => {
+    Container.prototype.save = jest.fn();
+    Stat.prototype.create = jest.fn();
+    Stat.prototype.save = jest.fn();
+});
 
 afterEach(() => jest.restoreAllMocks());
 
@@ -113,7 +117,7 @@ describe('TTN data controller', () => {
         });
 
         it('should increment times serviced count', async () => {
-            const uplinkMock = mockUplink({ distance: 141 });
+            const uplinkMock = mockUplink({ distance: 181 });
             Container.findOne = jest.fn().mockReturnValue(new Container({
                 height: 200,
                 level: 40,

@@ -61,6 +61,7 @@ export const addContainer = async (req: Request, res: Response) => {
             level: level || -1,
             timesServiced: 0,
             height: 0,
+            lastUpdate: new Date(),
             company: req.user!!.company
         });
     } catch (error) {

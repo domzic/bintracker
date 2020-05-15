@@ -7,3 +7,9 @@ export const InfoWindowButton = styled.div`
         text-decoration: underline;
     }
 `;
+
+export const Alert = styled.img`
+    width: 16px;
+    position: absolute;
+    cursor: pointer;
+`;

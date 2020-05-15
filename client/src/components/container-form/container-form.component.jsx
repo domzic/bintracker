@@ -42,25 +42,17 @@ const ContainerForm = ({ deviceId, closeModal, lat, lng }) => {
     const handleSubmit = async (formData, actions) => {
         actions.setSubmitting(true);
         try {
-            geocoder.geocode(
-                {
-                    location: {
-                        lat: parseInt(formData.latitude, 10),
-                        lng: parseInt(formData.longitude, 10),
-                    },
-                },
-                async geo => {
-                    console.log(geo);
-                    console.log(parseAddress(geo));
-                    const { data } = await axios.post('/api/container', {
-                        formData: { ...formData, address: parseAddress(geo) },
-                    });
-                    actions.setSubmitting(false);
-                    closeModal();
-                    dispatch({ type: Actions.SET_CONTAINERS, payload: data });
-                    toast.success('Success!');
-                }
-            );
+            geocoder.geocode({ location: { lat, lng } }, async geo => {
+                console.log(geo);
+                console.log(parseAddress(geo));
+                const { data } = await axios.post('/api/container', {
+                    formData: { ...formData, address: parseAddress(geo) },
+                });
+                actions.setSubmitting(false);
+                closeModal();
+                dispatch({ type: Actions.SET_CONTAINERS, payload: data });
+                toast.success('Success!');
+            });
         } catch (error) {
             actions.setErrors(
                 error.response.data.reduce((obj, key) => {
@@ -78,10 +70,14 @@ const ContainerForm = ({ deviceId, closeModal, lat, lng }) => {
             <Formik
                 initialValues={{
                     ttnDeviceId: deviceId ? deviceId.device : '',
-                    latitude: lat ? lat : state.userLocation
+                    latitude: lat
+                        ? lat
+                        : state.userLocation
                         ? state.userLocation.lat.toFixed(4)
                         : '',
-                    longitude: lng ? lng : state.userLocation
+                    longitude: lng
+                        ? lng
+                        : state.userLocation
                         ? state.userLocation.lng.toFixed(4)
                         : '',
                     level: '',
@@ -185,7 +181,7 @@ const ContainerForm = ({ deviceId, closeModal, lat, lng }) => {
                                         <ErrorMessage name="longitude" />
                                     </FormError>
                                 </Row>
-                            ): null}
+                            ) : null}
                             <Row>
                                 <TextField
                                     autoComplete="off"

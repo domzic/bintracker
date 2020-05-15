@@ -13,7 +13,8 @@ const ContainerSchema: Schema = new Schema({
         required: true
     },
     timesServiced: Number,
-    height: Number
+    height: Number,
+    lastUpdate: Date
 });
 
 export interface IContainer extends Document {
@@ -25,6 +26,7 @@ export interface IContainer extends Document {
     height?: number;
     address: string;
     company?: number;
+    lastUpdate: Date;
 }
 
 ContainerSchema.statics.companyDeviceExists = async function (ttnDeviceId: string, companyId: mongoose.Types.ObjectId) {

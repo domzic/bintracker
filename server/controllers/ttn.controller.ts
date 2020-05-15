@@ -75,7 +75,7 @@ const updateContainer = async (uplink: Uplink): Promise<IContainer> => {
     }
 
     const newLevel = 100 - Math.round(newDistance / container.height * 100);
-    if (container.level - newLevel > 10) {
+    if (container.level - newLevel > 20) {
         container.timesServiced++;
         await Stat.create({
             key: StatType.Action,
@@ -98,7 +98,7 @@ const updateContainer = async (uplink: Uplink): Promise<IContainer> => {
     }
 
     container.level = newLevel;
-
+    container.lastUpdate = new Date();
     await container.save();
 
     return Promise.resolve(container);

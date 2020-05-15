@@ -9,11 +9,16 @@ import {
     withScriptjs,
 } from 'react-google-maps';
 import { Context } from '../../state/store';
-import { Actions } from '../../state/constants';
+import { Actions, Filter, MapView } from '../../state/constants';
 import ContainerForm from '../container-form/container-form.component';
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
-import {InfoWindowButton} from "./google-map.styles";
+import { InfoWindowButton, Alert } from './google-map.styles';
+import moment from 'moment';
+import alert from '../../assets/alert.svg';
+import Fab from '@material-ui/core/Fab';
+import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const MAP_MARKER =
     'M19 4h-3.5l-1-1h-5l-1 1H5v2h14zM6 7v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zm8 7v4h-4v-4H8l4-4 4 4h-2z';
@@ -96,7 +101,7 @@ const Map = withScriptjs(
         const [state, dispatch] = useContext(Context);
         const { userLocation, activeMarker } = state;
         const [cursorPosition, setCursorPosition] = useState(null);
-        
+
         const onMarkerClick = id => {
             dispatch({ type: Actions.SET_ACTIVE_MARKER, payload: id });
             setCursorPosition(null);
@@ -123,7 +128,12 @@ const Map = withScriptjs(
         };
 
         const onMapRightClick = event => {
-            setCursorPosition({lat: event.latLng.lat(), lng: event.latLng.lng()});
+            console.log('lat ', event.latLng.lat());
+            console.log('lng ', event.latLng.lng());
+            setCursorPosition({
+                lat: event.latLng.lat(),
+                lng: event.latLng.lng(),
+            });
         };
 
         return (
@@ -137,7 +147,7 @@ const Map = withScriptjs(
                     <div style={modalStyle} className={classes.paper}>
                         <ContainerForm
                             lat={cursorPosition ? cursorPosition.lat : ''}
-                            lng={cursorPosition ? cursorPosition.lng: ''}
+                            lng={cursorPosition ? cursorPosition.lng : ''}
                             closeModal={handleModalClose}
                         />
                     </div>
@@ -249,18 +259,22 @@ const Map = withScriptjs(
                 >
                     {cursorPosition && (
                         <Marker
-                            key='add'
-                            id='add'
+                            key="add"
+                            id="add"
                             position={cursorPosition}
                             icon={{
-                                path:MAP_MARKER,
+                                path: MAP_MARKER,
                                 fillColor: 'rgba(255, 255, 255, 0.2)',
                                 fillOpacity: 1,
                                 anchor: { x: 16, y: 16 },
                             }}
                         >
-                            <InfoWindow>
-                                <InfoWindowButton onClick={() => setOpenModal(true)}>
+                            <InfoWindow
+                                onCloseClick={() => setCursorPosition(null)}
+                            >
+                                <InfoWindowButton
+                                    onClick={() => setOpenModal(true)}
+                                >
                                     Add container here
                                 </InfoWindowButton>
                             </InfoWindow>
@@ -311,6 +325,30 @@ const Map = withScriptjs(
                                                     1
                                                 )}{' '}
                                                 m
+                                            </div>
+                                            <div>
+                                                Last updated:{' '}
+                                                {moment(
+                                                    marker.lastUpdate
+                                                ).format('MMM DD, ddd HH:mm')}
+                                                {moment(new Date()).diff(
+                                                    moment(marker.lastUpdate),
+                                                    'hours'
+                                                ) > 24 && (
+                                                    <span>
+                                                        <Tooltip
+                                                            placement='top'
+                                                            color='yellow'
+                                                            title="The device haven't send any data for one day"
+                                                            aria-label="device"
+                                                        >
+                                                            <Alert
+                                                                alt="alert"
+                                                                src={alert}
+                                                            />
+                                                        </Tooltip>
+                                                    </span>
+                                                )}
                                             </div>
                                         </div>
                                     </InfoWindow>
