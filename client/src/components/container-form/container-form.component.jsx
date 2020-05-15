@@ -1,20 +1,16 @@
 /* global google */
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import * as Yup from 'yup';
-import {ErrorMessage, Formik} from 'formik';
+import { ErrorMessage, Formik } from 'formik';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import {
-    Container,
-    Form,
-    Row,
-} from './container-form.styles';
+import { Container, Form, Row } from './container-form.styles';
 import { Context } from '../../state/store';
 import { toast } from 'react-toastify';
-import {useFormButtonStyles, useTextFieldStyles} from "../utils/mui-styles";
-import {FormError} from "../company-form/company-form.styles";
-import {Actions} from "../../state/constants";
+import { useFormButtonStyles, useTextFieldStyles } from '../utils/mui-styles';
+import { FormError } from '../company-form/company-form.styles';
+import { Actions } from '../../state/constants';
 
 const ContainerFormSchema = Yup.object().shape({
     ttnDeviceId: Yup.string()
@@ -28,31 +24,43 @@ const ContainerFormSchema = Yup.object().shape({
     longitude: Yup.number()
         .min(-180, 'Longitude must be between -180 and 180.')
         .max(180, 'Longitude must be between -180 and 180.')
-        .required('Required')
-    
+        .required('Required'),
+    level: Yup.number()
+        .min(0, 'Level mus be between 0 and 100.')
+        .max(100, 'Level must be between 0 and 100.')
+        .required('Required'),
 });
 
-const ContainerForm = ({ deviceId, closeModal }) => {
+const ContainerForm = ({ deviceId, closeModal, lat, lng }) => {
     const [state, dispatch] = useContext(Context);
     const textFieldClasses = useTextFieldStyles();
     const buttonClasses = useFormButtonStyles();
-    const geocoder = new google.maps.Geocoder;
-    
+    const geocoder = new google.maps.Geocoder();
+
     const parseAddress = data =>
         `${data[0].address_components[1].long_name} ${data[0].address_components[0].long_name}, ${data[0].address_components[2].long_name}`;
-    console.log(closeModal);
     const handleSubmit = async (formData, actions) => {
         actions.setSubmitting(true);
         try {
-            geocoder.geocode({ location: { lat: parseInt(formData.latitude, 10), lng: parseInt(formData.longitude, 10) }}, async geo => {
-                const { data } = await axios.post('/api/container',
-                    { formData: {...formData, address: parseAddress(geo)}});
-                actions.setSubmitting(false);
-                closeModal();
-                dispatch({ type: Actions.SET_CONTAINERS, payload: data});
-                toast.success('Success!');
-            });
-           
+            geocoder.geocode(
+                {
+                    location: {
+                        lat: parseInt(formData.latitude, 10),
+                        lng: parseInt(formData.longitude, 10),
+                    },
+                },
+                async geo => {
+                    console.log(geo);
+                    console.log(parseAddress(geo));
+                    const { data } = await axios.post('/api/container', {
+                        formData: { ...formData, address: parseAddress(geo) },
+                    });
+                    actions.setSubmitting(false);
+                    closeModal();
+                    dispatch({ type: Actions.SET_CONTAINERS, payload: data });
+                    toast.success('Success!');
+                }
+            );
         } catch (error) {
             actions.setErrors(
                 error.response.data.reduce((obj, key) => {
@@ -70,8 +78,12 @@ const ContainerForm = ({ deviceId, closeModal }) => {
             <Formik
                 initialValues={{
                     ttnDeviceId: deviceId ? deviceId.device : '',
-                    latitude: state.userLocation ? state.userLocation.lat.toFixed(4) : '',
-                    longitude: state.userLocation ? state.userLocation.lng.toFixed(4) : '',
+                    latitude: lat ? lat : state.userLocation
+                        ? state.userLocation.lat.toFixed(4)
+                        : '',
+                    longitude: lng ? lng : state.userLocation
+                        ? state.userLocation.lng.toFixed(4)
+                        : '',
                     level: '',
                 }}
                 enableReinitialize
@@ -105,8 +117,7 @@ const ContainerForm = ({ deviceId, closeModal }) => {
                                     onBlur={handleBlur}
                                     InputProps={{
                                         classes: textFieldClasses,
-                                        error:
-                                            errors.email && touched.email,
+                                        error: errors.email && touched.email,
                                     }}
                                     InputLabelProps={{
                                         className:
@@ -119,58 +130,62 @@ const ContainerForm = ({ deviceId, closeModal }) => {
                                     <ErrorMessage name="ttnDeviceId" />
                                 </FormError>
                             </Row>
-                            <Row>
-                                <TextField
-                                    autoComplete="off"
-                                    fullWidth
-                                    label="Latitude"
-                                    id="latitude"
-                                    placeholder="Enter latitude"
-                                    type="number"
-                                    value={values.latitude}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    InputProps={{
-                                        classes: textFieldClasses,
-                                        error: errors.name && touched.name,
-                                    }}
-                                    InputLabelProps={{
-                                        className:
-                                            errors.name && touched.name
-                                                ? 'form-label errored'
-                                                : 'form-label',
-                                    }}
-                                />
-                                <FormError>
-                                    <ErrorMessage name="latitude" />
-                                </FormError>
-                            </Row>
-                            <Row>
-                                <TextField
-                                    autoComplete="off"
-                                    fullWidth
-                                    label="Longitude"
-                                    id="longitude"
-                                    placeholder="Enter longitude"
-                                    type="number"
-                                    value={values.longitude}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    InputProps={{
-                                        classes: textFieldClasses,
-                                        error: errors.name && touched.name,
-                                    }}
-                                    InputLabelProps={{
-                                        className:
-                                            errors.name && touched.name
-                                                ? 'form-label errored'
-                                                : 'form-label',
-                                    }}
-                                />
-                                <FormError>
-                                    <ErrorMessage name="longitude" />
-                                </FormError>
-                            </Row>
+                            {lat === null ? (
+                                <Row>
+                                    <TextField
+                                        autoComplete="off"
+                                        fullWidth
+                                        label="Latitude"
+                                        id="latitude"
+                                        placeholder="Enter latitude"
+                                        type="number"
+                                        value={values.latitude}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        InputProps={{
+                                            classes: textFieldClasses,
+                                            error: errors.name && touched.name,
+                                        }}
+                                        InputLabelProps={{
+                                            className:
+                                                errors.name && touched.name
+                                                    ? 'form-label errored'
+                                                    : 'form-label',
+                                        }}
+                                    />
+                                    <FormError>
+                                        <ErrorMessage name="latitude" />
+                                    </FormError>
+                                </Row>
+                            ) : null}
+                            {lat === null ? (
+                                <Row>
+                                    <TextField
+                                        autoComplete="off"
+                                        fullWidth
+                                        label="Longitude"
+                                        id="longitude"
+                                        placeholder="Enter longitude"
+                                        type="number"
+                                        value={values.longitude}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        InputProps={{
+                                            classes: textFieldClasses,
+                                            error: errors.name && touched.name,
+                                        }}
+                                        InputLabelProps={{
+                                            className:
+                                                errors.name && touched.name
+                                                    ? 'form-label errored'
+                                                    : 'form-label',
+                                        }}
+                                    />
+                                    <FormError>
+                                        <ErrorMessage name="longitude" />
+                                    </FormError>
+                                </Row>
+                            ): null}
                             <Row>
                                 <TextField
                                     autoComplete="off"
@@ -193,6 +208,9 @@ const ContainerForm = ({ deviceId, closeModal }) => {
                                                 : 'form-label',
                                     }}
                                 />
+                                <FormError>
+                                    <ErrorMessage name="level" />
+                                </FormError>
                             </Row>
                             <Button
                                 type="submit"
