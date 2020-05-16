@@ -39,7 +39,6 @@ const DashboardPage = () => {
     useEffect(() => {
         const fetchDevice = async () => {
             const { data } = await axios.get('/api/stat/devices');
-            console.log(data);
             if (data.length) {
                 setDevice(data[0]);
                 sessionStorage.setItem('alertShown', 'true');

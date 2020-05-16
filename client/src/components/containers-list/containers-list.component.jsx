@@ -53,7 +53,6 @@ const ContainersList = () => {
             })
             .then(response => {
                 handleClose();
-                console.log(response.data);
                 dispatch({ type: Actions.SET_CONTAINERS, payload: response.data })
             });
     };

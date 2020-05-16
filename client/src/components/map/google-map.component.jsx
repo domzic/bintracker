@@ -128,8 +128,6 @@ const Map = withScriptjs(
         };
 
         const onMapRightClick = event => {
-            console.log('lat ', event.latLng.lat());
-            console.log('lng ', event.latLng.lng());
             setCursorPosition({
                 lat: event.latLng.lat(),
                 lng: event.latLng.lng(),

@@ -80,11 +80,8 @@ export const addContainer = async (req: Request, res: Response) => {
         company: req.user!!.company, key: StatType.notRegisteredDevices
     });
 
-    console.log('devices ', notRegisteredDevices!!.devices, ' ttndeviceid ', ttnDeviceId);
     if (notRegisteredDevices && notRegisteredDevices.devices?.includes(ttnDeviceId)) {
-        console.log('YES');
         notRegisteredDevices.devices = notRegisteredDevices.devices.filter(d => d !== ttnDeviceId);
-        console.log('after removal ', notRegisteredDevices.devices);
         await notRegisteredDevices.save();
     }
 

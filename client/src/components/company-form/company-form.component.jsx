@@ -44,7 +44,6 @@ const CompanyForm = ({ title, showAdminField, creationForm }) => {
     const buttonClasses = useFormButtonStyles();
 
     const handleSubmit = async (formData, actions) => {
-        console.log(formData);
         return creationForm ? handleCreate(formData, actions) : handleUpdate(formData, actions);
     };
 

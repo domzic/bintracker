@@ -43,8 +43,6 @@ const ContainerForm = ({ deviceId, closeModal, lat, lng }) => {
         actions.setSubmitting(true);
         try {
             geocoder.geocode({ location: { lat, lng } }, async geo => {
-                console.log(geo);
-                console.log(parseAddress(geo));
                 const { data } = await axios.post('/api/container', {
                     formData: { ...formData, address: parseAddress(geo) },
                 });

@@ -73,7 +73,6 @@ export const createCompany = async (req: Request, res: Response) => {
 export const updateCompany = async (req: Request, res: Response) => {
     const { ttnAppName, name } = req.body.formData;
     const company = await Company.findById(req.user!!.company).populate('employees');
-    console.log('ID  ', company);
     if (!company) {
         return res.sendStatus(422);
     }
