@@ -10,7 +10,7 @@ const HomePage = () => {
     const { company } = useContext(Context)[0];
     return (
         <PageContainer>
-            <h2>Welcome to <br/> <img src={logo}/></h2>
+            <h2>Welcome to <br/> <img alt='logo' src={logo}/></h2>
             {company ? (
             <h4>Your company is "{company.name}"</h4>
             ) : null}

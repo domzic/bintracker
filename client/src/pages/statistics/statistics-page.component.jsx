@@ -15,7 +15,6 @@ import { Context } from '../../state/store';
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import StatCard from '../../components/stat-card/stat-card.component';
 import axios from 'axios';
-import _ from 'lodash';
 import moment from 'moment';
 
 const barColors = [

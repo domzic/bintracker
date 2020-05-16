@@ -1,10 +1,8 @@
-import React, { useEffect, useContext, useMemo } from 'react';
+import React, { useEffect, useContext } from 'react';
 import './App.css';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import axios from 'axios';
-
 import { Context } from './state/store';
-
 import Header from './components/header/header.component';
 import HomePage from './pages/home/home-page.component';
 import DashboardPage from './pages/dashboard/dashboard-page.component';

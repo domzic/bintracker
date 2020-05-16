@@ -31,6 +31,7 @@ const MainBoard = ( props ) => {
                 return containers.yellow;
             case Filter.RED:
                 return containers.red;
+            default: return [];
         }
     };
 
