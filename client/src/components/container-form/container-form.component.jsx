@@ -14,7 +14,7 @@ import { Actions } from '../../state/constants';
 
 const ContainerFormSchema = Yup.object().shape({
     ttnDeviceId: Yup.string()
-        .min(4, 'Minimum 2 characters are required.')
+        .min(2, 'Minimum 2 characters are required.')
         .max(50, 'Maximum 50 characters are allowed.')
         .required('Required'),
     latitude: Yup.number()
@@ -27,8 +27,7 @@ const ContainerFormSchema = Yup.object().shape({
         .required('Required'),
     level: Yup.number()
         .min(0, 'Level mus be between 0 and 100.')
-        .max(100, 'Level must be between 0 and 100.')
-        .required('Required'),
+        .max(100, 'Level must be between 0 and 100.'),
 });
 
 const ContainerForm = ({ deviceId, closeModal, lat, lng }) => {
@@ -41,8 +40,12 @@ const ContainerForm = ({ deviceId, closeModal, lat, lng }) => {
         `${data[0].address_components[1].long_name} ${data[0].address_components[0].long_name}, ${data[0].address_components[2].long_name}`;
     const handleSubmit = async (formData, actions) => {
         actions.setSubmitting(true);
-        try {
-            geocoder.geocode({ location: { lat, lng } }, async geo => {
+        const location = {
+            lat: parseFloat(formData.latitude),
+            lng: parseFloat(formData.longitude),
+        };
+        geocoder.geocode({ location }, async geo => {
+            try {
                 const { data } = await axios.post('/api/container', {
                     formData: { ...formData, address: parseAddress(geo) },
                 });
@@ -50,17 +53,18 @@ const ContainerForm = ({ deviceId, closeModal, lat, lng }) => {
                 closeModal();
                 dispatch({ type: Actions.SET_CONTAINERS, payload: data });
                 toast.success('Success!');
-            });
-        } catch (error) {
-            actions.setErrors(
-                error.response.data.reduce((obj, key) => {
-                    return {
-                        ...obj,
-                        [key]: `This TTN device is already registered.`,
-                    };
-                }, {})
-            );
-        }
+            } catch (error) {
+                actions.setErrors(
+                    error.response.data.reduce((obj, key) => {
+                        console.log(key);
+                        return {
+                            ...obj,
+                            [key]: `This TTN device is already registered.`,
+                        };
+                    }, {})
+                );
+            }
+        });
     };
 
     return (
@@ -71,13 +75,13 @@ const ContainerForm = ({ deviceId, closeModal, lat, lng }) => {
                     latitude: lat
                         ? lat
                         : state.userLocation
-                        ? state.userLocation.lat.toFixed(4)
-                        : '',
+                        ? state.userLocation.lat
+                        : undefined,
                     longitude: lng
                         ? lng
                         : state.userLocation
-                        ? state.userLocation.lng.toFixed(4)
-                        : '',
+                        ? state.userLocation.lng
+                        : undefined,
                     level: '',
                 }}
                 enableReinitialize
@@ -124,7 +128,7 @@ const ContainerForm = ({ deviceId, closeModal, lat, lng }) => {
                                     <ErrorMessage name="ttnDeviceId" />
                                 </FormError>
                             </Row>
-                            {lat === null ? (
+                            {!lat ? (
                                 <Row>
                                     <TextField
                                         autoComplete="off"
@@ -152,7 +156,7 @@ const ContainerForm = ({ deviceId, closeModal, lat, lng }) => {
                                     </FormError>
                                 </Row>
                             ) : null}
-                            {lat === null ? (
+                            {!lat ? (
                                 <Row>
                                     <TextField
                                         autoComplete="off"

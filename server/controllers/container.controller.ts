@@ -29,7 +29,7 @@ export const getContainers = async (req: Request, res: Response) => {
     const companyDoc = await Company.findById(company);
 
     if (!companyDoc) {
-        res.sendStatus(500).send('Company not found.');
+        res.status(500).send('Company not found.');
     }
 
     if (moment.duration(moment(new Date()).diff(companyDoc!!.lastUpdate)).asHours() >= 1) {
@@ -50,7 +50,7 @@ export const addContainer = async (req: Request, res: Response) => {
     const { latitude, longitude, ttnDeviceId, level, address } = req.body.formData;
     const exists = await Container.companyDeviceExists(ttnDeviceId, req.user!!.company);
     if (exists) {
-        res.status(422).send(['ttnDeviceId']);
+        return res.status(422).send(['ttnDeviceId']);
     }
     try {
         await Container.create({
@@ -86,7 +86,7 @@ export const addContainer = async (req: Request, res: Response) => {
     }
 
     const containers = await Container.find({ company: req.user!!.company });
-    res.status(200).json(getContainersTypes(containers));
+    res.status(200).send(getContainersTypes(containers));
 };
 
 export const removeContainer = async (req: Request, res: Response) => {

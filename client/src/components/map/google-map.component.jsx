@@ -16,8 +16,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { InfoWindowButton, Alert } from './google-map.styles';
 import moment from 'moment';
 import alert from '../../assets/alert.svg';
-import Fab from '@material-ui/core/Fab';
-import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
 import Tooltip from '@material-ui/core/Tooltip';
 
 const MAP_MARKER =

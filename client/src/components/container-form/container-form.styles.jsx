@@ -11,7 +11,7 @@ export const Form = styled.form`
     flex-direction: column;
     min-width: 350px;
     padding: 10px;
-    height: 50vh;
+    max-height: 50vh;
     justify-content: space-around;
 `;
 
