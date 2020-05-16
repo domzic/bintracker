@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
@@ -6,6 +6,7 @@ import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TrackChangesIcon from '@material-ui/icons/TrackChanges';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import {Context} from "../../state/store";
 
 const Action = {
     Remove: 'remove',
@@ -18,7 +19,7 @@ const Action = {
 const Timeline = () => {
     
     const [actions, setActions] = useState([]);
-    
+    const { containers } = useContext(Context)[0];
     useEffect(() => {
         async function fetchActions() {
             const { data } = await axios.get('/api/stat/actions');
@@ -26,7 +27,7 @@ const Timeline = () => {
         }
     
         fetchActions();
-    }, []);
+    }, [containers]);
     
     const renderElement = event => {
         let icon;
