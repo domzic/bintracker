@@ -13,10 +13,10 @@ import Slide from '@material-ui/core/Slide';
 import { tableIcons } from '../employees-list/employees-list.component';
 import { makeStyles } from '@material-ui/core/styles';
 import { useFormButtonStyles } from '../utils/mui-styles';
-import ContainerForm from "../container-form/container-form.component";
 import Modal from "../modal/modal.component";
 import AddIcon from '@material-ui/icons/Add';
 import {Actions} from "../../state/constants";
+import _ from "lodash";
 
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -43,7 +43,11 @@ const ContainersList = () => {
             { title: 'Height, cm', field: 'height' },
             { title: 'Times serviced', field: 'timesServiced' },
         ],
-        data: containers.green.concat(containers.yellow).concat(containers.red),
+        data: _.sortBy([
+            ...containers.red,
+            ...containers.yellow,
+            ...containers.green,
+        ], ['ttnDeviceId']),
     };
 
     const onConfirm = () => {

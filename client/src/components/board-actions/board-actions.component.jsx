@@ -55,7 +55,7 @@ const BoardActions = props => {
                 payload: response.data,
             });
         } catch (error) {
-            console.log(error);
+            toast.error('No data found in cloud server.');
         }
 
     };

@@ -22,9 +22,11 @@ const MainBoard = ( props ) => {
 
         switch (state.filter) {
             case Filter.ALL:
-                return containers.green
-                    .concat(containers.yellow)
-                    .concat(containers.red);
+                return [
+                    ...containers.red,
+                    ...containers.yellow,
+                    ...containers.green,
+                ];
             case Filter.GREEN:
                 return containers.green;
             case Filter.YELLOW:
