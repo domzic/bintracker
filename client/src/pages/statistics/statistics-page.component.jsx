@@ -16,6 +16,7 @@ import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import StatCard from '../../components/stat-card/stat-card.component';
 import axios from 'axios';
 import moment from 'moment';
+import _ from 'lodash';
 
 const barColors = [
     'rgba(255,99,132,1)',
@@ -24,12 +25,20 @@ const barColors = [
     'rgba(75, 192, 192, 1)',
     'rgba(153, 102, 255, 1)',
     'rgba(255, 159, 64, 1)',
-    'rgba(255,99,132,1)',
     'rgba(54, 162, 235, 1)',
     'rgba(255, 206, 86, 1)',
     'rgba(75, 192, 192, 1)',
     'rgba(153, 102, 255, 1)',
     'rgba(255, 159, 64, 1)',
+    'rgba(54, 162, 235, 1)',
+    'rgba(255, 206, 86, 1)',
+    'rgba(75, 192, 192, 1)',
+    'rgba(153, 102, 255, 1)',
+    'rgba(255, 159, 64, 1)',
+    'rgba(54, 162, 235, 1)',
+    'rgba(255, 206, 86, 1)',
+    'rgba(75, 192, 192, 1)',
+    'rgba(153, 102, 255, 1)',
 ];
 
 const doughnutColors = ['#78CA2F', '#EDDF4E', '#FF7575'];
@@ -45,11 +54,11 @@ const StatisticsPage = () => {
     const { containers, company, user } = state;
     const [activeTab, setActiveTab] = useState(ActiveTab.PERCENTAGE);
     const [monthly, setMonthly] = useState([]);
-    const allContainers = [
+    const allContainers = _.sortBy([
         ...containers.red,
         ...containers.yellow,
         ...containers.green,
-    ];
+    ], ['ttnDeviceId']);
 
     useEffect(() => {
         async function fetchMonthly() {
@@ -157,7 +166,7 @@ const StatisticsPage = () => {
                                 },
                                 title: {
                                     display: true,
-                                    text: 'Containers services count',
+                                    text: 'Containers serviced',
                                     fontSize: 18,
                                     fontColor: '#A9DAC4',
                                 },
@@ -282,14 +291,14 @@ const StatisticsPage = () => {
                         className={isActive(ActiveTab.SERVICES)}
                         onClick={handleTabClick}
                     >
-                        Containers services
+                        Containers report
                     </Selection>
                     <Selection
                         data-tabname={ActiveTab.REPORTS}
                         className={isActive(ActiveTab.REPORTS)}
                         onClick={handleTabClick}
                     >
-                        Monthly report
+                        Productivity report
                     </Selection>
                 </ButtonsContainer>
                 <View>{renderTab(activeTab)}</View>
