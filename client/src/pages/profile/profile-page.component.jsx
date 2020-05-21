@@ -22,14 +22,12 @@ const ProfilePage = () => {
     const [state, dispatch] = useContext(Context);
     const { user, company } = state;
 
-    const [loading, setLoading] = useState(company == null);
     const [activeTab, setActiveTab] = useState(ActiveTab.PROFILE);
 
     useEffect(() => {
         const fetchCompanyData = async () => {
             const response = await axios.get('/api/company');
             dispatch({ type: Actions.SET_COMPANY, payload: response.data });
-            setLoading(false);
         };
 
         if (user.isAdmin && company === null) {

@@ -4,9 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 
-
 const StatCard = ({ backgroundImage, title, value }) => {
-    
     const useStyles = makeStyles({
         root: {
             minWidth: 225,

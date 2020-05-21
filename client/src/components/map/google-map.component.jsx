@@ -9,7 +9,7 @@ import {
     withScriptjs,
 } from 'react-google-maps';
 import { Context } from '../../state/store';
-import { Actions, Filter, MapView } from '../../state/constants';
+import { Actions } from '../../state/constants';
 import ContainerForm from '../container-form/container-form.component';
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';

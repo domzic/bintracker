@@ -1,17 +1,11 @@
 import React, { useContext } from 'react';
-
 import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
-
 import { green, yellow, red } from '@material-ui/core/colors';
-import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core';
 import {
     Container,
     Filter,
-    Count,
-    Text,
-    Filters,
 } from './filters-container.styles';
 import { Filter as FilterType, MapView } from '../../state/constants';
 import { Context } from '../../state/store';

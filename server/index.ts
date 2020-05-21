@@ -47,4 +47,3 @@ const db = mongoose.connection;
 db.once('open', _ => {
     console.log('Database connected:', process.env.MONGO_URI);
 });
-// TODO - Company - add ttnAppName, lastUpdateDate
